@@ -4,7 +4,6 @@
 	import { OrbitControls, useGltf } from '@threlte/extras';
 	import * as THREE from 'three';
 	import { Group, type Object3DEventMap } from 'three';
-	import Girl_4 from './girl_4.svelte';
 	export const ref = new Group();
 
 	let model: Group<Object3DEventMap>;
