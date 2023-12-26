@@ -7,22 +7,28 @@
 	export const ref = new Group();
 
 	let model: Group<Object3DEventMap>;
+	let light: any;
 	let camera: any;
-
-
 	$: if (camera && model) {
-		const boundingBox = new THREE.Box3().setFromObject(model);
-		const height = boundingBox.getSize(new THREE.Vector3()).y;
+		let boundingBox = new THREE.Box3().setFromObject(model);
+		let height = boundingBox.getSize(new THREE.Vector3()).y;
+
+		const roundedHeight = Number(height.toFixed(5));
+
+		if (roundedHeight < 0.6) {
+			console.log('Model Terlalu Kecil, Scaling ...');
+			model.scale.set(10, 10, 10);
+		}
+
+		// Set up boundingBox again after scaling
+		boundingBox.setFromObject(model);
+		height = boundingBox.getSize(new THREE.Vector3()).y;
+
 		const distance = height / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2));
-
-		console.log(height);
-
 		const targetPosition = boundingBox.getCenter(new THREE.Vector3());
 
-		// Center
-		model.position.z = model.position.z - targetPosition.z;
-		model.position.x = model.position.x - targetPosition.x;
-		model.position.y = model.position.y - targetPosition.y;
+		// Center model
+		model.position.sub(targetPosition);
 
 		const fudgeFactor = 2;
 
@@ -31,13 +37,21 @@
 	}
 </script>
 
-<T.PerspectiveCamera bind:ref={camera} fov={80} makeDefault>
-	<OrbitControls enableDamping  />
+<T.AmbientLight args={[0xffffff, 1]} />
+
+<T.PointLight bind:ref={light} args={[0xffffff, 1, 300]} position={[0, 1, 1]} />
+
+{#if light}
+	<T.PointLightHelper args={[light]} />
+{/if}
+
+<T.PerspectiveCamera bind:ref={camera} fov={40} makeDefault>
+	<OrbitControls enableDamping />
 </T.PerspectiveCamera>
 
 {#if $modelUpload}
 	{#await useGltf(URL.createObjectURL($modelUpload)) then gltf}
-		<T bind:ref={model} scale={0.2} is={gltf.scene} />
+		<T bind:ref={model} is={gltf.scene} />
 		<T.BoxHelper args={[model]} />
 	{/await}
 {/if}

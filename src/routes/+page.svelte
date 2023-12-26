@@ -1,40 +1,24 @@
 <script lang="ts">
-	import App from '$lib/components/App.svelte';
-	import { modelFile } from '$lib/state';
-	import { popup, type PopupSettings } from '@skeletonlabs/skeleton';
+	import { goto } from '$app/navigation';
+	import { removeGlbExtension } from '$lib/utils.js';
 
+	export let data;
 
-	const popupClick: PopupSettings = {
-	event: 'click',
-	target: 'popupClick',
-	placement: 'top'
-};
+	const models = data.models.map((model: string) => removeGlbExtension(model));
 </script>
 
-
-
-
-<div class="flex h-screen w-screen overflow-hidden">
-	<!-- <div class="bg-blue-300 w-54">
-		<h1>Halo Bang</h1>
-	</div> -->
-
-	<div class="card p-4 variant-filled-primary flex-col" data-popup="popupClick">
-		<button class="btn" on:click={()=> modelFile.set('girl_1.glb') }>Model 1</button>
-		<button class="btn" on:click={()=> modelFile.set('girl_2.glb') }>Model 2</button>
-		<button class="btn" on:click={()=> modelFile.set('girl_3.glb') }>Model 3</button>
-		<button class="btn" on:click={()=> modelFile.set('girl_4.glb') }>Model 4</button>
-		<button class="btn" on:click={()=> modelFile.set('girl_5.glb') }>Model 5</button>
-		<button class="btn" on:click={()=> modelFile.set('tv.glb') }>Model 6</button>
-	</div>
-
-	<div class="flex-1 bg-gray-800">
-		<button use:popup={popupClick} class="absolute z-30 btn-sm btn text-xs variant-filled-primary top-4 right-4 text-white"
-			>Change Model</button
-		>
-		<App />
-	</div>
-</div>
+<header class="px-8 mb-12">
+	<h1 class="h3 font-bold">3D NII BOSS</h1>
+</header>
+<main class="flex h-screen w-screen gap-4 overflow-hidden px-8">
+	{#each models as model}
+		<button on:click={()=>goto(`/model/${model}`)} class="card btn whitespace-normal h-44 w-44 p-4">
+			<p>
+				{model}
+			</p>
+		</button>
+	{/each}
+</main>
 
 <style>
 	:global(body) {
