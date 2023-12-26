@@ -5,12 +5,9 @@ export const canvasEl = writable()
 
 export const capture = () => {
     const cav = document.querySelector('canvas');
-    // const cav = get(canvasEl)
 
     const img = cav.toDataURL('image/jpeg')
     window.open().document.write('<img src="' + img + '" />')
-
-    // console.log(base64);
 };
 
 export function removeGlbExtension(fileName: string): string {
