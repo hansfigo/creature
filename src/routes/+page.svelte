@@ -12,7 +12,7 @@
 </header>
 <main class="flex h-screen w-screen gap-4 overflow-hidden px-8">
 	{#each models as model}
-		<button on:click={()=>goto(`/model/${model}`)} class="card btn whitespace-normal h-44 w-44 p-4">
+		<button on:click={()=>goto(`/post/${model}`)} class="card btn whitespace-normal h-44 w-44 p-4">
 			<p>
 				{model}
 			</p>
@@ -20,8 +20,3 @@
 	{/each}
 </main>
 
-<style>
-	:global(body) {
-		margin: 0;
-	}
-</style>

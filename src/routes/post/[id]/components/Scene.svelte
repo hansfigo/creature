@@ -1,19 +1,56 @@
 <script lang="ts">
 	import { storage } from '$lib/firebase';
-	import { modelUpload } from '$lib/state';
+	import { animationStore, currentAnimationStore, isModelLoading, modelUpload } from '$lib/state';
 	import { capture } from '$lib/utils';
 	import { T } from '@threlte/core';
 	import { OrbitControls, useGltf, useGltfAnimations } from '@threlte/extras';
 	import { getDownloadURL, ref } from 'firebase/storage';
+	import { onDestroy } from 'svelte';
 	import type { Group, Object3DEventMap } from 'three';
 	import * as THREE from 'three';
 
 	export let modelFile: string;
 
-	console.log(modelFile);
+	const { actions, gltf } = useGltfAnimations();
 
 	let model: Group<Object3DEventMap>;
 	let camera: any;
+
+	let modelGltf: Promise<any> | undefined = useGltf(modelFile);
+
+	console.log($gltf);
+
+	$: {
+		isModelLoading.set(true);
+		console.log(modelFile);
+
+		modelGltf = useGltf(modelFile);
+
+		modelGltf
+			?.then((e) => {
+				gltf.set(e);
+				isModelLoading.set(false);
+				console.log(e);
+			})
+			.catch((e) => {
+				console.log(e.toString());
+				isModelLoading.set(false);
+			});
+	}
+
+	$: {
+		const animationArray = Object.entries($actions);
+
+		animationStore.set(animationArray);
+
+		if ($currentAnimationStore) {
+			$actions[$currentAnimationStore]?.play();
+		}
+	}
+
+	onDestroy(() => {
+		currentAnimationStore.set('');
+	});
 
 	$: if (camera && model) {
 		let boundingBox = new THREE.Box3().setFromObject(model);
@@ -40,26 +77,6 @@
 
 		camera.position.copy(targetPosition);
 		camera.position.z += distance * fudgeFactor;
-	}
-
-	const { gltf } = useGltfAnimations();
-
-	let modelGltf: Promise<any> | undefined = useGltf(modelFile);
-
-	$: {
-		console.log(modelFile);
-
-		modelGltf = useGltf(modelFile);
-
-		modelGltf
-			?.then((e) => {
-				gltf.set(e);
-
-				console.log(e);
-			})
-			.catch((e) => {
-				console.log(e.toString());
-			});
 	}
 </script>
 

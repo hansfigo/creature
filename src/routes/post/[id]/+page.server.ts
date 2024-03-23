@@ -10,6 +10,8 @@ export const load = (async ({ params }) => {
 
     const url = await getDownloadURL(storageRef)
 
+    console.log(url);
+
     return {
         model: url
     };

@@ -1,10 +1,14 @@
+import { model } from '$lib/server/Model';
 import type { PageServerLoad } from './$types';
 
-export const load = (async ({ fetch }) => {
+export const load = (async () => {
 
-    const res = await fetch('/api/models')
+    try {
+        const models = await model.getModel()
+        
+        return { models: models };
+    } catch (error) {
+        throw error
+    }
 
-    const models = await res.json()
-
-    return { models : models.fileNames };
 }) satisfies PageServerLoad;
