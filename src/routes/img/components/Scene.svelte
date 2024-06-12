@@ -10,8 +10,6 @@
 
 	export let modelFile: string;
 
-	console.log(modelFile);
-
 	let model: Group<Object3DEventMap>;
 	let camera: any;
 
@@ -19,8 +17,6 @@
 		const boundingBox = new THREE.Box3().setFromObject(model);
 		const height = boundingBox.getSize(new THREE.Vector3()).y;
 		const distance = height / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2));
-
-		console.log(height);
 
 		const targetPosition = boundingBox.getCenter(new THREE.Vector3());
 
@@ -40,15 +36,12 @@
 	let modelGltf: Promise<any> | undefined = useGltf(modelFile);
 
 	$: {
-		console.log(modelFile);
-		
 		modelGltf = useGltf(modelFile);
 
 		modelGltf
 			?.then((e) => {
 				gltf.set(e);
 
-				console.log(e);
 			})
 			.catch((e) => {
 				console.log(e.toString());

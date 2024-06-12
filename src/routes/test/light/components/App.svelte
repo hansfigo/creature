@@ -5,7 +5,7 @@
 
 </script>
 
-<Canvas >
+<Canvas>
 	<Scene />
 </Canvas>
 

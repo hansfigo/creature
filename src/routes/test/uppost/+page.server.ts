@@ -32,8 +32,6 @@ const createPost = async (input: CreatePostInput) => {
             },
             include: { tags: true }, // Include tags in the response
         });
-
-        console.log('New Post:', newPost);
         return newPost;
     } catch (error) {
         console.error('Error creating post:', error);
@@ -46,8 +44,6 @@ const createPost = async (input: CreatePostInput) => {
 
 export const load = (async () => {
 
-    console.log(authFirebase.currentUser);
-    
     if (!authFirebase.currentUser) {
         console.log("Belum Login");
         

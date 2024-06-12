@@ -1,6 +1,6 @@
 import { storage } from '$lib/firebase';
+import { RequestHandler } from '@sveltejs/kit';
 import { listAll, ref } from 'firebase/storage';
-import type { RequestHandler } from './$types';
 
 export const GET: RequestHandler = async () => {
     const listRef = ref(storage, `/models`);
@@ -23,5 +23,4 @@ export const GET: RequestHandler = async () => {
             }
         });
     }
-
 };

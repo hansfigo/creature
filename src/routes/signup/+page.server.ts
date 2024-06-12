@@ -21,7 +21,6 @@ export const actions = {
 
         const hashedPassword = await hashPassword(password.toString())
 
-        console.log("HASHEDDD", hashedPassword);
 
         createUserWithEmailAndPassword(authFirebase, email.toString(), hashedPassword)
             .then(async () => {
