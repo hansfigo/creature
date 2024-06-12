@@ -18,11 +18,8 @@
 
 	let modelGltf: Promise<any> | undefined = useGltf(modelFile);
 
-	console.log($gltf);
-
 	$: {
 		isModelLoading.set(true);
-		console.log(modelFile);
 
 		modelGltf = useGltf(modelFile);
 
@@ -30,10 +27,8 @@
 			?.then((e) => {
 				gltf.set(e);
 				isModelLoading.set(false);
-				console.log(e);
 			})
 			.catch((e) => {
-				console.log(e.toString());
 				isModelLoading.set(false);
 			});
 	}

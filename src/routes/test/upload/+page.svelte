@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { storage } from '$lib/firebase';
-	import { modelUpload } from '$lib/state';
+	import { isLightOn, modelUpload } from '$lib/state';
 	import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 	import App from './components/App.svelte';
 
@@ -19,11 +19,20 @@
 
 		console.log(file);
 	}
+
+	const handleToggleLight = () => {
+		isLightOn.set((!$isLightOn) as boolean);
+	};
 </script>
 
-<div class="bg-gray-800 h-screen">
+<div class=" h-screen">
 	<form class="bg absolute" on:submit|preventDefault={submitForm} enctype="multipart/form-data">
-		<input on:change={handleFileUpload} type="file" name="model" accept=".glb"/>
+		<input on:change={handleFileUpload} type="file" name="model" accept=".glb" />
 	</form>
+	<div class="absolute z-40 bottom-0 right-[50%]">
+		<button on:click={() => handleToggleLight()} class="btn variant-filled-primary">
+			{`Lightning ${$isLightOn ? 'On' : 'Off'}`}
+		</button>
+	</div>
 	<App />
 </div>
