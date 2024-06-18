@@ -47,7 +47,7 @@ export const load = (async () => {
     if (!authFirebase.currentUser) {
         console.log("Belum Login");
         
-        throw redirect(302, '/signin')
+        redirect(302, '/signin');
     }
 
     console.log("Sudah Login dengan Nama : ", authFirebase.currentUser.displayName);
