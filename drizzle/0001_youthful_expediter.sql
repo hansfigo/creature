@@ -1,0 +1,2 @@
+ALTER TABLE `posts` ADD `models_id` bigint unsigned;--> statement-breakpoint
+ALTER TABLE `posts` ADD CONSTRAINT `posts_models_id_models_id_fk` FOREIGN KEY (`models_id`) REFERENCES `models`(`id`) ON DELETE no action ON UPDATE no action;
