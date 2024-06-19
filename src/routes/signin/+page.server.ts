@@ -104,7 +104,7 @@ export const actions: Actions = {
 			...sessionCookie.attributes
 		});
 
-		throw redirect(302, '/');
+		redirect(302, '/');
 	}
 };
 
