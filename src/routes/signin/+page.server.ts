@@ -8,7 +8,9 @@ import { generateIdFromEntropySize } from 'lucia';
 import { hash } from '@node-rs/argon2';
 import { db } from '$lib/server/db/db';
 import { user } from '$lib/server/db/schema';
-import { eq, SQL, sql } from 'drizzle-orm';
+import { sql } from 'drizzle-orm';
+import { verify } from '@node-rs/argon2';
+import { error } from 'console';
 
 export const load = (async () => {
 	return {};
@@ -19,92 +21,51 @@ export const actions: Actions = {
 		const formData = await event.request.formData();
 		const username = formData.get('username');
 		const password = formData.get('password');
-		const email = formData.get('email');
-		const firstName = formData.get('first_name');
-		const lastName = formData.get('last_name');
 
-        console.log("EXCESS", username, password, email, firstName, lastName);
 		// username must be between 4 ~ 31 characters, and only consists of lowercase letters, 0-9, -, and _
 		// keep in mind some database (e.g. mysql) are case insensitive
-		if (
-			typeof username !== 'string' ||
-			username.length < 3 ||
-			username.length > 31 ||
-			!/^[a-z0-9_-]+$/.test(username)
-		) {
+
+		console.log(username, 'Username');
+
+		if (password === null || username === null) {
 			return fail(400, {
-                error : true,
-				message: 'Invalid username'
-			});
-		}
-		if (typeof password !== 'string' || password.length < 6 || password.length > 255) {
-			return fail(400, {
-                error : true,
-				message: 'Invalid password'
+				error: true,
+				message: 'Invalid username or password'
 			});
 		}
 
-		if (typeof email !== 'string' || email.length < 6 || email.length > 255) {
-			return fail(400, {
-                error : true,
-				message: 'Invalid email'
-			});
+		const queryUser = await db
+			.select()
+			.from(user)
+			.where(sql`${user.username} = ${username}`);
+
+		if (queryUser.length == 0) {
+			throw fail(400, { error: true, message: 'User not found' });
 		}
 
-		if (typeof firstName !== 'string' || firstName.length < 1 || firstName.length > 255) {
-			return fail(400, {
-                error : true,
-				message: 'Invalid first name'
-			});
-		}
+		const existingUser = queryUser[0];
 
-		if (typeof lastName !== 'string' || lastName.length < 1 || lastName.length > 255) {
-			return fail(400, {
-                error : true,
-				message: 'Invalid last name'
-			});
-		}
-
-		const userId = generateIdFromEntropySize(10); // 16 characters long
-		const passwordHash = await hash(password, {
-			// recommended minimum parameters
+		const validPassword = await verify(existingUser.password!, String(password), {
 			memoryCost: 19456,
 			timeCost: 2,
 			outputLen: 32,
 			parallelism: 1
 		});
-
-		// TODO: check if username is already used
-		const existedUsername = await db
-			.select()
-			.from(user).where(
-                sql`${user.username} = ${username}`
-            )
-
-		if (existedUsername.length > 0) {
+		if (!validPassword) {
 			return fail(400, {
-                error : true,
-				message: 'Username already exists'
+				error: true,
+				message: 'Incorrect username or password'
 			});
 		}
 
-		await db.insert(user).values({
-			id: userId,
-			username: username,
-			email: email,
-			password: passwordHash,
-			firstName: firstName,
-			lastName: lastName
-		});
-
-		const session = await lucia.createSession(userId, {});
+		const session = await lucia.createSession(existingUser.id, {});
 		const sessionCookie = lucia.createSessionCookie(session.id);
 		event.cookies.set(sessionCookie.name, sessionCookie.value, {
 			path: '.',
 			...sessionCookie.attributes
 		});
 
-		redirect(302, '/');
+		throw redirect(302, '/');
 	}
 };
 

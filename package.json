@@ -53,6 +53,7 @@
     "@lucia-auth/adapter-drizzle": "^1.0.7",
     "@lucia-auth/adapter-mysql": "^3.0.2",
     "@threlte/extras": "^7.5.1",
+    "@tidbcloud/serverless": "^0.1.1",
     "@types/nodemailer": "^6.4.14",
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.31.2",

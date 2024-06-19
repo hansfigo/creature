@@ -1,5 +1,5 @@
 import { storage } from '$lib/firebase';
-import { RequestHandler } from '@sveltejs/kit';
+import type { RequestHandler } from '@sveltejs/kit';
 import { listAll, ref } from 'firebase/storage';
 
 export const GET: RequestHandler = async () => {
