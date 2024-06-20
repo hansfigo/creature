@@ -23,27 +23,31 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 	}
 
 	const { title, description, file, thumbnail } = Object.fromEntries(await request.formData());
-
+	
 	if (!title || !file || !thumbnail) {
 		return json({ error: 'Invalid input' });
 	}
-
+	
+	const userID = locals.session!.userId;
+	const modelID = generateIdFromEntropySize(8);
+	const postID = generateIdFromEntropySize(8);
+	
+	const thumbnailName = `thumnail_${postID}.png`;
+	
+	const thumbnailUrl: string = await useFirebase.uploadFile({
+		file: new File([thumbnail as File], thumbnailName, { type: (thumbnail as File).type }),
+		path: '/users/posts/thumnails/'
+	});
+	
 	const fileUrl: string = await useFirebase.uploadFile({
 		file: file as File,
 		path: '/users/posts/models/'
 	});
 
-	const thumbnailUrl : string = await useFirebase.uploadFile({
-		file: thumbnail as File,
-		path: '/users/posts/thumnails/'
-	})
-
 	if (!fileUrl) {
 		return json({ error: 'Error uploading file' });
 	}
 
-	const userID = locals.session!.userId;
-	const modelID = generateIdFromEntropySize(8);
 
 	await db.insert(models).values({
 		id: modelID,
@@ -54,7 +58,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 	});
 
 	await db.insert(posts).values({
-		id: generateIdFromEntropySize(8),
+		id: postID,
 		userId: userID,
 		title: title.toString(),
 		description: description.toString(),

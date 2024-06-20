@@ -58,9 +58,6 @@ export const actions: Actions = {
 				if (!thumbnailUrl) {
 					return message(form, 'Error uploading file');
 				}
-				
-
-				
 
 				await db.insert(models).values({
 					id: modelID,
