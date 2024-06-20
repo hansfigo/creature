@@ -34,14 +34,9 @@ export const actions: Actions = {
 
 			try {
 				const fileUrl: string = await useFirebase.uploadFile({
-					file: (form.data.file) as File,
+					file: form.data.file as File,
 					path: '/users/posts/models/'
 				});
-
-				const thumbnailUrl : string = await useFirebase.uploadFile({
-					file: (form.data.thumbnail) as File,
-					path: '/users/posts/thumnails/'
-				})
 
 				if (!fileUrl) {
 					return message(form, 'Error uploading file');
@@ -49,6 +44,23 @@ export const actions: Actions = {
 
 				const userID = event.locals.session.userId;
 				const modelID = generateIdFromEntropySize(8);
+				const postID = generateIdFromEntropySize(8);
+
+				const thumbnail = form.data.thumbnail as File;
+				const thumbnailName = `thumnail_${postID}.png`;
+
+				const thumbnailUrl: string = await useFirebase.uploadFile({
+					file: new File([thumbnail], thumbnailName, { type: thumbnail.type }),
+					path: '/users/posts/thumnails/'
+				});
+
+
+				if (!thumbnailUrl) {
+					return message(form, 'Error uploading file');
+				}
+				
+
+				
 
 				await db.insert(models).values({
 					id: modelID,
@@ -59,14 +71,14 @@ export const actions: Actions = {
 				});
 
 				await db.insert(posts).values({
-					id: generateIdFromEntropySize(8),
+					id: postID,
 					userId: userID,
 					title: form.data.title,
 					description: form.data.description,
 					createdAt: new Date(),
 					updatedAt: new Date(),
 					modelId: modelID,
-					thumbnail : thumbnailUrl
+					thumbnail: thumbnailUrl
 				});
 
 				return message(form, 'Form posted successfully!');
