@@ -12,7 +12,7 @@
 
 </script>
 
-<div class="bg-main plus-jakarta-sans min-h-screen h-full flex flex-col overflow-x-hidden">
+<div class="bg-main plus-jakarta-sans min-h-screen h-full flex flex-col overflow-x-hidden px-14 4xl:px-0">
 	<Navbar user={data.user} />
 	<div class="min-h-full  flex-1">
 		<slot />

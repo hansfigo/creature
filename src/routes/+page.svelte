@@ -11,7 +11,7 @@
 	// const models = data.models.map((model: string) => removeGlbExtension(model));
 </script>
 
-<main class="flex justify-center h-screen w-screen gap-4 overflow-hidden px-8">
+<main class="flex justify-center h-screen w-screen gap-4 overflow-hidden">
 	<div class="container">
 		<section class="flex flex-col gap-4">
 			<h1 class="text-3xl font-bold">Latest Upload</h1>

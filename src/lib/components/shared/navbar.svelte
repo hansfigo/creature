@@ -10,12 +10,12 @@
 	const popupClick: PopupSettings = {
 		event: 'click',
 		target: 'popupClick',
-		placement: 'top'
+		placement: 'bottom'
 	};
 </script>
 
 {#if user}
-	<div class="card p-4 variant-filled-primary flex flex-col" data-popup="popupClick">
+	<!-- <div class="card p-4 variant-filled-primary flex flex-col" data-popup="popupClick">
 		<button class="btn">
 			<a href={`/u/${user.username}`}>Profile</a>
 		</button>
@@ -26,7 +26,7 @@
 		</form>
 
 		<div class="arrow variant-filled-primary" />
-	</div>
+	</div> -->
 {/if}
 
 <div class="flex min-w-full justify-center mb-12">
@@ -36,9 +36,16 @@
 		{#if user}
 			<div class="flex gap-4 justify-center items-center">
 				<p class="font-jakarta">{`Welcome, ${user.username}`}</p>
-				<button class="btn border-[1px] border-white" use:popup={popupClick}>
-					<Icon icon="ic:outline-person" />
+				<button class="btn border-[1px] border-white" >
+					<a href={`/u/${user.username}`}>
+						<Icon icon="ic:outline-person" />
+					</a>
 				</button>
+				<form method="post" use:enhance>
+					<button class="btn variant-filled-error">
+						<span>Logout</span>
+					</button>
+				</form>
 			</div>
 		{:else}
 			<div class="flex gap-2">

@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import Container from '$lib/components/shared/container.svelte';
-	import { FileDropzone } from '@skeletonlabs/skeleton';
+	import { FileDropzone, ProgressRadial } from '@skeletonlabs/skeleton';
 	import type { PageData } from './$types';
 	import SuperDebug, { superForm } from 'sveltekit-superforms';
 	import Icon from '@iconify/svelte';
 	import App from './components/App.svelte';
 	import { modelUpload } from '$lib/state';
+	import { goto } from '$app/navigation';
 
 	export let data: PageData;
 
@@ -18,6 +19,8 @@
 
 	let base64: string;
 	let image: any;
+
+	let isLoading = false;
 
 	function base64ToBlob(base64: string, contentType: string) {
 		const byteCharacters = atob(base64.split(',')[1]);
@@ -80,8 +83,7 @@
 			body: form
 		});
 
-		// const data = await response.json();
-		console.log(data);
+		goto('/');
 	};
 </script>
 
@@ -96,9 +98,15 @@
 				<div class="flex gap-4">
 					<div>
 						<label class="label" for="">Reupload Model</label>
-						<input class="input" on:change={onChangeHandler} type="file" name="model" accept=".glb" />
+						<input
+							class="input"
+							on:change={onChangeHandler}
+							type="file"
+							name="model"
+							accept=".glb"
+						/>
 					</div>
-					
+
 					<button type="button" class="btn variant-outline-secondary" on:click={capture}
 						>Create Thumbnail</button
 					>
@@ -107,7 +115,7 @@
 				<FileDropzone on:change={onChangeHandler} name="files" class="min-h-[30rem]">
 					<svelte:fragment slot="lead">
 						<div class="flex w-full h-full justify-center items-center">
-							<img class="text-center  w-44" src="/model-upload.svg" alt="" />
+							<img class="text-center w-44" src="/model-upload.svg" alt="" />
 						</div>
 					</svelte:fragment>
 					<svelte:fragment slot="message">Upload your 3D Model or Drag and Drop</svelte:fragment>
@@ -117,7 +125,13 @@
 
 			{#if base64}
 				<label class="label text-2xl font-semibold mt-8 mb-3" for="thumnail">Thumbnail</label>
-				<img bind:this={imageRef} id="img" src="/" alt="Thumbnail Image" class="border-[1px] border-slate-800" />
+				<img
+					bind:this={imageRef}
+					id="img"
+					src="/"
+					alt="Thumbnail Image"
+					class="border-[1px] border-slate-800"
+				/>
 			{/if}
 		</div>
 		<div class="min-w-[30%]">
@@ -129,10 +143,17 @@
 
 			<label class="label text-2xl font-semibold mt-4" for="description">description</label>
 			<br />
-			<textarea class="textarea rounded-3xl" rows="6" bind:value={description}  />
+			<textarea class="textarea rounded-3xl" rows="6" bind:value={description} />
 			<br />
 			<br />
-			<div><button class="btn variant-outline-secondary" on:click={submit}>Submit</button></div>
+			<div>
+				<button disabled={isLoading} class="btn variant-outline-secondary" on:click={submit}>
+					{#if isLoading}
+						<ProgressRadial class="w-4" />
+					{/if}
+					<span>Submit</span>
+				</button>
+			</div>
 		</div>
 	</div>
 </Container>
