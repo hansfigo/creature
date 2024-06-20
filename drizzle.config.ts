@@ -7,7 +7,7 @@ const host = process.env.NODE_ENV === 'production' ? process.env.DB_HOST : proce
 const user = process.env.NODE_ENV === 'production' ? process.env.DB_USER : process.env.DB_USER_DEV;
 const password = process.env.NODE_ENV === 'production' ? process.env.DB_PASSWORD : process.env.DB_PASSWORD_DEV;
 const database = process.env.NODE_ENV === 'production' ? process.env.DB_NAME : process.env.DB_NAME_DEV;
-
+const port = process.env.NODE_ENV === 'production' ? process.env.DB_PORT : process.env.DB_PORT_DEV;
 export default defineConfig({
   schema: './src/lib/server/db/schema.ts',
   out: './drizzle',
@@ -17,5 +17,6 @@ export default defineConfig({
     user: user || '',
     password: password || '',
     database: database || '',
+    port:  3306,
   },
 });

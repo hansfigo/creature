@@ -17,7 +17,6 @@ export const actions: Actions = {
 		const firstName = formData.get('first_name');
 		const lastName = formData.get('last_name');
 
-        console.log("EXCESS", username, password, email, firstName, lastName);
 		// username must be between 4 ~ 31 characters, and only consists of lowercase letters, 0-9, -, and _
 		// keep in mind some database (e.g. mysql) are case insensitive
 		if (
