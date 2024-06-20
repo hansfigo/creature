@@ -65,6 +65,7 @@
 	}
 
 	const submit = async () => {
+		isLoading = true;
 		if (!model || !title || !description || !base64) {
 			alert('Please fill all fields');
 			return;
@@ -83,6 +84,7 @@
 			body: form
 		});
 
+		isLoading = false;
 		goto('/');
 	};
 </script>
