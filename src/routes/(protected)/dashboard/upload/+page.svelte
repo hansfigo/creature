@@ -79,13 +79,19 @@
 
 		console.log(form, 'form');
 
-		const response = await fetch('/api/post', {
-			method: 'POST',
-			body: form
-		});
+		try {
+			const response = await fetch('/api/post', {
+				method: 'POST',
+				body: form
+			});
+			isLoading = false;
+			goto('/');
+		} catch (e) {
+			alert('Error While Uploading Post');
+			console.log(e);
+		}
 
 		isLoading = false;
-		goto('/');
 	};
 </script>
 
