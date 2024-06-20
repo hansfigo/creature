@@ -1,13 +1,15 @@
 import { model } from '$lib/server/Model';
 import type { PageServerLoad } from './$types';
-import { lucia } from "$lib/server/auth";
-import { fail, redirect, type Actions } from "@sveltejs/kit";
+import { lucia } from '$lib/server/auth';
+import { fail, redirect, type Actions } from '@sveltejs/kit';
+import { usePosts } from '$lib/server/posts/usePosts';
+
+const { getPosts } = usePosts;
 
 export const load: PageServerLoad = async (event) => {
 	try {
-		const models = await model.getModel();
-
-		return { models: models, user: event.locals.user };
+		const postList = await getPosts();
+		return { postList: postList };
 	} catch (error) {
 		throw error;
 	}
@@ -21,9 +23,12 @@ export const actions: Actions = {
 		await lucia.invalidateSession(event.locals.session.id);
 		const sessionCookie = lucia.createBlankSessionCookie();
 		event.cookies.set(sessionCookie.name, sessionCookie.value, {
-			path: ".",
+			path: '.',
 			...sessionCookie.attributes
 		});
-		throw redirect(302, "/signin");
+		throw redirect(302, '/signin');
 	}
 };
+
+// const models = await model.getModel();
+// return { models: models, user: event.locals.user };

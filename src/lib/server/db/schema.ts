@@ -1,3 +1,4 @@
+import { thumbnail } from '$lib/state';
 import {
 	mysqlTable,
 	varchar,
@@ -35,7 +36,8 @@ export const posts = mysqlTable('posts', {
 	title: varchar('title', { length: 256 }),
 	description: text('description'),
 	createdAt: timestamp('created_at'),
-	updatedAt: timestamp('updated_at')
+	updatedAt: timestamp('updated_at'),
+	thumbnail: varchar('thumbnail', { length: 256 })
 });
 
 export const models = mysqlTable('models', {

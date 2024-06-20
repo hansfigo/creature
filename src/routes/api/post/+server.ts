@@ -1,8 +1,11 @@
+import { useFirebase } from '$lib/firebase';
 import { db } from '$lib/server/db/db';
 import { models, posts, user } from '$lib/server/db/schema';
 import type { RequestHandler } from '@sveltejs/kit';
 import { json } from '@sveltejs/kit';
 import { sql } from 'drizzle-orm';
+import { generateIdFromEntropySize } from 'lucia';
+import { message } from 'sveltekit-superforms';
 
 export const GET: RequestHandler = async () => {
 	const x = await db
@@ -13,16 +16,52 @@ export const GET: RequestHandler = async () => {
 	return json({ hello: 'mamah', rand: x });
 };
 
-export const POST: RequestHandler = async ({ request }) => {
-	const { title, description, file } = Object.fromEntries(await request.formData());
+export const POST: RequestHandler = async ({ request, locals }) => {
 
-	if (!title || !description || !file) {
+	if (locals.session === undefined) {
+		return json({ error: 'Unauthorized' });
+	}
+
+	const { title, description, file, thumbnail } = Object.fromEntries(await request.formData());
+
+	if (!title || !description || !file || !thumbnail) {
 		return json({ error: 'Invalid input' });
 	}
 
-	// const insertModel =  await db.insert(models).values({ id : 'ZNDX' , filePath : '/', createdAt : new Date(), updatedAt : new Date()})
+	const fileUrl: string = await useFirebase.uploadFile({
+		file: file as File,
+		path: '/users/posts/models/'
+	});
 
-	// const modelId = insertModel[0].insertId
-	// await db.insert(posts).values({ title : String(title),  description: String(description), modelsId : modelId, createdAt : new Date(), updatedAt : new Date()})
+	const thumbnailUrl : string = await useFirebase.uploadFile({
+		file: thumbnail as File,
+		path: '/users/posts/thumnails/'
+	})
+
+	if (!fileUrl) {
+		return json({ error: 'Error uploading file' });
+	}
+
+	const userID = locals.session!.userId;
+	const modelID = generateIdFromEntropySize(8);
+
+	await db.insert(models).values({
+		id: modelID,
+		filePath: fileUrl,
+		createdAt: new Date(),
+		updatedAt: new Date(),
+		userId: userID
+	});
+
+	await db.insert(posts).values({
+		id: generateIdFromEntropySize(8),
+		userId: userID,
+		title: title.toString(),
+		description: description.toString(),
+		createdAt: new Date(),
+		updatedAt: new Date(),
+		modelId: modelID,
+		thumbnail : thumbnailUrl
+	});
 	return json({ hello: 'mamah' });
 };

@@ -19,7 +19,11 @@ const config = {
 		)
 	],
 	theme: {
-		extend: {},
+		extend: { 
+            fontFamily: { 
+                "jakarta": ['Plus Jakarta Sans', 'sans-serif'] 
+            } 
+        }, 
 	},
 	plugins: [
 		forms,
