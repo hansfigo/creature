@@ -84,10 +84,15 @@
 				method: 'POST',
 				body: form
 			});
+
+			if (response.status !== 200) {
+				alert('Error While Uploading Post, your model might be too big or server error, our team is working on it');
+				return;
+			}
 			isLoading = false;
 			goto('/');
 		} catch (e) {
-			alert('Error While Uploading Post');
+			alert('Error While Uploading Post, your model might be too big or server error, our team is working on it');
 			console.log(e);
 		}
 
