@@ -24,7 +24,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
 	const { title, description, file, thumbnail } = Object.fromEntries(await request.formData());
 
-	if (!title || !description || !file || !thumbnail) {
+	if (!title || !file || !thumbnail) {
 		return json({ error: 'Invalid input' });
 	}
 

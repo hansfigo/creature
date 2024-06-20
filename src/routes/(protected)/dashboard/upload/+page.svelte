@@ -66,7 +66,7 @@
 
 	const submit = async () => {
 		isLoading = true;
-		if (!model || !title || !description || !base64) {
+		if (!model || !title || !base64) {
 			alert('Please fill all fields');
 			return;
 		}

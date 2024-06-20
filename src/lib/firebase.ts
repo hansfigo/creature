@@ -37,7 +37,6 @@ const useFirebaseStorage = (storage: FirebaseStorage) => {
 		return new Promise(async (resolve, reject) => {
 			const storageRef = ref(storage, `${path}${file.name}`);
 
-			// Try to get the download URL first to check if the file already exists
 			try {
 				const existingUrl = await getDownloadURL(storageRef);
 				console.log('File already exists at', existingUrl);
