@@ -15,20 +15,5 @@ export const load: PageServerLoad = async (event) => {
 	}
 };
 
-export const actions: Actions = {
-	default: async (event) => {
-		if (!event.locals.session) {
-			return fail(401);
-		}
-		await lucia.invalidateSession(event.locals.session.id);
-		const sessionCookie = lucia.createBlankSessionCookie();
-		event.cookies.set(sessionCookie.name, sessionCookie.value, {
-			path: '.',
-			...sessionCookie.attributes
-		});
-		throw redirect(302, '/signin');
-	}
-};
-
 // const models = await model.getModel();
 // return { models: models, user: event.locals.user };

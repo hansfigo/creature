@@ -4,7 +4,7 @@
 
 <div class="flex w-full justify-center h-[20rem]">
 	<footer class="container overflow-hidden rounded-t-[4rem] relative pb-4">
-		<img class="min-h-full min-w-full object-cover opacity-80" src="/footer-bg.svg" alt="" />
+		<img class="min-h-full min-w-full object-cover opacity-50" src="/footer-bg.svg" alt="" />
 		<div class="absolute bottom-0 min-w-full min-h-full py-10 flex px-16">
 			<div class="w-full">
 				<div class="flex justify-between items-center w-full">

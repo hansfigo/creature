@@ -9,15 +9,10 @@
 	function handleFileUpload(event: any) {
 		file = event.target.files[0];
 
-		console.log(file);
-
-		modelUpload.set(file);
 		// console.log(spaceRef);
 	}
 	function submitForm() {
 		// Kirim file ke backend atau lakukan tindakan yang sesuai di sini
-
-		console.log(file);
 	}
 </script>
 

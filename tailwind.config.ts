@@ -22,7 +22,10 @@ const config = {
 		extend: { 
             fontFamily: { 
                 "jakarta": ['Plus Jakarta Sans', 'sans-serif'] 
-            } 
+            } ,
+			colors: {
+				'blue-primary' : '#18166A'
+			}
         }, 
 	},
 	plugins: [

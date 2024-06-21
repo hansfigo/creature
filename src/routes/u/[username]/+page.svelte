@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import Container from '$lib/components/shared/container.svelte';
 	import type { PageData } from './$types';
 
@@ -23,7 +24,12 @@
 				{`${firstName} ${lastName}`}
 			</p>
 			{#if user && user.id === userDetail.id}
+			<div class="flex gap-4">
 				<a href="/dashboard/upload" class="btn variant-outline-secondary">Create Post + </a>
+				<button on:click={()=> goto('/signout')} class="btn variant-filled-error">
+					<span>Logout</span>
+				</button>
+			</div>
 			{/if}
 		</div>
 

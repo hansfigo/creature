@@ -14,5 +14,7 @@ export const load = (async (event) => {
 		}
 		throw redirect(302, '/signin');
 	}
-	return { user: event.locals.user};
+	const url = event.request.url;
+
+	return { user: event.locals.user, url };
 }) satisfies LayoutServerLoad;

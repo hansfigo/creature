@@ -22,10 +22,6 @@ export const actions: Actions = {
 		const username = formData.get('username');
 		const password = formData.get('password');
 
-		// username must be between 4 ~ 31 characters, and only consists of lowercase letters, 0-9, -, and _
-		// keep in mind some database (e.g. mysql) are case insensitive
-
-		console.log(username, 'Username');
 
 		if (password === null || username === null) {
 			return fail(400, {
@@ -40,7 +36,7 @@ export const actions: Actions = {
 			.where(sql`${user.username} = ${username}`);
 
 		if (queryUser.length == 0) {
-			throw fail(400, { error: true, message: 'User not found' });
+			return fail(400, { error: true, message: 'User not found' });
 		}
 
 		const existingUser = queryUser[0];

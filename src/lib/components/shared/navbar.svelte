@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { goto } from '$app/navigation';
 	import { TITLE } from '$lib/consants';
 	import Icon from '@iconify/svelte';
 	import { popup, type PopupSettings } from '@skeletonlabs/skeleton';
 	export let user;
 
-	console.log(user);
 
 	const popupClick: PopupSettings = {
 		event: 'click',
@@ -41,18 +41,16 @@
 						<Icon icon="ic:outline-person" />
 					</a>
 				</button>
-				<form method="post" use:enhance>
-					<button class="btn variant-filled-error">
-						<span>Logout</span>
-					</button>
-				</form>
+				<!-- <form method="post" use:enhance> -->
+					
+				<!-- </form> -->
 			</div>
 		{:else}
 			<div class="flex gap-2">
-				<button>
+				<button class="btn variant-outline-secondary">
 					<a href="/signin"> Login </a>
 				</button>
-				<button>
+				<button class="btn variant-outline-secondary">
 					<a href="/signup"> Register </a>
 				</button>
 			</div>
