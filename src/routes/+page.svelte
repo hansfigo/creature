@@ -22,22 +22,32 @@
 					<h1 class="text-[4rem] leading-tight font-black">
 						The medium for 3D interest and the creator
 					</h1>
-					<br>
+					<br />
 					<div class="flex flex-col w-full justify-end gap-4 md:flex-row md:pr-8">
 						<div>
-							<button class="btn variant-filled-secondary text-lg">Join
-								<Icon class="ml-2" icon="ic:baseline-arrow-outward"/>
-							</button>
+							<a href="/dashboard/upload">
+								<button class="btn variant-filled-secondary text-lg"
+									>Join
+									<Icon class="ml-2" icon="ic:baseline-arrow-outward" />
+								</button>
+							</a>
 						</div>
 						<div>
-							<button class="btn variant-filled-secondary text-lg">Post
-								<Icon class="ml-2" icon="ic:baseline-arrow-outward"/>
-							</button>
+							<a href="/dashboard/upload">
+								<button class="btn variant-filled-secondary text-lg"
+									>Post
+									<Icon class="ml-2" icon="ic:baseline-arrow-outward" />
+								</button>
+							</a>
 						</div>
 					</div>
 				</div>
 				<div class="h-[30rem] w-full bg-slate-800 overflow-hidden rounded-2xl">
-					<img class="h-full w-full object-cover" src="https://lh6.googleusercontent.com/proxy/qHZjYOyDk62_G4zO4GArH5BvfdjLSJ5Ov96_912gs2tenHaeRKJDFfVh5hBp8OUX4LbZ_MIkx2a_G9LGq9iSUFJZVTtUZFzVriovkt6-vT59-Na5cd38ktXdRi1G1JBuznxXScvgxr_5O6hF" alt="">
+					<img
+						class="h-full w-full object-cover"
+						src="https://lh6.googleusercontent.com/proxy/qHZjYOyDk62_G4zO4GArH5BvfdjLSJ5Ov96_912gs2tenHaeRKJDFfVh5hBp8OUX4LbZ_MIkx2a_G9LGq9iSUFJZVTtUZFzVriovkt6-vT59-Na5cd38ktXdRi1G1JBuznxXScvgxr_5O6hF"
+						alt=""
+					/>
 				</div>
 			</div>
 			<h1 class="text-3xl font-bold">Latest Upload</h1>

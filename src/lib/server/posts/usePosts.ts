@@ -37,7 +37,21 @@ const postInit = () => {
 	};
 
 	const getDetailPost = async (id: string) => {
-		const post = await db.select().from(posts).where(eq(posts.id, id));
+		const post = await db.select({
+			id: posts.id,
+			title: posts.title,
+			description: posts.description,
+			thumbnail: posts.thumbnail,
+			createdAt: posts.createdAt,
+			modelPath: posts.model,
+			user: {
+				id: user.id,
+				username: user.username,
+				firstName: user.firstName,
+				lastName: user.lastName,
+				profilePicture: user.profilePicture
+			}
+		}).from(posts).where(eq(posts.id, id)).innerJoin(user, eq(user.id, posts.userId));
 		return post[0];
 	};
 
