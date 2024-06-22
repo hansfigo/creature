@@ -3,6 +3,7 @@ import { getAnalytics } from 'firebase/analytics';
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import {
+	deleteObject,
 	getDownloadURL,
 	getStorage,
 	ref,
@@ -33,64 +34,63 @@ export const storage = getStorage(app);
 // const analytics = getAnalytics(app);
 
 const useFirebaseStorage = (storage: FirebaseStorage) => {
-	const uploadFile = ({ file, path }: { file: File, path: string }): Promise<string> => {
+	const uploadFile = ({ file, path }: { file: File; path: string }): Promise<string> => {
 		return new Promise(async (resolve, reject) => {
 			const storageRef = ref(storage, `${path}${file.name}`);
 
-			try {
-				const existingUrl = await getDownloadURL(storageRef);
-				console.log('File already exists at', existingUrl);
-				resolve(existingUrl);
-			} catch (error : any) {
-				if (error.code === 'storage/object-not-found') {
-					// File does not exist, proceed with upload
-					const uploadTask = uploadBytesResumable(storageRef, file);
+			// File does not exist, proceed with upload
+			const uploadTask = uploadBytesResumable(storageRef, file);
 
-					uploadTask.on(
-						'state_changed',
-						(snapshot) => {
-							const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-							console.log('Upload is ' + progress + '% done');
-							switch (snapshot.state) {
-								case 'paused':
-									console.log('Upload is paused');
-									break;
-								case 'running':
-									console.log('Upload is running');
-									break;
-							}
-						},
-						(error) => {
-							switch (error.code) {
-								case 'storage/unauthorized':
-									reject('User doesn\'t have permission to access the object');
-									break;
-								case 'storage/canceled':
-									reject('User canceled the upload');
-									break;
-								case 'storage/unknown':
-									reject('An unknown error occurred');
-									break;
-							}
-						},
-						() => {
-							getDownloadURL(uploadTask.snapshot.ref)
-								.then((downloadURL) => {
-									console.log('File available at', downloadURL);
-									resolve(downloadURL);
-								})
-								.catch(reject);
-						}
-					);
-				} else {
-					// Handle other errors
-					reject(error);
+			uploadTask.on(
+				'state_changed',
+				(snapshot) => {
+					const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+					console.log('Upload is ' + progress + '% done');
+					switch (snapshot.state) {
+						case 'paused':
+							console.log('Upload is paused');
+							break;
+						case 'running':
+							console.log('Upload is running');
+							break;
+					}
+				},
+				(error) => {
+					switch (error.code) {
+						case 'storage/unauthorized':
+							reject("User doesn't have permission to access the object");
+							break;
+						case 'storage/canceled':
+							reject('User canceled the upload');
+							break;
+						case 'storage/unknown':
+							reject('An unknown error occurred');
+							break;
+					}
+				},
+				() => {
+					getDownloadURL(uploadTask.snapshot.ref)
+						.then((downloadURL) => {
+							console.log('File available at', downloadURL);
+							resolve(downloadURL);
+						})
+						.catch(reject);
 				}
-			}
+			);
 		});
 	};
 
-	return { uploadFile };
+	const deleteFile = async (path: string) => {
+		const storageRef = ref(storage, path);
+		try {
+			await deleteObject(storageRef);
+			return { success: true };
+		} catch (error: any) {
+			return { success: false, error: error.message };
+		}
+	};
+
+	return { uploadFile, deleteFile };
 };
 
 export const useFirebase = useFirebaseStorage(storage);
