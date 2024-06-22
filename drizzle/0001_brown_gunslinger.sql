@@ -1,1 +1,0 @@
-ALTER TABLE `posts` ADD `thumbnail` varchar(256);

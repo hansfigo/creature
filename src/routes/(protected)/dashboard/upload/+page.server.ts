@@ -5,9 +5,8 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { z } from 'zod';
 import { useFirebase } from '$lib/firebase';
 import { db } from '$lib/server/db/db';
-import { models, posts } from '$lib/server/db/schema';
 import { generateIdFromEntropySize } from 'lucia';
-import { thumbnail } from '$lib/state';
+import { posts, user } from '$lib/server/db/schema';
 
 const schema = z.object({
 	title: z.string().min(1),
@@ -43,7 +42,8 @@ export const actions: Actions = {
 				}
 
 				const userID = event.locals.session.userId;
-				const modelID = generateIdFromEntropySize(8);
+
+				console.log(userID, 'USERID');
 				const postID = generateIdFromEntropySize(8);
 
 				const thumbnail = form.data.thumbnail as File;
@@ -54,29 +54,30 @@ export const actions: Actions = {
 					path: '/users/posts/thumnails/'
 				});
 
-
 				if (!thumbnailUrl) {
 					return message(form, 'Error uploading file');
 				}
 
-				await db.insert(models).values({
-					id: modelID,
-					filePath: fileUrl,
-					createdAt: new Date(),
-					updatedAt: new Date(),
-					userId: userID
-				});
+				if (!userID) {
+					console.log(event.locals.user , 'ERROR');
+					return message(form, 'Error posting form');
+				}
 
-				await db.insert(posts).values({
+				console.log(userID, 'USERID');
+				const payload = {
 					id: postID,
 					userId: userID,
 					title: form.data.title,
+					model: fileUrl,
+					thumbnail: thumbnailUrl,
 					description: form.data.description,
 					createdAt: new Date(),
-					updatedAt: new Date(),
-					modelId: modelID,
-					thumbnail: thumbnailUrl
-				});
+					updatedAt: new Date()
+				};
+
+				console.log(payload, 'PAYLOAD');
+
+				// await db.insert(posts).values(payload);
 
 				return message(form, 'Form posted successfully!');
 			} catch (error) {

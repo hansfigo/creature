@@ -1,6 +1,6 @@
 import { useFirebase } from '$lib/firebase';
 import { db } from '$lib/server/db/db';
-import { models, posts, user } from '$lib/server/db/schema';
+import {  posts, user } from '$lib/server/db/schema';
 import type { RequestHandler } from '@sveltejs/kit';
 import { json } from '@sveltejs/kit';
 import { sql } from 'drizzle-orm';
@@ -29,7 +29,6 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 	}
 	
 	const userID = locals.session!.userId;
-	const modelID = generateIdFromEntropySize(8);
 	const postID = generateIdFromEntropySize(8);
 	
 	const thumbnailName = `thumnail_${postID}.png`;
@@ -48,15 +47,6 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		return json({ error: 'Error uploading file' });
 	}
 
-
-	await db.insert(models).values({
-		id: modelID,
-		filePath: fileUrl,
-		createdAt: new Date(),
-		updatedAt: new Date(),
-		userId: userID
-	});
-
 	await db.insert(posts).values({
 		id: postID,
 		userId: userID,
@@ -64,8 +54,8 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		description: description.toString(),
 		createdAt: new Date(),
 		updatedAt: new Date(),
-		modelId: modelID,
-		thumbnail : thumbnailUrl
+		thumbnail : thumbnailUrl,
+		model : fileUrl
 	});
 	return json({ hello: 'mamah' });
 };

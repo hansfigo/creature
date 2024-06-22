@@ -6,16 +6,18 @@
 
 	export let data;
 
+	console.log(data);
+
 	const posts = data.postList;
 
 	// const models = data.models.map((model: string) => removeGlbExtension(model));
 </script>
 
-<main class="flex justify-center h-screen w-full gap-4 overflow-hidden">
+<main class="flex justify-center min-h-screen w-full gap-4">
 	<div class="container">
 		<section class="flex flex-col gap-4">
 			<h1 class="text-3xl font-bold">Latest Upload</h1>
-			<div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+			<div class="grid grid-cols-2 gap-8 md:grid-cols-3 xl:grid-cols-4">
 				{#each posts as post}
 					<Postcard {post} />
 				{/each}

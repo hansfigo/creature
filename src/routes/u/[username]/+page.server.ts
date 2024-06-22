@@ -2,8 +2,8 @@ import { userUser } from '$lib/server/user/userUser';
 import type { PageServerLoad } from './$types';
 
 const { getUserDetail } = userUser;
-export const load = (async ({ params, locals }) => {
-	const { username } = params;
+export const load = (async (event) => {
+	const { username } = event.params;
 	const userDetail = await getUserDetail(username);
 
 	if (!userDetail) {
@@ -13,5 +13,10 @@ export const load = (async ({ params, locals }) => {
 		};
 	}
 
-	return { userDetail, user: locals.user };
+	const {posts, user} = userDetail
+
+
+	const p = event.locals.session ? event.locals.session.userId : null;
+
+	return { posts, locals : event.locals, user, p};
 }) satisfies PageServerLoad;

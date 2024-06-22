@@ -9,7 +9,8 @@ const { getPosts } = usePosts;
 export const load: PageServerLoad = async (event) => {
 	try {
 		const postList = await getPosts();
-		return { postList: postList };
+		console.log(postList);
+		return { postList };
 	} catch (error) {
 		throw error;
 	}

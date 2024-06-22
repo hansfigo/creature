@@ -14,8 +14,6 @@ export const actions: Actions = {
 		const username = formData.get('username');
 		const password = formData.get('password');
 		const email = formData.get('email');
-		const firstName = formData.get('first_name');
-		const lastName = formData.get('last_name');
 
 		// username must be between 4 ~ 31 characters, and only consists of lowercase letters, 0-9, -, and _
 		// keep in mind some database (e.g. mysql) are case insensitive
@@ -41,20 +39,6 @@ export const actions: Actions = {
 			return fail(400, {
                 error : true,
 				message: 'Invalid email'
-			});
-		}
-
-		if (typeof firstName !== 'string' || firstName.length < 1 || firstName.length > 255) {
-			return fail(400, {
-                error : true,
-				message: 'Invalid first name'
-			});
-		}
-
-		if (typeof lastName !== 'string' || lastName.length < 1 || lastName.length > 255) {
-			return fail(400, {
-                error : true,
-				message: 'Invalid last name'
 			});
 		}
 
@@ -86,8 +70,6 @@ export const actions: Actions = {
 			username: username,
 			email: email,
 			password: passwordHash,
-			firstName: firstName,
-			lastName: lastName
 		});
 
 		const session = await lucia.createSession(userId, {});

@@ -1,6 +1,6 @@
 import { desc, eq, or } from 'drizzle-orm';
 import { db } from '../db/db';
-import { models, posts } from '../db/schema';
+import { posts, user } from '../db/schema';
 
 export enum orderEnum {
 	ASC = 'asc',
@@ -10,7 +10,25 @@ export enum orderEnum {
 const postInit = () => {
 	const getPosts = async (order: orderEnum = orderEnum.ASC) => {
 		if (order === orderEnum.ASC) {
-			const postList = await db.select().from(posts).orderBy(posts.createdAt);
+			const postList = db
+				.select({
+					id: posts.id,
+					title: posts.title,
+					description: posts.description,
+					thumbnail: posts.thumbnail,
+					createdAt: posts.createdAt,
+					user: {
+						id: user.id,
+						username: user.username,
+						firstName: user.firstName,
+						lastName: user.lastName,
+						profilePicture: user.profilePicture
+					}
+				})
+				.from(posts)
+				.innerJoin(user, eq(user.id, posts.userId))
+				.orderBy(desc(posts.createdAt));
+
 			return postList;
 		} else {
 			const postList = await db.select().from(posts).orderBy(desc(posts.createdAt));
@@ -19,9 +37,8 @@ const postInit = () => {
 	};
 
 	const getDetailPost = async (id: string) => {
-		const post = await db.select().from(posts).where(eq(posts.id, id)).as('posts');
-		const model = await db.select().from(models).innerJoin(post, eq(post.modelId, models.id));
-		return model[0];
+		const post = await db.select().from(posts).where(eq(posts.id, id));
+		return post[0];
 	};
 
 	return {

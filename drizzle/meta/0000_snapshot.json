@@ -1,9 +1,94 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "4e3670dc-9555-4515-8dbf-04c5ce5cd633",
+  "id": "9d014c7e-95b5-4b4d-9bb6-362b0e322bc0",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
+    "comments": {
+      "name": "comments",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "post_id": {
+          "name": "post_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "content": {
+          "name": "content",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "comments_user_id_user_id_fk": {
+          "name": "comments_user_id_user_id_fk",
+          "tableFrom": "comments",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "comments_post_id_posts_id_fk": {
+          "name": "comments_post_id_posts_id_fk",
+          "tableFrom": "comments",
+          "tableTo": "posts",
+          "columnsFrom": [
+            "post_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "comments_id": {
+          "name": "comments_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
     "likes": {
       "name": "likes",
       "columns": {
@@ -80,72 +165,14 @@
           ]
         }
       },
-      "uniqueConstraints": {}
-    },
-    "models": {
-      "name": "models",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "varchar(256)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "varchar(256)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "file_path": {
-          "name": "file_path",
-          "type": "varchar(256)",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "models_user_id_user_id_fk": {
-          "name": "models_user_id_user_id_fk",
-          "tableFrom": "models",
-          "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {
-        "models_id": {
-          "name": "models_id",
+      "uniqueConstraints": {
+        "likes_user_id_unique": {
+          "name": "likes_user_id_unique",
           "columns": [
-            "id"
+            "user_id"
           ]
         }
-      },
-      "uniqueConstraints": {}
+      }
     },
     "post_tags": {
       "name": "post_tags",
@@ -242,15 +269,15 @@
           "notNull": true,
           "autoincrement": false
         },
-        "model_id": {
-          "name": "model_id",
+        "title": {
+          "name": "title",
           "type": "varchar(256)",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
-        "title": {
-          "name": "title",
+        "model_path": {
+          "name": "model_path",
           "type": "varchar(256)",
           "primaryKey": false,
           "notNull": false,
@@ -276,6 +303,13 @@
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
+        },
+        "thumbnail": {
+          "name": "thumbnail",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
         }
       },
       "indexes": {},
@@ -286,19 +320,6 @@
           "tableTo": "user",
           "columnsFrom": [
             "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "posts_model_id_models_id_fk": {
-          "name": "posts_model_id_models_id_fk",
-          "tableFrom": "posts",
-          "tableTo": "models",
-          "columnsFrom": [
-            "model_id"
           ],
           "columnsTo": [
             "id"

@@ -1,54 +1,105 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import Container from '$lib/components/shared/container.svelte';
+	import Postcard from '$lib/components/shared/post/postcard.svelte';
+	import { get, writable } from 'svelte/store';
 	import type { PageData } from './$types';
+	import Cropper from 'svelte-easy-crop';
+	import {
+		Modal,
+		getModalStore,
+		type ModalComponent,
+		type ModalSettings
+	} from '@skeletonlabs/skeleton';
+	import ImageCropper from '$lib/components/shared/ImageCropper.svelte';
 
 	export let data: PageData;
+	const modalStore = getModalStore();
 
-	const { userDetail, user } = data;
+	const image = writable<HTMLInputElement | null>(null);
+	const imageUrl = writable<string | null>(null);
 
-	const firstName = userDetail?.firstName;
-	const lastName = userDetail?.lastName;
+	const { posts, user, locals, p } = data;
 
-	console.log(data);
+	const handleImage = (e: Event) => {
+		const target = e.target as HTMLInputElement;
+		const file = target.files?.[0] as File;
+		if (file) {
+			const reader = new FileReader();
+			reader.onload = (e) => {
+				imageUrl.set(e.target?.result as string);
+
+				const modalComponent: ModalComponent = {
+					ref: ImageCropper,
+					props: {
+						image: e.target?.result as string,
+						onCropComplete: (e: any) => console.log(e , "PPPPPPPP"),
+						classList: 'w-[20rem] h-[20rem] bg-black relative z-[99]'
+					}
+				};
+
+				const modal: ModalSettings = {
+					type: 'component',
+					component: modalComponent
+				};
+
+				modalStore.trigger(modal);
+			};
+			reader.readAsDataURL(file);
+		}
+	};
+
+	const handleImageSimple = (e : Event)=> {
+		const target = e.target as HTMLInputElement;
+		const file = target.files?.[0] as File;
+
+		if (file) {
+			imageUrl.set(URL.createObjectURL(file));
+		}
+	}
 </script>
 
 <svelte:head>
-	<title>{`${firstName} ${lastName}`}</title>
+	<title>{user?.username}</title>
 </svelte:head>
 
 <Container>
 	<div class="flex flex-col gap-12 min-h-[20rem]">
-		<div>
-			<p class="font-bold text-4xl mb-4">
-				{`${firstName} ${lastName}`}
-			</p>
-			{#if user && user.id === userDetail.id}
-			<div class="flex gap-4">
-				<a href="/dashboard/upload" class="btn variant-outline-secondary">Create Post + </a>
-				<button on:click={()=> goto('/signout')} class="btn variant-filled-error">
-					<span>Logout</span>
-				</button>
+		{#if user}
+			<!-- {#if $imageUrl !== null}
+				<Modal />
+			{/if} -->
+			<div>
+				{#if user.profilePicture || $imageUrl !== null}
+					<div class="w-32 h-32 overflow-hidden bg-slate-700 rounded-full mb-4">
+						<img src={$imageUrl} alt="" class="h-full w-full object-cover"/>
+					</div>
+				{:else}
+					<label class="w-32 h-32 bg-slate-700 rounded-full mb-4 cursor-pointer" for="image"
+					></label>
+					<input on:change={handleImageSimple} type="file" name="image" id="image" class="hidden" />
+				{/if}
+				<p class="font-bold text-4xl mb-4">
+					{user?.username}
+				</p>
+				<div class="flex gap-4">
+					<a href="/dashboard/upload" class="btn variant-outline-secondary">Create Post + </a>
+					<button on:click={() => goto('/signout')} class="btn variant-filled-error">
+						<span>Logout</span>
+					</button>
+				</div>
 			</div>
-			{/if}
-		</div>
+		{/if}
 
 		<div>
 			<p class="font-bold text-3xl mb-4">Your Posts</p>
-			<div class="flex gap-4">
-				<div class="flex flex-col gap-2">
-					<p class="font-bold text-xl">Post Title</p>
-					<p class="text-sm">Post Content</p>
+			{#if posts && posts.length > 0}
+				<div class="flex gap-4">
+					{#each posts as post}
+						<Postcard {post} />
+					{/each}
 				</div>
-				<div class="flex flex-col gap-2">
-					<p class="font-bold text-xl">Post Title</p>
-					<p class="text-sm">Post Content</p>
-				</div>
-				<div class="flex flex-col gap-2">
-					<p class="font-bold text-xl">Post Title</p>
-					<p class="text-sm">Post Content</p>
-				</div>
-			</div>
+			{/if}
 		</div>
 	</div>
 </Container>

@@ -20,7 +20,7 @@ export const connection = await mysql.createConnection({
 	database: database,
 	multipleStatements: true,
 	ssl: {
-		rejectUnauthorized: false 
+		rejectUnauthorized: false ,
 		// ca: fs.readFileSync('/path/to/ca-cert.pem'), // Sertifikat CA jika diperlukan
 	}
 });

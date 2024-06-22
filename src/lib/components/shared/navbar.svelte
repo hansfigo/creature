@@ -29,12 +29,12 @@
 	</div> -->
 {/if}
 
-<div class="flex min-w-full justify-center mb-12">
+<div class="flex min-w-full justify-center mb-12 z-[99]">
 	<div class="container flex justify-between py-8">
 		<a href="/" class="h3 font-bold font-jakarta text-4xl">{TITLE}</a>
 		<p></p>
 		{#if user}
-			<div class="flex gap-4 justify-center items-center">
+			<div class=" gap-4 justify-center items-center hidden md:flex">
 				<p class="font-jakarta">{`Welcome, ${user.username}`}</p>
 				<button class="btn border-[1px] border-white" >
 					<a href={`/u/${user.username}`}>
@@ -46,7 +46,7 @@
 				<!-- </form> -->
 			</div>
 		{:else}
-			<div class="flex gap-2">
+			<div class=" gap-2 hidden md:flex">
 				<button class="btn variant-outline-secondary">
 					<a href="/signin"> Login </a>
 				</button>

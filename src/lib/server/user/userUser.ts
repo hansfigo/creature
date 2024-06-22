@@ -1,16 +1,31 @@
 import { eq } from 'drizzle-orm';
 import { db } from '../db/db';
-import { user } from '../db/schema';
+import { posts, user } from '../db/schema';
 
 const initUser = () => {
 	const getUserDetail = async (username: string) => {
 		const userData = await db.select().from(user).where(eq(user.username, username));
+		const PostList = await db.select().from(posts).where(eq(posts.userId, userData[0].id));
 
-		if (userData.length === 0) {
+		if (PostList.length === 0) {
 			return undefined;
 		}
 
-		return userData[0];
+		let data = {
+			user: userData[0],
+			posts: PostList as any
+		};
+
+		data.posts.forEach((post : any) => {
+			post.user = userData[0];
+		});
+
+
+		console.log("====================================");
+		console.log(data.posts, "data");
+
+		return data;
+
 	};
 
 	return { getUserDetail };

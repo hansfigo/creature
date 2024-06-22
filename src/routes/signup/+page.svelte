@@ -22,7 +22,7 @@
 			class="min-h-full px-8 py-6 flex-1 w-[80%]"
 		>
 			<div class="flex w-full justify-between items-center">
-				<p class="text-4xl font-bold">Regiter</p>
+				<p class="text-4xl font-bold">Register</p>
 				<button class="h-full text-3xl" type="button">
 					<a href="/">
 						<Icon icon="ic:baseline-arrow-outward"/>

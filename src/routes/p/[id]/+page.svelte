@@ -18,7 +18,7 @@
 		{/if}
 	</div>
 
-	{#if data.models.filePath}
-		<App modelFile={data.models.filePath} />
+	{#if data.model}
+		<App modelFile={data.model} />
 	{/if}
 </div>

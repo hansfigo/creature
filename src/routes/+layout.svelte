@@ -4,8 +4,12 @@
 	import { page } from '$app/stores';
 	import Footer from '$lib/components/shared/footer.svelte';
 	import Navbar from '$lib/components/shared/navbar.svelte';
-	import { is } from 'drizzle-orm';
+	import { initializeStores } from '@skeletonlabs/skeleton';
+
 	import '../app.pcss';
+
+	initializeStores();
+
 
 	import { arrow, autoUpdate, computePosition, flip, offset, shift } from '@floating-ui/dom';
 
@@ -38,11 +42,11 @@
 		<Navbar user={data.user} />
 	{/if}
 
-	<div class="min-h-full flex-1 z-[2]">
+	<div class="min-h-full flex-1 z-10">
 		<slot />
 	</div>
 	
-	<div class="footer-gradient"></div>
+	<div class="footer-gradient z-0"></div>
 	<br /><br /><br />
 	{#if $page.route.id !== '/signin' && $page.route.id !== '/signup'}
 		<Footer />

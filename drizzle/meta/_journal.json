@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1718739222349,
-      "tag": "0000_massive_magma",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1718886023681,
-      "tag": "0001_brown_gunslinger",
+      "when": 1719039563781,
+      "tag": "0000_same_big_bertha",
       "breakpoints": true
     }
   ]

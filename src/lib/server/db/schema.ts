@@ -1,4 +1,3 @@
-import { thumbnail } from '$lib/state';
 import {
 	mysqlTable,
 	varchar,
@@ -32,22 +31,12 @@ export const posts = mysqlTable('posts', {
 	userId: varchar('user_id', { length: 256 })
 		.references(() => user.id)
 		.notNull(),
-	modelId: varchar('model_id', { length: 256 }).references(() => models.id),
 	title: varchar('title', { length: 256 }),
+	model : varchar('model_path', { length: 256 }),
 	description: text('description'),
 	createdAt: timestamp('created_at'),
 	updatedAt: timestamp('updated_at'),
-	thumbnail: varchar('thumbnail', { length: 256 })
-});
-
-export const models = mysqlTable('models', {
-	id: varchar('id', { length: 256 }).primaryKey(),
-	userId: varchar('user_id', { length: 256 })
-		.references(() => user.id)
-		.notNull(),
-	filePath: varchar('file_path', { length: 256 }),
-	createdAt: timestamp('created_at'),
-	updatedAt: timestamp('updated_at')
+	thumbnail: varchar('thumbnail', { length: 256 }),
 });
 
 export const postTags = mysqlTable('post_tags', {
@@ -71,8 +60,19 @@ export const likes = mysqlTable('likes', {
 	id: varchar('id', { length: 256 }).primaryKey(),
 	userId: varchar('user_id', { length: 256 })
 		.references(() => user.id)
+		.notNull().unique(),
+	postId: varchar('post_id', { length: 256 }).references(() => posts.id),
+	createdAt: timestamp('created_at'),
+	updatedAt: timestamp('updated_at')
+});
+
+export const comments = mysqlTable('comments', {
+	id: varchar('id', { length: 256 }).primaryKey(),
+	userId: varchar('user_id', { length: 256 })
+		.references(() => user.id)
 		.notNull(),
 	postId: varchar('post_id', { length: 256 }).references(() => posts.id),
+	content: text('content'),
 	createdAt: timestamp('created_at'),
 	updatedAt: timestamp('updated_at')
 });

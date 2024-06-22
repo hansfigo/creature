@@ -2,7 +2,7 @@
 	import { TITLE } from '$lib/consants';
 </script>
 
-<div class="flex w-full justify-center h-[20rem]">
+<div class="flex w-full justify-center h-[20rem] ">
 	<footer class="container overflow-hidden rounded-t-[4rem] relative pb-4">
 		<img class="min-h-full min-w-full object-cover opacity-50" src="/footer-bg.svg" alt="" />
 		<div class="absolute bottom-0 min-w-full min-h-full py-10 flex px-16">
