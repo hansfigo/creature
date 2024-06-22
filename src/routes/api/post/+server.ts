@@ -30,14 +30,19 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 	const userID = locals.session!.userId;
 	const postID = generateIdFromEntropySize(8);
 
-	const thumbnailName = `thumnail_${postID}.png`;
-
-	const thumbnailUrl: string = await useFirebase.uploadFile({
-		file: new File([thumbnail as File], thumbnailName, { type: (thumbnail as File).type }),
-		path: '/users/posts/thumnails/'
-	});
-
 	let fileUrl: string;
+	let thumbnailUrl: string;
+
+	if (typeof thumbnail === 'string') {
+		thumbnailUrl = thumbnail;
+	} else if (thumbnail instanceof File) {
+		thumbnailUrl = await useFirebase.uploadFile({
+			file: thumbnail as File,
+			path: '/users/posts/thumnails/'
+		});
+	} else {
+		return json({ error: 'Error uploading file' });
+	}
 
 	if (typeof file === 'string') {
 		fileUrl = file;
@@ -46,10 +51,10 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 			file: file as File,
 			path: '/users/posts/models/'
 		});
-	} else{
+	} else {
 		return json({ error: 'Error uploading file' });
 	}
- 
+
 	if (!fileUrl) {
 		return json({ error: 'Error uploading file' });
 	}
