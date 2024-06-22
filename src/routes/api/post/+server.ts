@@ -37,11 +37,19 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		path: '/users/posts/thumnails/'
 	});
 
-	const fileUrl: string = await useFirebase.uploadFile({
-		file: file as File,
-		path: '/users/posts/models/'
-	});
+	let fileUrl: string;
 
+	if (typeof file === 'string') {
+		fileUrl = file;
+	} else if (file instanceof File) {
+		fileUrl = await useFirebase.uploadFile({
+			file: file as File,
+			path: '/users/posts/models/'
+		});
+	} else{
+		return json({ error: 'Error uploading file' });
+	}
+ 
 	if (!fileUrl) {
 		return json({ error: 'Error uploading file' });
 	}
@@ -92,14 +100,15 @@ export const DELETE: RequestHandler = async ({ params, locals }) => {
 	const modelFileName = extractFileName(post[0].model);
 	const thumbnailFileName = extractFileName(post[0].thumbnail);
 
-
 	const modelDelete = await useFirebase.deleteFile(`/users/posts/models/${modelFileName}`);
 
 	if (!modelDelete.success) {
 		return json({ error: 'Error deleting file' });
 	}
 
-	const thumbnailDelete = await useFirebase.deleteFile(`/users/posts/thumbnails/${thumbnailFileName}`);
+	const thumbnailDelete = await useFirebase.deleteFile(
+		`/users/posts/thumbnails/${thumbnailFileName}`
+	);
 
 	if (!thumbnailDelete.success) {
 		return json({ error: 'Error deleting file' });

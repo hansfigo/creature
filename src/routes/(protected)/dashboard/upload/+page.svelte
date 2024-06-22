@@ -8,6 +8,7 @@
 	import App from './components/App.svelte';
 	import { modelUpload } from '$lib/state';
 	import { goto } from '$app/navigation';
+	import { useFirebase } from '$lib/firebase';
 
 	export let data: PageData;
 
@@ -71,8 +72,13 @@
 			return;
 		}
 
+		const fileUrl = await useFirebase.uploadFile({
+			file: model as File,
+			path: '/users/posts/models/'
+		});
+
 		const form = new FormData();
-		form.append('file', model);
+		form.append('file', fileUrl);
 		form.append('title', title);
 		form.append('description', description);
 		form.append('thumbnail', image);
