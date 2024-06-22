@@ -8,26 +8,26 @@
 	export let data: PageData;
 
 	const calculateAge = (createdAt: Date) => {
-		const now = new Date();
-		const createdDate = new Date(createdAt);
+	const now = new Date();
+	const createdDate = new Date(createdAt);
 
-		const diffInMilliseconds = now - createdDate;
+	const diffInMilliseconds = now.getTime() - createdDate.getTime();
 
-		const diffInSeconds = Math.floor(diffInMilliseconds / 1000);
-		const diffInMinutes = Math.floor(diffInSeconds / 60);
-		const diffInHours = Math.floor(diffInMinutes / 60);
-		const diffInDays = Math.floor(diffInHours / 24);
+	const diffInSeconds = Math.floor(diffInMilliseconds / 1000);
+	const diffInMinutes = Math.floor(diffInSeconds / 60);
+	const diffInHours = Math.floor(diffInMinutes / 60);
+	const diffInDays = Math.floor(diffInHours / 24);
 
-		if (diffInDays > 0) {
-			return `${diffInDays} days`;
-		} else if (diffInHours > 0) {
-			return `${diffInHours} hours`;
-		} else if (diffInMinutes > 0) {
-			return `${diffInMinutes} minutes`;
-		} else {
-			return `${diffInSeconds} seconds`;
-		}
-	};
+	if (diffInDays > 0) {
+		return `${diffInDays} days`;
+	} else if (diffInHours > 0) {
+		return `${diffInHours} hours`;
+	} else if (diffInMinutes > 0) {
+		return `${diffInMinutes} minutes`;
+	} else {
+		return `${diffInSeconds} seconds`;
+	}
+};
 </script>
 
 <Container>
