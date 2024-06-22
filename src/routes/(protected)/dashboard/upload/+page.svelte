@@ -77,11 +77,16 @@
 			path: '/users/posts/models/'
 		});
 
+		const thumbnailUrl = await useFirebase.uploadFile({
+			file: image as File,
+			path: '/users/posts/thumnails/'
+		});
+
 		const form = new FormData();
 		form.append('file', fileUrl);
 		form.append('title', title);
 		form.append('description', description);
-		form.append('thumbnail', image);
+		form.append('thumbnail', thumbnailUrl);
 
 		console.log(form, 'form');
 
