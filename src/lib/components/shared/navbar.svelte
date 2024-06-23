@@ -36,11 +36,10 @@
 		{#if user}
 			<div class=" gap-4 justify-center items-center hidden md:flex">
 				<p class="font-jakarta">{`Welcome, ${user.username}`}</p>
-				<button class="btn border-[1px] border-white" >
-					<a href={`/u/${user.username}`}>
+					<a class="btn variant-outline-secondary" href={`/u/${user.username}`}>
 						<Icon icon="ic:outline-person" />
 					</a>
-				</button>
+				<a href="/dashboard/upload" class="btn variant-outline-secondary text-sm">Create Post + </a>
 				<!-- <form method="post" use:enhance> -->
 					
 				<!-- </form> -->
