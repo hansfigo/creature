@@ -139,7 +139,11 @@
 						veniam ab perspiciatis fugiat sunt assumenda quam eligendi deleniti minima optio odio
 						placeat ipsa obcaecati, qui nisi.
 					</p>
+					
 				</div>
+				<button on:click={() => goto('/signout')} class="btn variant-filled-error">
+					<span>Logout</span>
+				</button>
 				<!-- <div class="flex gap-4">
 					<a href="/dashboard/upload" class="btn variant-outline-secondary">Create Post + </a>
 					<button on:click={() => goto('/signout')} class="btn variant-filled-error">
