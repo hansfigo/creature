@@ -5,6 +5,7 @@
 	import Container from '$lib/components/shared/container.svelte';
 	import Icon from '@iconify/svelte';
 	import { enhance } from '$app/forms';
+	import { ProgressRadial } from '@skeletonlabs/skeleton';
 
 	export let data: PageData;
 
@@ -29,6 +30,8 @@
 			return `${diffInSeconds} seconds`;
 		}
 	};
+
+	let likeLoading = false;
 </script>
 
 <Container>
@@ -54,14 +57,29 @@
 				<div class="flex w-full justify-between">
 					<h1 class="text-3xl font-black">{data.title}</h1>
 					<div class="flex gap-4">
-						<form action="?/like" use:enhance method="post">
-							<button class={`btn ${data.isLiked ? 'variant-filled-secondary' : 'variant-outline-secondary'} `}
-								>
+						<form
+							action="?/like"
+							method="post"
+							use:enhance={() => {
+								likeLoading = true;
+								return async ({ update }) => {
+									likeLoading = false;
+									update();
+								};
+							}}
+						>
+							<button
+								disabled={likeLoading}
+								class={`btn ${data.isLiked ? 'variant-filled-secondary' : 'variant-outline-secondary'} `}
+							>
 								{data.isLiked ? 'Liked' : 'Like'}
-								<Icon class="ml-2" icon="ic:baseline-thumb-up" 
-								/>
+								{#if likeLoading}
+									<ProgressRadial class="ml-2 w-4" />
+								{:else}
+									<Icon class="ml-2" icon="ic:baseline-thumb-up" />
+								{/if}
 							</button>
-							<input class="input hidden" type="text" name="liked" value={data.isLiked}>
+							<input class="input hidden" type="text" name="liked" value={data.isLiked} />
 						</form>
 						<button class="btn variant-outline-secondary"
 							>Share
