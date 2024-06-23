@@ -27,7 +27,6 @@ export const actions: Actions = {
 			const form = await superValidate(event.request, zod(schema));
 
 			if (!form.valid) {
-				console.log('ERROR');
 				return fail(400, { form });
 			}
 
@@ -43,7 +42,6 @@ export const actions: Actions = {
 
 				const userID = event.locals.session.userId;
 
-				console.log(userID, 'USERID');
 				const postID = generateIdFromEntropySize(8);
 
 				const thumbnail = form.data.thumbnail as File;
@@ -59,11 +57,9 @@ export const actions: Actions = {
 				}
 
 				if (!userID) {
-					console.log(event.locals.user , 'ERROR');
 					return message(form, 'Error posting form');
 				}
 
-				console.log(userID, 'USERID');
 				const payload = {
 					id: postID,
 					userId: userID,
@@ -74,8 +70,6 @@ export const actions: Actions = {
 					createdAt: new Date(),
 					updatedAt: new Date()
 				};
-
-				console.log(payload, 'PAYLOAD');
 
 				// await db.insert(posts).values(payload);
 

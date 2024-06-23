@@ -60,7 +60,7 @@ export const likes = mysqlTable('likes', {
 	id: varchar('id', { length: 256 }).primaryKey(),
 	userId: varchar('user_id', { length: 256 })
 		.references(() => user.id)
-		.notNull().unique(),
+		.notNull(),
 	postId: varchar('post_id', { length: 256 }).references(() => posts.id),
 	createdAt: timestamp('created_at'),
 	updatedAt: timestamp('updated_at')

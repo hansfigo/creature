@@ -16,7 +16,5 @@ export const load = (async (event) => {
 	}
 	const url = event.request.url;
 
-	console.log(event.locals.user);
-
 	return { user: event.locals.user, url };
 }) satisfies LayoutServerLoad;

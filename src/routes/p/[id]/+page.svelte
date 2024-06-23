@@ -8,8 +8,6 @@
 
 	export let data: PageData;
 
-	console.log(data, 'DETAIL POST');
-
 	const calculateAge = (createdAt: Date) => {
 		const now = new Date();
 		const createdDate = new Date(createdAt);
@@ -56,6 +54,15 @@
 				<div class="flex w-full justify-between">
 					<h1 class="text-3xl font-black">{data.title}</h1>
 					<div class="flex gap-4">
+						<form action="?/like" use:enhance method="post">
+							<button class={`btn ${data.isLiked ? 'variant-filled-secondary' : 'variant-outline-secondary'} `}
+								>
+								{data.isLiked ? 'Liked' : 'Like'}
+								<Icon class="ml-2" icon="ic:baseline-thumb-up" 
+								/>
+							</button>
+							<input class="input hidden" type="text" name="liked" value={data.isLiked}>
+						</form>
 						<button class="btn variant-outline-secondary"
 							>Share
 							<Icon class="ml-2" icon="ic:baseline-share" />
@@ -81,8 +88,12 @@
 				</div>
 
 				{#if data.createdAt}
-					<div>
+					<div class="flex w-full justify-between">
 						<p class="mt-4">{`Published ${calculateAge(data.createdAt)} Ago`}</p>
+						<div class="flex items-center gap-2">
+							<Icon class="ml-2" icon="ic:baseline-thumb-up" />
+							<p>{data.likes}</p>
+						</div>
 					</div>
 				{/if}
 
@@ -111,7 +122,11 @@
 							<div class="flex w-full gap-4">
 								<div class="bg-slate-700 h-16 w-20 rounded-full overflow-hidden">
 									{#if comment.user.profilePicture}
-										<img src={comment.user.profilePicture} alt="" />
+										<img
+											class="w-full h-full object-cover"
+											src={comment.user.profilePicture}
+											alt=""
+										/>
 									{/if}
 								</div>
 								<div class="px-8 py-4 rounded-3xl bg-blue-primary w-full">

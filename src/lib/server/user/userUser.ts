@@ -28,10 +28,6 @@ const initUser = () => {
 			post.user = userData[0];
 		});
 
-
-		console.log("====================================");
-		console.log(data.posts, "data");
-
 		return data;
 
 	};

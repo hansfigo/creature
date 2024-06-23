@@ -2,18 +2,14 @@ import { usePosts } from '$lib/server/posts/usePosts';
 import type { Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { db } from '$lib/server/db/db';
-import { comments } from '$lib/server/db/schema';
+import { comments, likes, posts } from '$lib/server/db/schema';
 import { generateIdFromEntropySize } from 'lucia';
+import { eq } from 'drizzle-orm';
 
 const { getDetailPost } = usePosts;
 
-export const load = (async ({ params }) => {
-	const detailPost = await getDetailPost(params.id);
-	console.log("====================================");
-	console.log(params.id, "ID");
-	console.log("====================================");
-	console.log(detailPost, "PPPP");
-
+export const load = (async ({ params, locals }) => {
+	const detailPost = await getDetailPost(params.id, locals.user?.id);
 	return detailPost;
 }) satisfies PageServerLoad;
 
@@ -37,6 +33,36 @@ export const actions = {
 				createdAt: new Date(),
 				updatedAt: new Date()
 			});
+		} catch (error) {
+			console.log(error);
+		}
+	},
+	like : async (event) =>{
+		
+		if (!event.locals.user || !event.locals.user.id) {
+			console.log("Unauthorized");
+			throw new Error('Unauthorized');
+		}
+
+		const { id } = event.params;
+		const formData = await event.request.formData();
+		const isLiked = formData.get('liked');
+
+		if (isLiked == 'true') {
+			await db.delete(likes).where(eq(likes.postId, id!));
+			return;
+		}
+
+		try {
+			await db.insert(likes).values(
+				{
+					id : generateIdFromEntropySize(8),
+					userId : event.locals.user.id,
+					postId : id,
+					createdAt : new Date(),
+					updatedAt : new Date(),
+				}
+			)
 		} catch (error) {
 			console.log(error);
 		}

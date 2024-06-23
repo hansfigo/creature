@@ -1,0 +1,1 @@
+ALTER TABLE `likes` DROP INDEX `likes_user_id_unique`;

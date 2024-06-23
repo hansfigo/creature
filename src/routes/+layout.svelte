@@ -28,8 +28,6 @@
 			return true;
 		}
 	} 
-	
-	console.log(isShow());
 </script>
 
 <div

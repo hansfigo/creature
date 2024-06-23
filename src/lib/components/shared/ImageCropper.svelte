@@ -7,7 +7,6 @@
     export let onCropComplete = () => {};
     export let classList = ''
 
-    console.log(image, "PPPPP");
 </script>
 
 <div class={`relative ${classList}`}>
