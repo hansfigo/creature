@@ -1,5 +1,5 @@
 import { usePosts } from '$lib/server/posts/usePosts';
-import type { Actions } from '@sveltejs/kit';
+import { redirect, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { db } from '$lib/server/db/db';
 import { comments, likes, posts } from '$lib/server/db/schema';
@@ -16,7 +16,7 @@ export const load = (async ({ params, locals }) => {
 export const actions = {
 	comment: async (event) => {
 		if (!event.locals.user) {
-			throw new Error('Unauthorized');
+			throw redirect(301, '/signin');
 		}
 
 		const { id } = event.params;
@@ -40,8 +40,7 @@ export const actions = {
 	like : async (event) =>{
 		
 		if (!event.locals.user || !event.locals.user.id) {
-			console.log("Unauthorized");
-			throw new Error('Unauthorized');
+			throw redirect(301, '/signin');
 		}
 
 		const { id } = event.params;
