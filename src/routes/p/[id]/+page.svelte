@@ -36,8 +36,8 @@
 
 <Container>
 	{#if data}
-		<div class=" relative">
-			<div class="relative w-full h-[28rem] border-2 border-slate-800 rounded-3xl">
+		<div class="h-full relative">
+			<div class="relative w-full h-[55%] border-2 border-slate-800 rounded-3xl">
 				<div class="absolute z-40 bottom-0 right-[50%]">
 					{#if $animationStore}
 						{#each $animationStore as animation}
