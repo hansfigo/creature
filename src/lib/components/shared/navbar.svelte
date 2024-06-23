@@ -29,7 +29,7 @@
 	</div> -->
 {/if}
 
-<div class="flex min-w-full justify-center mb-12 z-[99]">
+<div class="flex min-w-full justify-center z-[99]">
 	<div class="container flex justify-between py-8">
 		<a href="/" class="h3 font-bold font-jakarta text-4xl">{TITLE}</a>
 		<p></p>

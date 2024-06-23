@@ -42,7 +42,7 @@
 		<Navbar user={data.user} />
 	{/if}
 
-	<div class="min-h-full flex-1 z-10">
+	<div class=" flex-1 z-10">
 		<slot />
 	</div>
 	
