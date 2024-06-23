@@ -13,14 +13,15 @@ const password =
 const database =
 	process.env.NODE_ENV === 'production' ? process.env.DB_NAME : process.env.DB_NAME_DEV;
 
-export const connection = await mysql.createConnection({
+export const connection = mysql.createPool({
 	host: host,
 	user: user,
 	password: password,
 	database: database,
 	multipleStatements: true,
+
 	ssl: {
-		rejectUnauthorized: false ,
+		rejectUnauthorized: false
 		// ca: fs.readFileSync('/path/to/ca-cert.pem'), // Sertifikat CA jika diperlukan
 	}
 });
