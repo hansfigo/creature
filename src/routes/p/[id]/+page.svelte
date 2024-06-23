@@ -32,12 +32,26 @@
 	};
 
 	let likeLoading = false;
+
+	let canvas: HTMLElement;
+
+	let isFullScreen = false
+
+	const toggleFullScreen = () => {
+		if (!document.fullscreenElement) {
+			canvas.requestFullscreen();
+			isFullScreen = true;
+		} else {
+			document.exitFullscreen();
+			isFullScreen = false;
+		}
+	};	
 </script>
 
 <Container>
 	{#if data}
 		<div class="h-full relative">
-			<div class="relative w-full h-[55%] border-2 border-slate-800 rounded-3xl">
+			<div bind:this={canvas} class="relative w-full bg-main bg-slate-800 h-[55%] border-2 border-slate-800 rounded-3xl">
 				<div class="absolute z-40 bottom-0 right-[50%]">
 					{#if $animationStore}
 						{#each $animationStore as animation}
@@ -48,6 +62,14 @@
 						{/each}
 					{/if}
 				</div>
+
+				<button on:click={toggleFullScreen} class="btn absolute bottom-4 right-5 text-2xl">
+					{#if isFullScreen}
+						<Icon icon="ic:baseline-fullscreen-exit" />
+					{:else}
+						<Icon icon="ic:baseline-fullscreen" />
+					{/if}
+				</button>
 
 				{#if data.modelPath}
 					<App modelFile={data.modelPath} />
@@ -107,7 +129,7 @@
 
 				{#if data.createdAt}
 					<div class="flex w-full justify-between">
-						<p class="mt-4">{`Published ${calculateAge(data.createdAt)} Ago`}</p>
+						<p class="mt-4">{`Published  ${calculateAge(data.createdAt)} ago`}</p>
 						<div class="flex items-center gap-2">
 							<Icon class="ml-2" icon="ic:baseline-thumb-up" />
 							<p>{data.likes}</p>
@@ -159,3 +181,10 @@
 		</div>
 	{/if}
 </Container>
+
+
+<style>
+	.bg-main {
+		background: rgba(14, 2, 49, 1);
+	}
+</style>
