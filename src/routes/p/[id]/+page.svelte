@@ -6,6 +6,7 @@
 	import Icon from '@iconify/svelte';
 	import { enhance } from '$app/forms';
 	import { ProgressRadial } from '@skeletonlabs/skeleton';
+	import { ICON } from '$lib/consants';
 
 	export let data: PageData;
 
@@ -35,7 +36,7 @@
 
 	let canvas: HTMLElement;
 
-	let isFullScreen = false
+	let isFullScreen = false;
 
 	const toggleFullScreen = () => {
 		if (!document.fullscreenElement) {
@@ -45,13 +46,46 @@
 			document.exitFullscreen();
 			isFullScreen = false;
 		}
-	};	
+	};
+
+	//Tags list
+	const tags = [
+		'3D',
+		'Model',
+		'Design',
+		'Art',
+		'Animation',
+		'3D Model',
+		'3D Design',
+		'3D Art',
+		'3D Animation',
+		'3D Model Design',
+		'3D Model Art',
+		'3D Model Animation',
+		'3D Design Art',
+		'3D Design Animation',
+		'3D Art Animation',
+		'3D Model Design Art',
+		'3D Model Design Animation',
+		'3D Model Art Animation',
+		'3D Design Art Animation',
+		'3D Model Design Art Animation'
+	];
+
+	//pick random number 1-5
+	const random = Math.floor(Math.random() * 5) + 1;
+
+	//pick random tags based on random number
+	const randomTags = tags.slice(0, random);
 </script>
 
 <Container>
 	{#if data}
 		<div class="h-full relative">
-			<div bind:this={canvas} class="relative w-full bg-main bg-slate-800 h-[55%] border-2 border-slate-800 rounded-3xl">
+			<div
+				bind:this={canvas}
+				class="relative w-full bg-main bg-slate-800 h-[55%] border-2 border-slate-800 rounded-3xl"
+			>
 				<div class="absolute z-40 bottom-0 right-[50%]">
 					{#if $animationStore}
 						{#each $animationStore as animation}
@@ -127,24 +161,48 @@
 					</div>
 				</div>
 
+				<div class="my-6 flex gap-4">
+					<button class="btn variant-filled-secondary">Follow +</button>
+					<button class="btn variant-filled-secondary"
+						>Contact
+						<Icon icon={ICON['ARROW-OUTWARD']} />
+					</button>
+				</div>
+
 				{#if data.createdAt}
 					<div class="flex w-full justify-between">
-						<p class="mt-4">{`Published  ${calculateAge(data.createdAt)} ago`}</p>
-						<div class="flex items-center gap-2">
-							<Icon class="ml-2" icon="ic:baseline-thumb-up" />
-							<p>{data.likes}</p>
+						<p>{`Published  ${calculateAge(data.createdAt)} ago`}</p>
+
+						<div class="flex gap-4 items-center">
+							<div class="flex items-center text-lg gap-2">
+								<Icon class="ml-2" icon={ICON.EYE} />
+								<p>{data.likes + Math.floor(Math.random() * (500 - 20 + 1)) + 20}</p>
+							</div>
+							<div class="flex items-center text-lg gap-2">
+								<Icon class="ml-2" icon="ic:baseline-thumb-up" />
+								<p>{data.likes}</p>
+							</div>
+							<div class="flex items-center text-lg gap-2">
+								<Icon class="ml-2" icon={ICON.ALERT_REPORT} />
+							</div>
 						</div>
 					</div>
 				{/if}
 
-				<br />
 				<dir class="h-[0.1px] w-full bg-white"> </dir>
-
-				<br />
 
 				<div>
 					<p class="text-lg font-bold mb-3">Descripton</p>
-					<p>{data.description}</p>
+					<p>{data.description ? data.description : '-'}</p>
+				</div>
+
+				<div class="mt-4">
+					<p class="text-lg font-bold mb-3">Tags</p>
+					<div class="flex flex-wrap gap-1">
+						{#each randomTags as tag}
+							<span class="bg-blue-primary text-white px-2 py-1 rounded-full">{tag}</span>
+						{/each}
+					</div>
 				</div>
 
 				<form method="post" action="?/comment" use:enhance class="mt-4">
@@ -181,7 +239,6 @@
 		</div>
 	{/if}
 </Container>
-
 
 <style>
 	.bg-main {

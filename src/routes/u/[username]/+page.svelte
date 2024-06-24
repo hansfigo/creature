@@ -2,18 +2,14 @@
 	import { goto } from '$app/navigation';
 	import Container from '$lib/components/shared/container.svelte';
 	import Postcard from '$lib/components/shared/post/postcard.svelte';
-	import { get, writable } from 'svelte/store';
+	import { writable } from 'svelte/store';
 	import type { PageData } from './$types';
-	import Cropper from 'svelte-easy-crop';
 	import {
-		Modal,
-		ProgressRadial,
 		getModalStore,
 		type ModalComponent,
 		type ModalSettings
 	} from '@skeletonlabs/skeleton';
 	import ImageCropper from '$lib/components/shared/ImageCropper.svelte';
-	import { is } from 'drizzle-orm';
 	import Icon from '@iconify/svelte';
 
 	export let data: PageData;
@@ -29,35 +25,35 @@
 		}
 	}
 
-	const { posts, user, locals, p } = data;
+	const { posts, user} = data;
 
-	const handleImage = (e: Event) => {
-		const target = e.target as HTMLInputElement;
-		const file = target.files?.[0] as File;
-		if (file) {
-			const reader = new FileReader();
-			reader.onload = (e) => {
-				imageUrl.set(e.target?.result as string);
+	// const handleImage = (e: Event) => {
+	// 	const target = e.target as HTMLInputElement;
+	// 	const file = target.files?.[0] as File;
+	// 	if (file) {
+	// 		const reader = new FileReader();
+	// 		reader.onload = (e) => {
+	// 			imageUrl.set(e.target?.result as string);
 
-				const modalComponent: ModalComponent = {
-					ref: ImageCropper,
-					props: {
-						image: e.target?.result as string,
-						onCropComplete: (e: any) => console.log(e, 'PPPPPPPP'),
-						classList: 'w-[20rem] h-[20rem] bg-black relative z-[99]'
-					}
-				};
+	// 			const modalComponent: ModalComponent = {
+	// 				ref: ImageCropper,
+	// 				props: {
+	// 					image: e.target?.result as string,
+	// 					onCropComplete: (e: any) => console.log(e, 'PPPPPPPP'),
+	// 					classList: 'w-[20rem] h-[20rem] bg-black relative z-[99]'
+	// 				}
+	// 			};
 
-				const modal: ModalSettings = {
-					type: 'component',
-					component: modalComponent
-				};
+	// 			const modal: ModalSettings = {
+	// 				type: 'component',
+	// 				component: modalComponent
+	// 			};
 
-				modalStore.trigger(modal);
-			};
-			reader.readAsDataURL(file);
-		}
-	};
+	// 			modalStore.trigger(modal);
+	// 		};
+	// 		reader.readAsDataURL(file);
+	// 	}
+	// };
 
 	const handleImageSimple = async (e: Event) => {
 		const target = e.target as HTMLInputElement;
