@@ -224,6 +224,7 @@
 				<label class="label">
 					<span>Select</span>
 					<select on:change={selectTag} class="select">
+						<option value="">--- Select Tags ---</option>
 						{#each tags as tag}
 							<option value={tag.id}>{tag.name}</option>
 						{/each}

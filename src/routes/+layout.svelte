@@ -4,7 +4,7 @@
 	import { page } from '$app/stores';
 	import Footer from '$lib/components/shared/footer.svelte';
 	import Navbar from '$lib/components/shared/navbar.svelte';
-	import { initializeStores } from '@skeletonlabs/skeleton';
+	import { ProgressBar, initializeStores } from '@skeletonlabs/skeleton';
 
 	import '../app.pcss';
 
@@ -39,6 +39,10 @@
 	{#if $page.route.id !== '/signin' && $page.route.id !== '/signup'}
 		<Navbar user={data.user} />
 	{/if}
+
+	<div class="fixed w-full left-0 top-0 z-[100]">
+		<ProgressBar  />
+	</div>
 
 	<div class=" flex-1 z-10">
 		<slot />

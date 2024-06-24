@@ -11,6 +11,7 @@ import {
 	uploadBytesResumable,
 	type FirebaseStorage
 } from 'firebase/storage';
+import { generateIdFromEntropySize } from 'lucia';
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -36,7 +37,8 @@ export const storage = getStorage(app);
 const useFirebaseStorage = (storage: FirebaseStorage) => {
 	const uploadFile = ({ file, path }: { file: File; path: string }): Promise<string> => {
 		return new Promise(async (resolve, reject) => {
-			const storageRef = ref(storage, `${path}${file.name}`);
+			
+			const storageRef = ref(storage, `${path}${file.name}-${generateIdFromEntropySize(8)}`);
 
 			// File does not exist, proceed with upload
 			const uploadTask = uploadBytesResumable(storageRef, file);
