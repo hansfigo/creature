@@ -62,6 +62,7 @@ const postInit = () => {
 				})
 				.from(posts)
 				.innerJoin(user, eq(user.id, posts.userId))
+				.where(eq(posts.is_published, true))
 				.orderBy(desc(posts.createdAt));
 
 			return postList;
