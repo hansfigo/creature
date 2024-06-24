@@ -14,6 +14,9 @@
 
 	let model: any = null;
 	let title: string = '';
+	let tag: string = '';
+	let tagList: any = [];
+
 	let description: string = '';
 
 	let imageRef: HTMLImageElement;
@@ -69,6 +72,7 @@
 		isLoading = true;
 		if (!model || !title || !base64) {
 			alert('Please fill all fields');
+			isLoading = false
 			return;
 		}
 
@@ -87,6 +91,7 @@
 		form.append('title', title);
 		form.append('description', description);
 		form.append('thumbnail', thumbnailUrl);
+		form.append('tags', JSON.stringify(tagList));
 
 		console.log(form, 'form');
 
@@ -97,20 +102,57 @@
 			});
 
 			if (response.status !== 200) {
-				alert('Error While Uploading Post, your model might be too big or server error, our team is working on it');
+				alert(
+					'Error While Uploading Post, your model might be too big or server error, our team is working on it'
+				);
 				isLoading = false;
 				return;
 			}
 			isLoading = false;
 			goto('/');
 		} catch (e) {
-			alert('Error While Uploading Post, your model might be too big or server error, our team is working on it');
+			alert(
+				'Error While Uploading Post, your model might be too big or server error, our team is working on it'
+			);
 			console.log(e);
 			isLoading = false;
 		}
 
 		isLoading = false;
 	};
+
+	//list available tags for 3d post
+	const tags = data.tags;
+	
+	function pressed(ev: any) {
+		if (ev.type !== 'blur' && ev.key !== ',' && ev.key !== 'Enter') return;
+
+		tag = tag.replace(',', '');
+
+		if (tag === '') return;
+
+		tagList = [...tagList, tag];
+		tag = '';
+	}
+
+	// remove tag by index
+	function removeTag (index : number) {
+		tagList = tagList.filter((_ : any, i : number) => i !== index);
+	}
+
+	function selectTag(e : any){
+		const selectedTag = e.target.value;
+
+		console.log(tags, 'selectedTag');
+
+		//check if already exist
+		// if(tagList.includes(selectedTag)) return;
+
+		const tag = tags.find((tag: any) => tag.id == selectedTag);
+
+		tagList = [...tagList, tag];
+
+	}
 </script>
 
 <Container>
@@ -165,12 +207,39 @@
 			<br />
 			<input class="input" type="text" name="title" bind:value={title} />
 			<br />
-			<br />
-
 			<label class="label text-2xl font-semibold mt-4" for="description">description</label>
 			<br />
 			<textarea class="textarea rounded-3xl" rows="6" bind:value={description} />
 			<br />
+			<label class="label">
+				<label class="label mb-3 text-2xl font-semibold mt-4" for="description">Tags</label>
+				<!-- <input
+					class="input"
+					type="text"
+					name="tags"
+					on:blur={pressed}
+					on:keyup={pressed}
+					bind:value={tag}
+				/> -->
+				<label class="label">
+					<span>Select</span>
+					<select on:change={selectTag} class="select">
+						{#each tags as tag}
+							<option value={tag.id}>{tag.name}</option>
+						{/each}
+					</select>
+				</label>
+				<!-- TagList -->
+				<div class="flex flex-wrap gap-1 pt-2">
+					{#each tagList as tag, i}
+						<div class="flex gap-2 items-center">
+							<span class="bg-blue-primary text-white px-2 py-1 rounded-full">{tag.name}
+								<button on:click={()=> removeTag(i)} class="px-2"> x </button>
+							</span>
+						</div>
+					{/each}
+				</div>
+			</label>
 			<br />
 			<div>
 				<button disabled={isLoading} class="btn variant-outline-secondary" on:click={submit}>

@@ -10,6 +10,8 @@
 
 	export let data: PageData;
 
+	console.log(data.tags, 'tags');
+
 	const calculateAge = (createdAt: Date) => {
 		const now = new Date();
 		const createdDate = new Date(createdAt);
@@ -49,34 +51,11 @@
 	};
 
 	//Tags list
-	const tags = [
-		'3D',
-		'Model',
-		'Design',
-		'Art',
-		'Animation',
-		'3D Model',
-		'3D Design',
-		'3D Art',
-		'3D Animation',
-		'3D Model Design',
-		'3D Model Art',
-		'3D Model Animation',
-		'3D Design Art',
-		'3D Design Animation',
-		'3D Art Animation',
-		'3D Model Design Art',
-		'3D Model Design Animation',
-		'3D Model Art Animation',
-		'3D Design Art Animation',
-		'3D Model Design Art Animation'
-	];
+	const tags = data.tags
 
 	//pick random number 1-5
 	const random = Math.floor(Math.random() * 5) + 1;
 
-	//pick random tags based on random number
-	const randomTags = tags.slice(0, random);
 </script>
 
 <Container>
@@ -199,8 +178,8 @@
 				<div class="mt-4">
 					<p class="text-lg font-bold mb-3">Tags</p>
 					<div class="flex flex-wrap gap-1">
-						{#each randomTags as tag}
-							<span class="bg-blue-primary text-white px-2 py-1 rounded-full">{tag}</span>
+						{#each tags as tag}
+							<span class="bg-blue-primary text-white px-2 py-1 rounded-full">{tag.tag}</span>
 						{/each}
 					</div>
 				</div>

@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { useFirebase } from '$lib/firebase';
 import { db } from '$lib/server/db/db';
 import { generateIdFromEntropySize } from 'lucia';
-import { posts, user } from '$lib/server/db/schema';
+import { posts, tags, user } from '$lib/server/db/schema';
 
 const schema = z.object({
 	title: z.string().min(1),
@@ -18,7 +18,14 @@ const schema = z.object({
 export const load = (async () => {
 	const form = await superValidate(zod(schema));
 
-	return { form };
+	const tagsList = await db
+		.select({
+			id: tags.id,
+			name: tags.name
+		})
+		.from(tags);
+
+	return { form, tags : tagsList };
 }) satisfies PageServerLoad;
 
 export const actions: Actions = {

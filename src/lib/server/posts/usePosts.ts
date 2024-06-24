@@ -1,10 +1,44 @@
 import { and, count, desc, eq, or, sql } from 'drizzle-orm';
 import { db } from '../db/db';
-import { comments, likes, posts, user } from '../db/schema';
+import { comments, likes, posts, postTags, tags, user } from '../db/schema';
 
 export enum orderEnum {
 	ASC = 'asc',
 	DESC = 'desc'
+}
+
+interface DetailPost {
+	id: string;
+	title: string;
+	description: string;
+	thumbnail: string;
+	createdAt: Date;
+	modelPath: string;
+	user: {
+		id: string;
+		username: string;
+		firstName: string;
+		lastName: string;
+		profilePicture: string;
+	};
+	comments: {
+		id: string;
+		content: string;
+		createdAt: Date;
+		user: {
+			id: string;
+			username: string;
+			firstName: string;
+			lastName: string;
+			profilePicture: string;
+		};
+	}[];
+	likes: number;
+	tags: {
+		id: string;
+		tag: string;
+	}[];
+	isLiked?: boolean;
 }
 
 const postInit = () => {
@@ -36,7 +70,7 @@ const postInit = () => {
 		}
 	};
 
-	const getDetailPost = async (id: string, userId : string | undefined) => {
+	const getDetailPost = async (id: string, userId: string | undefined): Promise<DetailPost> => {
 		const post = await db
 			.select({
 				id: posts.id,
@@ -54,8 +88,18 @@ const postInit = () => {
 				}
 			})
 			.from(posts)
-			.where(eq(posts.id, id))
-			.innerJoin(user, eq(user.id, posts.userId));
+			.innerJoin(user, eq(user.id, posts.userId))
+			.where(eq(posts.id, id));
+		const tagList = await db
+			.select(
+				{
+					id : tags.id,
+					tag : tags.name
+				}
+			)
+			.from(postTags)
+			.innerJoin(tags, eq(tags.id, postTags.tagId))
+			.where(eq(postTags.postId, id));
 
 		const commentList = await db
 			.select({
@@ -81,19 +125,21 @@ const postInit = () => {
 			})
 			.from(likes)
 			.where(eq(likes.postId, id));
-		
-		//check if its Liked or Not
 
-				
+		//check if its Liked or Not
 
 		const postClone: any = post[0];
 
 		postClone.comments = commentList;
 		postClone.likes = likesCount[0].count;
+		postClone.tags = tagList;
 
 		let isLiked = null;
 		if (userId) {
-			isLiked = await db.select().from(likes).where(and(eq(likes.postId, id), eq(likes.userId, userId)));
+			isLiked = await db
+				.select()
+				.from(likes)
+				.where(and(eq(likes.postId, id), eq(likes.userId, userId)));
 		}
 
 		if (isLiked) {

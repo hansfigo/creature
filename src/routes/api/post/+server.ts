@@ -1,11 +1,11 @@
 import { useFirebase } from '$lib/firebase';
 import { db } from '$lib/server/db/db';
-import { posts, user } from '$lib/server/db/schema';
+import { posts, postTags, user } from '$lib/server/db/schema';
 import type { RequestHandler } from '@sveltejs/kit';
 import { json } from '@sveltejs/kit';
+import { create } from 'domain';
 import { sql } from 'drizzle-orm';
 import { generateIdFromEntropySize } from 'lucia';
-import { message } from 'sveltekit-superforms';
 
 export const GET: RequestHandler = async () => {
 	const x = await db
@@ -21,7 +21,9 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		return json({ error: 'Unauthorized' });
 	}
 
-	const { title, description, file, thumbnail } = Object.fromEntries(await request.formData());
+	const { title, description, file, thumbnail, tags } = Object.fromEntries(
+		await request.formData()
+	);
 
 	if (!title || !file || !thumbnail) {
 		return json({ error: 'Invalid input' });
@@ -32,6 +34,13 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
 	let fileUrl: string;
 	let thumbnailUrl: string;
+	let tagIdList = [];
+
+	if (tags) {
+		const taglist = await JSON.parse(tags.toString());
+		//return only id keys value
+		tagIdList = taglist.map((tag: any) => tag.id);
+	}
 
 	if (typeof thumbnail === 'string') {
 		thumbnailUrl = thumbnail;
@@ -69,7 +78,18 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		thumbnail: thumbnailUrl,
 		model: fileUrl
 	});
-	return json({ hello: 'mamah' });
+
+	if (tagIdList.length > 0) {
+		await db.insert(postTags).values(
+			tagIdList.map((tagId: string) => ({
+				postId: postID,
+				id: generateIdFromEntropySize(8),
+				tagId: tagId,
+			}))
+		);
+	}
+
+	return json({ success: true, message: 'Post uploaded'});
 };
 
 export const DELETE: RequestHandler = async ({ params, locals }) => {

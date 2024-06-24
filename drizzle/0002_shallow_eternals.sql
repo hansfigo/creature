@@ -1,0 +1,1 @@
+ALTER TABLE `posts` ADD `views` bigint DEFAULT 0;

@@ -15,6 +15,34 @@
       "when": 1719140797779,
       "tag": "0001_fantastic_sharon_carter",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1719246592600,
+      "tag": "0002_shallow_eternals",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1719246790567,
+      "tag": "0003_majestic_cerise",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1719247202987,
+      "tag": "0004_ordinary_maddog",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1719247277412,
+      "tag": "0005_optimal_dreadnoughts",
+      "breakpoints": true
     }
   ]
 }

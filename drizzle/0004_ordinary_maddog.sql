@@ -1,0 +1,2 @@
+ALTER TABLE `post_tags` ADD `tag_id` varchar(256);--> statement-breakpoint
+ALTER TABLE `post_tags` ADD CONSTRAINT `post_tags_tag_id_tags_id_fk` FOREIGN KEY (`tag_id`) REFERENCES `tags`(`id`) ON DELETE no action ON UPDATE no action;
