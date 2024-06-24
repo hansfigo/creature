@@ -1,0 +1,1 @@
+ALTER TABLE `posts` ADD `is_published` boolean DEFAULT true;

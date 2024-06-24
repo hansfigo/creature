@@ -1,4 +1,4 @@
-import { mysqlTable, varchar, text, timestamp, datetime, bigint } from 'drizzle-orm/mysql-core';
+import { mysqlTable, varchar, text, timestamp, datetime, bigint, boolean } from 'drizzle-orm/mysql-core';
 import { link } from 'fs';
 
 export const user = mysqlTable('user', {
@@ -37,7 +37,8 @@ export const posts = mysqlTable('posts', {
 	createdAt: timestamp('created_at'),
 	updatedAt: timestamp('updated_at'),
 	thumbnail: varchar('thumbnail', { length: 256 }),
-	views: bigint('views', { mode: 'number' }).default(0)
+	views: bigint('views', { mode: 'number' }).default(0),
+	is_published : boolean('is_published').default(true)
 });
 
 export const postTags = mysqlTable('post_tags', {
