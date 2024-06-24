@@ -50,12 +50,46 @@
 					/>
 				</div>
 			</div>
-			<h1 class="text-3xl font-bold">Latest Upload</h1>
-			<div class="grid grid-cols-2 gap-8 md:grid-cols-3 xl:grid-cols-4">
-				{#each posts as post}
-					<Postcard {post} />
-				{/each}
-			</div>
+
+			<section class="h-[30rem] flex items-center w-full">
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-stretch w-full">
+					<div>
+						<div class="w-full h-60 rounded-3xl overflow-hidden border-[1px] border-slate-800">
+							<img src="/advantage-1.png" class="w-full h-full object-cover" alt="" />
+						</div>
+						<div class="flex gap-2 mt-2">
+							<p>Add friends around you and invite them to collaborate</p>
+						</div>
+					</div>
+
+					<div>
+						<div class="w-full h-60 rounded-3xl overflow-hidden border-[1px] border-slate-800">
+							<img src="/advantage-3.png" class="w-full h-full object-cover" alt="" />
+						</div>
+						<div class="flex gap-2 mt-2">
+							<p>Make them more alive with animations</p>
+						</div>
+					</div>
+
+					<div>
+						<div class="w-full h-60 rounded-3xl overflow-hidden border-[1px] border-slate-800">
+							<img src="/advantage-2.png" class="w-full h-full object-cover" alt="" />
+						</div>
+						<div class="flex gap-2 mt-2">
+							<p>Use lighting to make it more real</p>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h1 class="text-3xl font-bold">Latest Upload</h1>
+				<div class="grid grid-cols-2 gap-8 md:grid-cols-3 xl:grid-cols-4">
+					{#each posts as post}
+						<Postcard {post} />
+					{/each}
+				</div>
+			</section>
 		</section>
 	</div>
 </main>
