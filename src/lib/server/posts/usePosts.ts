@@ -14,6 +14,7 @@ interface DetailPost {
 	thumbnail: string;
 	createdAt: Date;
 	modelPath: string;
+	views : number
 	user: {
 		id: string;
 		username: string;
@@ -79,6 +80,7 @@ const postInit = () => {
 				thumbnail: posts.thumbnail,
 				createdAt: posts.createdAt,
 				modelPath: posts.model,
+				views : posts.views,
 				user: {
 					id: user.id,
 					username: user.username,

@@ -155,7 +155,7 @@
 						<div class="flex gap-4 items-center">
 							<div class="flex items-center text-lg gap-2">
 								<Icon class="ml-2" icon={ICON.EYE} />
-								<p>{data.likes + Math.floor(Math.random() * (500 - 20 + 1)) + 20}</p>
+								<p>{data.views}</p>
 							</div>
 							<div class="flex items-center text-lg gap-2">
 								<Icon class="ml-2" icon="ic:baseline-thumb-up" />

@@ -10,6 +10,14 @@ const { getDetailPost } = usePosts;
 
 export const load = (async ({ params, locals }) => {
 	const detailPost = await getDetailPost(params.id, locals.user?.id);
+
+	await db
+		.update(posts)
+		.set({
+			views: (detailPost.views += 1)
+		})
+		.where(eq(posts.id, params.id));
+		
 	return detailPost;
 }) satisfies PageServerLoad;
 
@@ -37,8 +45,7 @@ export const actions = {
 			console.log(error);
 		}
 	},
-	like : async (event) =>{
-		
+	like: async (event) => {
 		if (!event.locals.user || !event.locals.user.id) {
 			throw redirect(301, '/signin');
 		}
@@ -53,15 +60,13 @@ export const actions = {
 		}
 
 		try {
-			await db.insert(likes).values(
-				{
-					id : generateIdFromEntropySize(8),
-					userId : event.locals.user.id,
-					postId : id,
-					createdAt : new Date(),
-					updatedAt : new Date(),
-				}
-			)
+			await db.insert(likes).values({
+				id: generateIdFromEntropySize(8),
+				userId: event.locals.user.id,
+				postId: id,
+				createdAt: new Date(),
+				updatedAt: new Date()
+			});
 		} catch (error) {
 			console.log(error);
 		}
