@@ -29,6 +29,10 @@
 	};
 </script>
 
+<svelte:head>
+	<title>Creature</title>
+</svelte:head>
+
 <div
 	class="relative bg-main plus-jakarta-sans min-h-screen h-full flex flex-col overflow-y-hidden overflow-x-hidden px-14 4xl:px-0 justify-between"
 >
