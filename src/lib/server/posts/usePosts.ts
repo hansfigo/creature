@@ -1,4 +1,4 @@
-import { and, count, desc, eq, or, sql } from 'drizzle-orm';
+import { and, asc, count, desc, eq, like, or, sql } from 'drizzle-orm';
 import { db } from '../db/db';
 import { comments, likes, posts, postTags, tags, user } from '../db/schema';
 
@@ -14,7 +14,7 @@ interface DetailPost {
 	thumbnail: string;
 	createdAt: Date;
 	modelPath: string;
-	views : number
+	views: number;
 	user: {
 		id: string;
 		username: string;
@@ -42,34 +42,35 @@ interface DetailPost {
 	isLiked?: boolean;
 }
 
-const postInit = () => {
-	const getPosts = async (order: orderEnum = orderEnum.ASC) => {
-		if (order === orderEnum.ASC) {
-			const postList = db
-				.select({
-					id: posts.id,
-					title: posts.title,
-					description: posts.description,
-					thumbnail: posts.thumbnail,
-					createdAt: posts.createdAt,
-					user: {
-						id: user.id,
-						username: user.username,
-						firstName: user.firstName,
-						lastName: user.lastName,
-						profilePicture: user.profilePicture
-					}
-				})
-				.from(posts)
-				.innerJoin(user, eq(user.id, posts.userId))
-				.where(eq(posts.is_published, true))
-				.orderBy(desc(posts.createdAt));
+interface GetPostsParams {
+	order?: orderEnum;
+	query?: string | null;
+}
 
-			return postList;
-		} else {
-			const postList = await db.select().from(posts).orderBy(desc(posts.createdAt));
-			return postList;
-		}
+const postInit = () => {
+	const getPosts = async ({ order = orderEnum.ASC, query = null }: GetPostsParams = {}) => {
+		let orderBy = order === orderEnum.ASC ? asc(posts.createdAt) : desc(posts.createdAt);
+		const postList = db
+			.select({
+				id: posts.id,
+				title: posts.title,
+				description: posts.description,
+				thumbnail: posts.thumbnail,
+				createdAt: posts.createdAt,
+				user: {
+					id: user.id,
+					username: user.username,
+					firstName: user.firstName,
+					lastName: user.lastName,
+					profilePicture: user.profilePicture
+				}
+			})
+			.from(posts)
+			.innerJoin(user, eq(user.id, posts.userId))
+			.where(and(eq(posts.is_published, true), like(posts.title, query ? `%${query}%` : '')))
+			.orderBy(orderBy);
+
+		return postList;
 	};
 
 	const getDetailPost = async (id: string, userId: string | undefined): Promise<DetailPost> => {
@@ -81,7 +82,7 @@ const postInit = () => {
 				thumbnail: posts.thumbnail,
 				createdAt: posts.createdAt,
 				modelPath: posts.model,
-				views : posts.views,
+				views: posts.views,
 				user: {
 					id: user.id,
 					username: user.username,
@@ -94,12 +95,10 @@ const postInit = () => {
 			.innerJoin(user, eq(user.id, posts.userId))
 			.where(eq(posts.id, id));
 		const tagList = await db
-			.select(
-				{
-					id : tags.id,
-					tag : tags.name
-				}
-			)
+			.select({
+				id: tags.id,
+				tag: tags.name
+			})
 			.from(postTags)
 			.innerJoin(tags, eq(tags.id, postTags.tagId))
 			.where(eq(postTags.postId, id));

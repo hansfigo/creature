@@ -1,19 +1,23 @@
 import { useFirebase } from '$lib/firebase';
 import { db } from '$lib/server/db/db';
 import { posts, postTags, user } from '$lib/server/db/schema';
+import { orderEnum, usePosts } from '$lib/server/posts/usePosts';
 import type { RequestHandler } from '@sveltejs/kit';
 import { json } from '@sveltejs/kit';
 import { create } from 'domain';
 import { sql } from 'drizzle-orm';
+import { get } from 'http';
 import { generateIdFromEntropySize } from 'lucia';
 
+const { getPosts } = usePosts;
+
 export const GET: RequestHandler = async () => {
-	const x = await db
-		.select({
-			username: sql<string>`${String('MADOKA')}`
-		})
-		.from(user);
-	return json({ hello: 'mamah', rand: x });
+	const postlist = await getPosts({
+		order: orderEnum.ASC,
+		query: 'Shir'
+	});
+
+	return json(postlist);
 };
 
 export const POST: RequestHandler = async ({ request, locals }) => {
@@ -84,12 +88,12 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 			tagIdList.map((tagId: string) => ({
 				postId: postID,
 				id: generateIdFromEntropySize(8),
-				tagId: tagId,
+				tagId: tagId
 			}))
 		);
 	}
 
-	return json({ success: true, message: 'Post uploaded'});
+	return json({ success: true, message: 'Post uploaded' });
 };
 
 export const DELETE: RequestHandler = async ({ params, locals }) => {
