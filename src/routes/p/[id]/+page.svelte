@@ -110,7 +110,7 @@
 							use:enhance={() => {
 								likeLoading = true;
 								return async ({ update }) => {
-									update();
+									await update();
 									likeLoading = false;
 								};
 							}}
@@ -161,7 +161,7 @@
 							use:enhance={() => {
 								isFollowLoading = true;
 								return async ({ update }) => {
-									update({ reset: false });
+									await update({ reset: false });
 									isFollowLoading = false;
 								};
 							}}
@@ -230,7 +230,7 @@
 					use:enhance={() => {
 						isCommentLoading = true;
 						return async ({ update }) => {
-							update();
+							await update();
 							isCommentLoading = false;
 						};
 					}}
