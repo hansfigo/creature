@@ -102,3 +102,15 @@ export const followers = mysqlTable('followers', {
 	createdAt: timestamp('created_at'),
 	updatedAt: timestamp('updated_at')
 });
+
+export const bookmarks = mysqlTable('bookmarks', {
+	id: varchar('id', { length: 256 }).primaryKey().notNull(),
+	userId: varchar('user_id', { length: 256 })
+		.references(() => user.id)
+		.notNull(),
+	postId: varchar('post_id', { length: 256 })
+		.references(() => posts.id)
+		.notNull(),
+	createdAt: timestamp('created_at').defaultNow(),
+	updatedAt: timestamp('updated_at').defaultNow()
+});

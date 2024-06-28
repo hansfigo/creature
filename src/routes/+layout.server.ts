@@ -1,6 +1,7 @@
 import { lucia } from '$lib/server/auth';
 import { redirect } from '@sveltejs/kit';
 import type { LayoutServerLoad } from './$types';
+import { useUser } from '$lib/server/user/userUser';
 
 export const load = (async (event) => {
 	if (event.locals.user === undefined) {
@@ -16,5 +17,12 @@ export const load = (async (event) => {
 	}
 	const url = event.request.url;
 
-	return { user: event.locals.user, url };
+	//get user data
+
+	if (!event.locals.user) {
+		return { user: event.locals.user, url };
+	}
+	const userDetail = await useUser.getUserDetail(event.locals.user?.username);
+
+	return { user: event.locals.user, url, userDetail : userDetail.user };
 }) satisfies LayoutServerLoad;

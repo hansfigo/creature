@@ -87,7 +87,7 @@
 <Container>
 	<div class="flex flex-col w-full gap-4 min-h-[20rem]">
 		<section class="flex flex-col md:flex-row gap-4">
-			<div class="md:w-[20%] px-8 py-10 bg-blue-primary rounded-3xl flex flex-col items-center">
+			<div class="w-[30%] 3xl:w-[20%] px-8 py-10 bg-blue-primary rounded-3xl flex flex-col items-center">
 				<div class="w-28 h-28 bg-slate-700 rounded-full mb-4 relative">
 					<img src={$imageUrl} alt="" class="h-full w-full rounded-full object-cover" />
 					{#if locals && locals.user && user.username === locals.user.username}
@@ -179,11 +179,7 @@
 					</div>
 				</div>
 
-				{#if locals && locals.user && user.username === locals.user.username}
-					<button on:click={() => goto('/signout')} class="btn variant-filled-error">
-						<span>Logout</span>
-					</button>
-				{/if}
+				
 			</div>
 			<div class="flex-1">
 				<p class="font-bold text-3xl mb-4"> Posts</p>
