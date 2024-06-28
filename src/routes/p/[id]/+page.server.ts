@@ -5,6 +5,7 @@ import { db } from '$lib/server/db/db';
 import { comments, likes, posts } from '$lib/server/db/schema';
 import { generateIdFromEntropySize } from 'lucia';
 import { eq } from 'drizzle-orm';
+import { followUser, unfollowUser } from '$lib/server/followers/useFollowers';
 
 const { getDetailPost } = usePosts;
 
@@ -17,8 +18,8 @@ export const load = (async ({ params, locals }) => {
 			views: (detailPost.views += 1)
 		})
 		.where(eq(posts.id, params.id));
-		
-	return detailPost;
+
+	return { posts: detailPost };
 }) satisfies PageServerLoad;
 
 export const actions = {
@@ -67,6 +68,35 @@ export const actions = {
 				createdAt: new Date(),
 				updatedAt: new Date()
 			});
+		} catch (error) {
+			console.log(error);
+		}
+	},
+	follow: async (event) => {
+		if (!event.locals.user || !event.locals.user.id) {
+			throw redirect(301, '/signin');
+		}
+
+		const formData = await event.request.formData();
+		const isFollowed = formData.get('followed');
+		const userId = formData.get('userId');
+
+		setTimeout(() => {}, 300);
+
+		console.log(isFollowed?.toString(), 'isFollowed', isFollowed?.toString() == 'false')
+		;
+
+		if (isFollowed && isFollowed?.toString() == 'false') {
+			if (event.locals.user.id && userId) {
+				await followUser(event.locals.user.id, userId!.toString());
+				console.log('followed');
+			}
+			return;
+		}
+
+		try {
+			await unfollowUser(event.locals.user.id, userId!.toString());
+			console.log('unfollowed');
 		} catch (error) {
 			console.log(error);
 		}

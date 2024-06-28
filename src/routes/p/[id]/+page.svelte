@@ -10,7 +10,18 @@
 
 	export let data: PageData;
 
-	console.log(data.tags, 'tags');
+	const { user } = data;
+
+	let posts = data.posts;
+	let dataUser = posts.user;
+	console.log(data.posts.user, "==================");
+
+	// make post reactive to changes
+	$: {
+		posts = data.posts;
+		dataUser = posts.user;
+		console.log(data.posts.user, "==================");
+	}
 
 	const calculateAge = (createdAt: Date) => {
 		const now = new Date();
@@ -51,15 +62,11 @@
 	};
 
 	//Tags list
-	const tags = data.tags
-
-	//pick random number 1-5
-	const random = Math.floor(Math.random() * 5) + 1;
-
+	const tags = posts.tags;
 </script>
 
 <Container>
-	{#if data}
+	{#if posts}
 		<div class="h-full relative">
 			<div
 				bind:this={canvas}
@@ -84,13 +91,13 @@
 					{/if}
 				</button>
 
-				{#if data.modelPath}
-					<App modelFile={data.modelPath} />
+				{#if posts.modelPath}
+					<App modelFile={posts.modelPath} />
 				{/if}
 			</div>
 			<div class="mt-4">
 				<div class="flex w-full justify-between">
-					<h1 class="text-3xl font-black">{data.title}</h1>
+					<h1 class="text-3xl font-black">{posts.title}</h1>
 					<div class="flex gap-4">
 						<form
 							action="?/like"
@@ -105,16 +112,16 @@
 						>
 							<button
 								disabled={likeLoading}
-								class={`btn ${data.isLiked ? 'variant-filled-secondary' : 'variant-outline-secondary'} `}
+								class={`btn ${posts.isLiked ? 'variant-filled-secondary' : 'variant-outline-secondary'} `}
 							>
-								{data.isLiked ? 'Liked' : 'Like'}
+								{posts.isLiked ? 'Liked' : 'Like'}
 								{#if likeLoading}
 									<ProgressRadial class="ml-2 w-4" />
 								{:else}
 									<Icon class="ml-2" icon="ic:baseline-thumb-up" />
 								{/if}
 							</button>
-							<input class="input hidden" type="text" name="liked" value={data.isLiked} />
+							<input class="input hidden" type="text" name="liked" value={posts.isLiked} />
 						</form>
 						<button class="btn variant-outline-secondary"
 							>Share
@@ -128,38 +135,53 @@
 						<div
 							class="h-20 w-20 rounded-full flex flex-col overflow-hidden items-center justify-center"
 						>
-							{#if !data.user.profilePicture}
+							{#if !posts.user.profilePicture}
 								<div class="w-24 h-24 rounded-full bg-slate-900"></div>
 							{:else}
-								<img class="w-full h-full object-cover" src={data.user.profilePicture} alt="" />
+								<img class="w-full h-full object-cover" src={posts.user.profilePicture} alt="" />
 							{/if}
 						</div>
 						<div>
-							<p class="text-xl font-bold">{data.user.username}</p>
+							<p class="text-xl font-bold">{dataUser?.username}</p>
+							<p class="text-base font-normal">{dataUser?.followersCount} Followers</p>
 						</div>
 					</div>
 				</div>
 
-				<div class="my-6 flex gap-4">
-					<button class="btn variant-filled-secondary">Follow +</button>
-					<button class="btn variant-filled-secondary"
-						>Contact
-						<Icon icon={ICON['ARROW-OUTWARD']} />
-					</button>
-				</div>
+				{#if user?.id != posts.user.id}
+					<div class="mt-6 flex gap-4">
+						<form action="?/follow" method="post" use:enhance>
+							<button type="submit" class="btn variant-filled-secondary"
+								>{dataUser?.isFollowing ? 'Followed ' : 'Follow +'}</button
+							>
+							<input
+								class="input hidden"
+								type="text"
+								name="followed"
+								id="followed"
+								value={dataUser?.isFollowing}
+							/>
+							<input class="hidden" type="text" name="userId" id="userId" value={posts.user.id} />
+						</form>
+						<button class="btn variant-filled-secondary"
+							>Contact
+							<Icon icon={ICON['ARROW-OUTWARD']} />
+						</button>
+					</div>
+				{/if}
 
-				{#if data.createdAt}
-					<div class="flex w-full justify-between">
-						<p>{`Published  ${calculateAge(data.createdAt)} ago`}</p>
+				{#if posts.createdAt}
+					<div class="flex w-full justify-between mt-4">
+						<p>{`Published  ${calculateAge(posts.createdAt)} ago`}</p>
 
 						<div class="flex gap-4 items-center">
 							<div class="flex items-center text-lg gap-2">
 								<Icon class="ml-2" icon={ICON.EYE} />
-								<p>{data.views}</p>
+								<p>{posts.views}</p>
 							</div>
 							<div class="flex items-center text-lg gap-2">
 								<Icon class="ml-2" icon="ic:baseline-thumb-up" />
-								<p>{data.likes}</p>
+								<p>{posts.likes}</p>
 							</div>
 							<div class="flex items-center text-lg gap-2">
 								<Icon class="ml-2" icon={ICON.ALERT_REPORT} />
@@ -172,7 +194,7 @@
 
 				<div>
 					<p class="text-lg font-bold mb-3">Descripton</p>
-					<p>{data.description ? data.description : '-'}</p>
+					<p>{posts.description ? posts.description : '-'}</p>
 				</div>
 
 				<div class="mt-4">
@@ -195,7 +217,7 @@
 					/>
 
 					<div class="grid md:grid-cols-2 gap-4 mt-4">
-						{#each data.comments as comment}
+						{#each posts.comments as comment}
 							<div class="flex w-full gap-4">
 								<div class="bg-slate-700 h-16 w-20 rounded-full overflow-hidden">
 									{#if comment.user.profilePicture}

@@ -1,5 +1,12 @@
-import { mysqlTable, varchar, text, timestamp, datetime, bigint, boolean } from 'drizzle-orm/mysql-core';
-import { link } from 'fs';
+import {
+	mysqlTable,
+	varchar,
+	text,
+	timestamp,
+	datetime,
+	bigint,
+	boolean
+} from 'drizzle-orm/mysql-core';
 
 export const user = mysqlTable('user', {
 	id: varchar('id', { length: 256 }).primaryKey().notNull(),
@@ -38,7 +45,7 @@ export const posts = mysqlTable('posts', {
 	updatedAt: timestamp('updated_at'),
 	thumbnail: varchar('thumbnail', { length: 256 }),
 	views: bigint('views', { mode: 'number' }).default(0),
-	is_published : boolean('is_published').default(true)
+	is_published: boolean('is_published').default(true)
 });
 
 export const postTags = mysqlTable('post_tags', {
@@ -73,6 +80,18 @@ export const comments = mysqlTable('comments', {
 		.notNull(),
 	postId: varchar('post_id', { length: 256 }).references(() => posts.id),
 	content: text('content'),
+	createdAt: timestamp('created_at'),
+	updatedAt: timestamp('updated_at')
+});
+
+export const followers = mysqlTable('followers', {
+	id: varchar('id', { length: 256 }).primaryKey(),
+	followerId: varchar('follower_id', { length: 256 })
+		.references(() => user.id)
+		.notNull(),
+	followedId: varchar('followed_id', { length: 256 })
+		.references(() => user.id)
+		.notNull(),
 	createdAt: timestamp('created_at'),
 	updatedAt: timestamp('updated_at')
 });

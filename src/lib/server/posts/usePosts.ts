@@ -1,6 +1,7 @@
-import { and, asc, count, desc, eq, like, or, sql } from 'drizzle-orm';
+import { and, asc, count, desc, eq, inArray, like, or, sql } from 'drizzle-orm';
 import { db } from '../db/db';
 import { comments, likes, posts, postTags, tags, user } from '../db/schema';
+import { getFollowersCount, isFollowing } from '../followers/useFollowers';
 
 export enum orderEnum {
 	ASC = 'asc',
@@ -21,6 +22,8 @@ interface DetailPost {
 		firstName: string;
 		lastName: string;
 		profilePicture: string;
+		followersCount?: number;
+		isFollowing?: boolean;
 	};
 	comments: {
 		id: string;
@@ -45,10 +48,15 @@ interface DetailPost {
 interface GetPostsParams {
 	order?: orderEnum;
 	query?: string | null;
+	tags?: string[];
 }
 
 const postInit = () => {
-	const getPosts = async ({ order = orderEnum.ASC, query = null }: GetPostsParams = {}) => {
+	const getPosts = async ({
+		order = orderEnum.ASC,
+		query = null,
+		tags = []
+	}: GetPostsParams = {}) => {
 		let orderBy = order === orderEnum.ASC ? asc(posts.createdAt) : desc(posts.createdAt);
 		const postList = db
 			.select({
@@ -66,9 +74,18 @@ const postInit = () => {
 				}
 			})
 			.from(posts)
+			.leftJoin(postTags, eq(postTags.postId, posts.id))
 			.innerJoin(user, eq(user.id, posts.userId))
-			.where(and(eq(posts.is_published, true), like(posts.title, query ? `%${query}%` : '')))
+			.where(
+				and(
+					eq(posts.is_published, true),
+					query ? like(posts.title, `%${query}%`) : undefined,
+					tags.length > 0 ? inArray(postTags.tagId, tags) : undefined
+				)
+			)
 			.orderBy(orderBy);
+
+		
 
 		return postList;
 	};
@@ -132,6 +149,10 @@ const postInit = () => {
 
 		const postClone: any = post[0];
 
+		//get followers count
+		
+		
+
 		postClone.comments = commentList;
 		postClone.likes = likesCount[0].count;
 		postClone.tags = tagList;
@@ -147,6 +168,17 @@ const postInit = () => {
 		if (isLiked) {
 			postClone.isLiked = isLiked.length > 0;
 		}
+
+		const followersCount = await getFollowersCount(postClone.user.id);
+		postClone.user.followersCount = followersCount;
+
+		if (userId) {
+			const isFollow = await isFollowing(userId, postClone.user.id);
+			postClone.user.isFollowing = isFollow;
+		} else{
+			postClone.user.isFollowing = null;
+		}
+
 
 		return postClone;
 	};

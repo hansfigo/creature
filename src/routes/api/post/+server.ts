@@ -11,10 +11,12 @@ import { generateIdFromEntropySize } from 'lucia';
 
 const { getPosts } = usePosts;
 
+const ELECTRONICS = '3bhs4gcpx6utm';
+
 export const GET: RequestHandler = async () => {
 	const postlist = await getPosts({
 		order: orderEnum.ASC,
-		query: 'Shir'
+		tags : [ELECTRONICS]
 	});
 
 	return json(postlist);
