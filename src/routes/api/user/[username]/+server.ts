@@ -45,17 +45,25 @@ export const PUT: RequestHandler = async ({ request, locals, params }) => {
 	}
 
 	if (formData.bannerPicture) {
-		try {
-			const bannerPicture = await useFirebase.uploadFile({
-				file: formData.bannerPicture as File,
-				path: '/users/bannerPictures/'
-			});
+		// check if the file is an image or string
+		if (typeof formData.bannerPicture === 'string') {
 			data = {
 				...data,
-				bannerPicture
+				bannerPicture: formData.bannerPicture
 			};
-		} catch (error) {
-			return json({ error: 'Error uploading file' });
+		} else {
+			try {
+				const bannerPicture = await useFirebase.uploadFile({
+					file: formData.bannerPicture as File,
+					path: '/users/bannerPictures/'
+				});
+				data = {
+					...data,
+					bannerPicture
+				};
+			} catch (error) {
+				return json({ error: 'Error uploading file' });
+			}
 		}
 	}
 

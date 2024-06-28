@@ -2,6 +2,7 @@
 	import Icon from '@iconify/svelte';
 	import type { LayoutData } from './$types';
 	import { writable } from 'svelte/store';
+	import { useFirebase } from '$lib/firebase';
 
 	export let data: LayoutData;
 
@@ -16,8 +17,13 @@
 		if (file) {
 			imageUrl.set(URL.createObjectURL(file));
 
+			const bannerPicture = await useFirebase.uploadFile({
+				file: file,
+				path: '/users/bannerPictures/'
+			});
+
 			const formData = new FormData();
-			formData.append('bannerPicture', file);
+			formData.append('bannerPicture', bannerPicture);
 
 			const res = await fetch(`/api/user/${data.user?.username}`, {
 				method: 'PUT',
