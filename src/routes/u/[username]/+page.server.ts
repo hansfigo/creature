@@ -1,22 +1,28 @@
-import { userUser } from '$lib/server/user/userUser';
+import { useUser } from '$lib/server/user/userUser';
+import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
-const { getUserDetail } = userUser;
+const { getUserDetail } = useUser;
 export const load = (async (event) => {
 	const { username } = event.params;
-	const userDetail = await getUserDetail(username);
-
-	if (!userDetail) {
+	if (!username) {
 		return {
 			status: 404,
 			error: 'User not found'
 		};
 	}
 
-	const {posts, user} = userDetail
+	console.log(username);
+	const userDetail = await getUserDetail(username);
 
+	if (!userDetail) {
+		console.log('User not found');
+		throw redirect(302, '/');
+	}
+
+	const { posts, user } = userDetail;
 
 	const p = event.locals.session ? event.locals.session.userId : null;
 
-	return { posts, locals : event.locals, user, p};
+	return { posts: posts ? posts : null, locals: event.locals!, user, p };
 }) satisfies PageServerLoad;

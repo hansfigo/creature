@@ -4,13 +4,9 @@
 	import Postcard from '$lib/components/shared/post/postcard.svelte';
 	import { writable } from 'svelte/store';
 	import type { PageData } from './$types';
-	import {
-		getModalStore,
-		type ModalComponent,
-		type ModalSettings
-	} from '@skeletonlabs/skeleton';
-	import ImageCropper from '$lib/components/shared/ImageCropper.svelte';
+	import { getModalStore, type ModalComponent, type ModalSettings } from '@skeletonlabs/skeleton';
 	import Icon from '@iconify/svelte';
+	import { ICON, LOGO } from '$lib/consants';
 
 	export let data: PageData;
 	const modalStore = getModalStore();
@@ -25,7 +21,7 @@
 		}
 	}
 
-	const { posts, user} = data;
+	const { posts, user, locals } = data;
 
 	// const handleImage = (e: Event) => {
 	// 	const target = e.target as HTMLInputElement;
@@ -90,64 +86,104 @@
 
 <Container>
 	<div class="flex flex-col w-full gap-4 min-h-[20rem]">
-		<section class="h-[20rem] bg-slate-800 rounded-3xl overflow-hidden w-full">
-			<img src="/default-banner.png" class="w-full h-full object-cover" alt="" />
-		</section>
 		<section class="flex flex-col md:flex-row gap-4">
-			<div class="w-[20%] px-8 py-10 bg-blue-primary rounded-3xl flex flex-col items-center">
-				<div class="w-28 h-28  bg-slate-700 rounded-full mb-4 relative">
+			<div class="md:w-[20%] px-8 py-10 bg-blue-primary rounded-3xl flex flex-col items-center">
+				<div class="w-28 h-28 bg-slate-700 rounded-full mb-4 relative">
 					<img src={$imageUrl} alt="" class="h-full w-full rounded-full object-cover" />
-					<label for="image" class="btn btn-icon btn-sm bg-white rounded-full absolute z-30 bottom-0 right-0">
-						<Icon icon="ic:baseline-edit" class="text-black text-sm" />
-					</label>
-					<input on:change={handleImageSimple} type="file" name="image" id="image" class="hidden" />
+					{#if locals && locals.user && user.username === locals.user.username}
+						<label
+							for="image"
+							class="btn btn-icon btn-sm bg-white rounded-full absolute z-30 bottom-0 right-0"
+						>
+							<Icon icon="ic:baseline-edit" class="text-black text-sm" />
+						</label>
+						<input
+							on:change={handleImageSimple}
+							type="file"
+							name="image"
+							id="image"
+							class="hidden"
+						/>
+					{/if}
 				</div>
-				<p class="font-bold text-2xl mb-4">
-					{user?.username}
+				<p class="font-bold text-2xl">
+					{user?.firstName}
+					{user?.lastName}
 				</p>
+				<div class="flex flex-col gap-1 justify-center items-center">
+					<p class="sub-info">{user?.headline ? user.headline : 'No Headline Provided'}</p>
+					<p class="sub-info">{user?.company ? user.company : 'No Company Provided'}</p>
+					<div class="flex gap-2 items-center">
+						<Icon icon="fluent:location-24-regular" class="w-4 h-4" />
+						<span class="sub-info">{user?.location ? user.location : 'No Location Provided'}</span>
+					</div>
+				</div>
 
-				<div class="relative px-3 py-4 border-[1px] border-white w-full rounded-xl mb-4">
-					<img class="absolute top-[-1rem] h-[4rem] left-[-1.4rem]" src="/ic-hello.png" alt="">
-					<div class="flex">	
-						<div class="h-8 w-8">
-						</div>
+				{#if locals && locals.user && user.username === locals.user.username}
+					<div class="mt-5">
+						<a href={`${user?.username}/edit`}>
+							<button class="btn btn-sm variant-filled-secondary">
+								<span>Edit Profile</span>
+								<Icon icon={ICON['ARROW-OUTWARD']} />
+							</button>
+						</a>
+					</div>
+				{/if}
+				<div class="relative mt-5 px-3 py-4 border-[1px] border-white w-full rounded-xl mb-4">
+					<img class="absolute top-[-1rem] h-[4rem] left-[-1.4rem]" src="/ic-hello.png" alt="" />
+					<div class="flex">
+						<div class="h-8 w-8"></div>
 						<div>
-							<p class="text-xs">Say hello to,</p>
-							<p>{user?.username}</p>
+							<p class="text-sm">Say hello to,</p>
+							{user?.firstName}
+							{user?.lastName}
 						</div>
 					</div>
-					<div class="h-[1px] bg-white w-full my-4">
-						
-					</div>
-					<p class="text-xs mb-4">Looking for good model?</p>
+					<div class="h-[1px] bg-white w-full my-4"></div>
+					<p class="text-sm mb-4">Looking for good model?</p>
 					<div class="w-full flex justify-center">
-						<button class="btn btn-sm variant-filled-secondary text-xs">Contact 
+						<button class="btn btn-sm variant-filled-secondary">
+							<span>Send Email</span>
 							<Icon icon="akar-icons:arrow-right" class="w-4 h-4" />
 						</button>
 					</div>
 				</div>
 
-				<div>
-					<h1>About Me</h1>
+				<div class="mt-4">
+					<h1 class="font-bold mb-2">About Me</h1>
 					<p class="font-thin mb-4">
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga eius mollitia beatae hic
-						veniam ab perspiciatis fugiat sunt assumenda quam eligendi deleniti minima optio odio
-						placeat ipsa obcaecati, qui nisi.
+						{user?.description || 'No description'}
 					</p>
-					
 				</div>
-				<button on:click={() => goto('/signout')} class="btn variant-filled-error">
-					<span>Logout</span>
-				</button>
-				<!-- <div class="flex gap-4">
-					<a href="/dashboard/upload" class="btn variant-outline-secondary">Create Post + </a>
+
+				<div class="flex flex-col w-full justify-start mb-4">
+					<h1 class="font-bold mb-2">Socials</h1>
+					<div class="flex flex-col gap-2">
+						<div class="flex gap-2 items-center">
+							<img class="h-6 rounded-md" src={LOGO['LINKEDIN']} alt="" />
+							<span class="text-sm">{user?.linkedin ? user.linkedin : 'No LinkedIn Profile'}</span>
+						</div>
+						<div class="flex gap-2 items-center">
+							<img class="h-6 rounded-md" src={LOGO['INSTAGRAM']} alt="" />
+							<span class="text-sm"
+								>{user?.instagram ? user.instagram : 'No Instagram Profile'}</span
+							>
+						</div>
+						<div class="flex gap-2 items-center">
+							<img class="h-6 rounded-md" src={LOGO['BEHANCE']} alt="" />
+							<span class="text-sm">{user?.behance ? user.behance : 'No Behance Profile'}</span>
+						</div>
+					</div>
+				</div>
+
+				{#if locals && locals.user && user.username === locals.user.username}
 					<button on:click={() => goto('/signout')} class="btn variant-filled-error">
 						<span>Logout</span>
 					</button>
-				</div> -->
+				{/if}
 			</div>
 			<div class="flex-1">
-				<p class="font-bold text-3xl mb-4">Your Posts</p>
+				<p class="font-bold text-3xl mb-4"> Posts</p>
 				{#if posts && posts.length > 0}
 					<div class="flex gap-4 flex-wrap">
 						{#each posts as post}
@@ -173,3 +209,9 @@
 	</label>
 	<input on:change={handleImageSimple} type="file" name="image" id="image" class="hidden" />
 {/if} -->
+
+<style lang="postcss">
+	.sub-info {
+		@apply text-base text-slate-400;
+	}
+</style>

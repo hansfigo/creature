@@ -15,13 +15,13 @@
 <main class="flex justify-center min-h-screen w-full gap-4">
 	<div class="container">
 		<section class="flex flex-col gap-4">
-			<div class="grid h-full md:grid-cols-2 gap- content-center items-center mb-16">
+			<div class="h-screen md:h-full flex flex-col-reverse md:flex-row  gap-8 justify-center md:items-center items-start  md:mb-16">
 				<div class="w-[70%]">
-					<h1 class="text-[4rem] leading-tight font-black">
+					<h1 class="text-4xl md:text-[4rem] leading-tight font-black">
 						The medium for 3D interest and the creator
 					</h1>
 					<br />
-					<div class="flex flex-col w-full justify-end gap-4 md:flex-row md:pr-8">
+					<div class="flex  w-full justify-end gap-4 flex-row md:pr-8">
 						<div>
 							<a href="/dashboard/upload">
 								<button class="btn variant-filled-secondary text-lg"
@@ -40,7 +40,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="h-[30rem] w-full bg-slate-800 overflow-hidden rounded-2xl">
+				<div class="h-[20rem] md:h-[30rem] w-full bg-slate-800 overflow-hidden rounded-2xl">
 					<img
 						class="h-full w-full object-cover"
 						src="https://lh6.googleusercontent.com/proxy/qHZjYOyDk62_G4zO4GArH5BvfdjLSJ5Ov96_912gs2tenHaeRKJDFfVh5hBp8OUX4LbZ_MIkx2a_G9LGq9iSUFJZVTtUZFzVriovkt6-vT59-Na5cd38ktXdRi1G1JBuznxXScvgxr_5O6hF"
@@ -49,7 +49,7 @@
 				</div>
 			</div>
 
-			<section class="h-[30rem] flex items-center w-full">
+			<section class="md:h-[30rem] flex items-center w-full">
 				<div class="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-stretch w-full">
 					<div>
 						<div class="w-full h-60 rounded-3xl overflow-hidden border-[1px] border-slate-800">
@@ -80,12 +80,14 @@
 				</div>
 			</section>
 
-			<section>
-				<h1 class="text-3xl font-bold">Latest Upload</h1>
+			<section class="mt-16">
+				<h1 class="text-lg mb-3  md:text-3xl font-bold">Latest Upload</h1>
 				<div class="grid grid-cols-2 gap-8 md:grid-cols-3 xl:grid-cols-4">
-					{#each posts as post}
-						<Postcard {post} />
-					{/each}
+					{#if posts.length > 0}
+						{#each posts as post}
+							<Postcard {post} />
+						{/each}
+					{/if}
 				</div>
 			</section>
 		</section>

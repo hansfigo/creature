@@ -1,3 +1,5 @@
+import { count } from 'console';
+import { desc } from 'drizzle-orm';
 import {
 	mysqlTable,
 	varchar,
@@ -19,7 +21,12 @@ export const user = mysqlTable('user', {
 	headline: varchar('headline', { length: 256 }),
 	lastName: varchar('last_name', { length: 256 }),
 	email: varchar('email', { length: 256 }).unique(),
+	company : varchar('company', { length: 256 }),
+	other: varchar('other', { length: 256 }),
+	country: varchar('country', { length: 256 }),
 	password: varchar('password', { length: 256 }),
+	description: text('description'),
+	bannerPicture: varchar('banner_picture', { length: 256 }),
 	profilePicture: varchar('profile_picture', { length: 256 }),
 	createdAt: timestamp('created_at'),
 	updatedAt: timestamp('updated_at')

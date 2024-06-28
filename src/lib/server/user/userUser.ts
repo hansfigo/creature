@@ -2,8 +2,24 @@ import { eq } from 'drizzle-orm';
 import { db } from '../db/db';
 import { posts, user } from '../db/schema';
 
+export interface userSchema {
+	username?: string;
+	firstName?: string;
+	lastName?: string;
+	description?: string;
+	company?: string;
+	headline?: string;
+	location?: string;
+	country?: string;
+	linkedin?: string;
+	instagram?: string;
+	behance?: string;
+	other?: string;
+	profilePicture?: string;
+} 
+
 const initUser = () => {
-	const updateuser = async (username: string, data: any) => {
+	const updateuser = async (username: string, data: userSchema ) => {
 		const userData = await db.select().from(user).where(eq(user.username, username));
 		if (userData.length === 0) {
 			return undefined;
@@ -14,10 +30,6 @@ const initUser = () => {
 	const getUserDetail = async (username: string) => {
 		const userData = await db.select().from(user).where(eq(user.username, username));
 		const PostList = await db.select().from(posts).where(eq(posts.userId, userData[0].id));
-
-		if (PostList.length === 0) {
-			return undefined;
-		}
 
 		let data = {
 			user: userData[0],
@@ -32,7 +44,7 @@ const initUser = () => {
 
 	};
 
-	return { getUserDetail };
+	return { getUserDetail, updateuser };
 };
 
-export const userUser = initUser();
+export const useUser = initUser();

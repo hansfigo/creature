@@ -18,6 +18,10 @@
 
 	export let data;
 
+	let user = data.user;
+
+	$ : user = data.user;
+
 	const url = get(page).route.id?.toString();
 
 	const isShow = () => {
@@ -40,7 +44,7 @@
 	<div class="ball-gradient-2"></div>
 
 	{#if $page.route.id !== '/signin' && $page.route.id !== '/signup'}
-		<Navbar user={data.user} />
+		<Navbar user={user} />
 	{/if}
 
 	{#if $navigating}
