@@ -107,9 +107,12 @@
 					{/if}
 				</div>
 				<p class="font-bold text-2xl">
-					{user?.firstName}
-					{user?.lastName}
-				</p>
+					{#if user?.firstName || user?.lastName}
+					  {user?.firstName} {user?.lastName}
+					{:else}
+					  {user?.username}
+					{/if}
+				  </p>
 				<div class="flex flex-col gap-1 justify-center items-center">
 					<p class="sub-info">{user?.headline ? user.headline : 'No Headline Provided'}</p>
 					<p class="sub-info">{user?.company ? user.company : 'No Company Provided'}</p>
