@@ -16,27 +16,18 @@
 		target: 'popupClick',
 		placement: 'bottom'
 	};
+
+	let query = '';
 </script>
-
-{#if user}
-	<!-- <div class="card p-4 variant-filled-primary flex flex-col" data-popup="popupClick">
-		<button class="btn">
-			<a href={`/u/${user.username}`}>Profile</a>
-		</button>
-		<form method="post" use:enhance>
-			<button class="btn">
-				<span>Logout</span>
-			</button>
-		</form>
-
-		<div class="arrow variant-filled-primary" />
-	</div> -->
-{/if}
 
 <div class="flex min-w-full justify-center z-[99]">
 	<div class="container flex justify-between py-8">
 		<a href="/" class="h3 font-bold font-jakarta text-3xl md:text-4xl">{TITLE}</a>
-		<p></p>
+		<div class="w-[40%]">
+			<form on:submit|preventDefault={() => goto(`/search?query=${query}`)}>
+				<input bind:value={query} type="text" class="input" />
+			</form>
+		</div>
 		{#if userData}
 			<div class=" gap-4 justify-center items-center hidden md:flex">
 				<p class="font-jakarta">{`Welcome, ${userData.username}`}</p>

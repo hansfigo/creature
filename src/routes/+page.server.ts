@@ -17,3 +17,12 @@ export const load: PageServerLoad = async (event) => {
 
 // const models = await model.getModel();
 // return { models: models, user: event.locals.user };
+
+export const actions: Actions = {
+	search: async (event) => {
+		const formData = await event.request.formData();
+		const query = formData.get('query');
+
+		return redirect(302, `/search/?${query}`);
+	}
+};
