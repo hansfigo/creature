@@ -7,22 +7,27 @@
 	import { enhance } from '$app/forms';
 	import { ProgressRadial } from '@skeletonlabs/skeleton';
 	import { ICON } from '$lib/consants';
+	import { writable } from 'svelte/store';
+	import { is } from 'drizzle-orm';
 
 	export let data: PageData;
 
 	const { user } = data;
 
 	let posts = data.posts;
-	let dataUser = posts.user;
-	console.log(data.posts.user, "==================");
+	let isFollowLoading = false;
+	let isCommentLoading = false;
 
+	const dataUser = writable(data.posts.user);
+
+	let isFollowing = data.posts.user.isFollowing;
+	const userId = data.posts.user.id;
 	// make post reactive to changes
 	$: {
 		posts = data.posts;
-		dataUser = posts.user;
-		console.log(data.posts.user, "==================");
+		console.log(userId);
+		isFollowing = data.posts.user.isFollowing;
 	}
-
 	const calculateAge = (createdAt: Date) => {
 		const now = new Date();
 		const createdDate = new Date(createdAt);
@@ -105,8 +110,8 @@
 							use:enhance={() => {
 								likeLoading = true;
 								return async ({ update }) => {
-									likeLoading = false;
 									update();
+									likeLoading = false;
 								};
 							}}
 						>
@@ -142,26 +147,39 @@
 							{/if}
 						</div>
 						<div>
-							<p class="text-xl font-bold">{dataUser?.username}</p>
-							<p class="text-base font-normal">{dataUser?.followersCount} Followers</p>
+							<p class="text-xl font-bold">{$dataUser?.username}</p>
+							<p class="text-base font-normal">{$dataUser?.followersCount} Followers</p>
 						</div>
 					</div>
 				</div>
 
 				{#if user?.id != posts.user.id}
 					<div class="mt-6 flex gap-4">
-						<form action="?/follow" method="post" use:enhance>
-							<button type="submit" class="btn variant-filled-secondary"
-								>{dataUser?.isFollowing ? 'Followed ' : 'Follow +'}</button
-							>
+						<form
+							action="?/follow"
+							method="post"
+							use:enhance={() => {
+								isFollowLoading = true;
+								return async ({ update }) => {
+									update({ reset: false });
+									isFollowLoading = false;
+								};
+							}}
+						>
+							<button disabled={isFollowLoading} type="submit" class="btn variant-filled-secondary">
+								<span>{isFollowing ? 'Followed ' : 'Follow +'}</span>
+								{#if isFollowLoading}
+									<ProgressRadial class="ml-2 w-4" />
+								{/if}
+							</button>
 							<input
 								class="input hidden"
 								type="text"
 								name="followed"
 								id="followed"
-								value={dataUser?.isFollowing}
+								bind:value={isFollowing}
 							/>
-							<input class="hidden" type="text" name="userId" id="userId" value={posts.user.id} />
+							<input class="input hidden" type="text" name="userId" id="userId" value={userId} />
 						</form>
 						<button class="btn variant-filled-secondary"
 							>Contact
@@ -206,15 +224,27 @@
 					</div>
 				</div>
 
-				<form method="post" action="?/comment" use:enhance class="mt-4">
+				<form
+					method="post"
+					action="?/comment"
+					use:enhance={() => {
+						isCommentLoading = true;
+						return async ({ update }) => {
+							update();
+							isCommentLoading = false;
+						};
+					}}
+					class="mt-4"
+				>
 					<p class="text-lg font-bold mb-3">Comments</p>
-					<input
-						placeholder="Write your comments !!"
-						class="input"
-						type="text"
-						name="comment"
-						id=""
-					/>
+					<div class="input-group input-group-divider grid-cols-[1fr_auto]">
+						<input disabled={isCommentLoading} name="comment" type="text" placeholder="Write your comments !!" />
+						{#if isCommentLoading}
+						<div>
+							<ProgressRadial class="w-4" />
+						</div>
+						{/if}
+					</div>
 
 					<div class="grid md:grid-cols-2 gap-4 mt-4">
 						{#each posts.comments as comment}

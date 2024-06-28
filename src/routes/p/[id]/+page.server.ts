@@ -2,7 +2,7 @@ import { usePosts } from '$lib/server/posts/usePosts';
 import { redirect, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { db } from '$lib/server/db/db';
-import { comments, likes, posts } from '$lib/server/db/schema';
+import { comments, likes, posts, user } from '$lib/server/db/schema';
 import { generateIdFromEntropySize } from 'lucia';
 import { eq } from 'drizzle-orm';
 import { followUser, unfollowUser } from '$lib/server/followers/useFollowers';
@@ -78,25 +78,25 @@ export const actions = {
 		}
 
 		const formData = await event.request.formData();
-		const isFollowed = formData.get('followed');
+		const isFollowed = formData.get('followed') === 'true'; // Check follow status as boolean
 		const userId = formData.get('userId');
 
-		setTimeout(() => {}, 300);
+		console.log(isFollowed, 'isFollowed');
 
-		console.log(isFollowed?.toString(), 'isFollowed', isFollowed?.toString() == 'false')
-		;
-
-		if (isFollowed && isFollowed?.toString() == 'false') {
-			if (event.locals.user.id && userId) {
-				await followUser(event.locals.user.id, userId!.toString());
-				console.log('followed');
-			}
+		if (!userId) {
+			console.log(userId?.toString(), "User ID is missing");
+			console.error('User ID is missing');
 			return;
 		}
 
 		try {
-			await unfollowUser(event.locals.user.id, userId!.toString());
-			console.log('unfollowed');
+			if (isFollowed) {
+				// If already followed, then unfollow
+				await unfollowUser(event.locals.user.id, userId.toString());
+			} else {
+				// If not followed, then follow
+				await followUser(event.locals.user.id, userId.toString());
+			}
 		} catch (error) {
 			console.log(error);
 		}

@@ -7,8 +7,6 @@
 
 	export let data;
 
-	console.log(data);
-
 	const posts = data.postList;
 
 	// const models = data.models.map((model: string) => removeGlbExtension(model));
