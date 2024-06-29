@@ -14,10 +14,11 @@
 	const handleDelete = () => {};
 </script>
 
-<div class="card p-4 variant-filled-surface z-[99]" data-popup={'popupPostCard-' + post.id}>
+<div class="card p-4 variant-filled z-[99]" data-popup={'popupPostCard-' + post.id}>
 	<button on:click={handleDelete} class="btn">
 		<span>Archive</span>
 	</button>
+	<br>
 	<a href={`/dashboard/edit/${post.id}`}>
 		<button on:click={handleDelete} class="btn">
 			<span>Edit</span>
