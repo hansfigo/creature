@@ -44,7 +44,7 @@
 	<div class="ball-gradient-2"></div>
 
 	{#if $page.route.id !== '/signin' && $page.route.id !== '/signup'}
-		<Navbar user={user} userDetail={data.userDetail}/>
+		<Navbar user={user} {url} userDetail={data.userDetail}/>
 	{/if}
 
 	{#if $navigating}

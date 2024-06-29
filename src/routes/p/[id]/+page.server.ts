@@ -7,12 +7,22 @@ import { generateIdFromEntropySize } from 'lucia';
 import { eq } from 'drizzle-orm';
 import { followUser, unfollowUser } from '$lib/server/followers/useFollowers';
 import { addBookmark } from '$lib/server/bookmarks/useBookmarks';
-import { createNotification } from '$lib/server/notification/useNotification';
+import {
+	createNotification,
+	updateNotificationStatus
+} from '$lib/server/notification/useNotification';
+import { error } from 'console';
 
 const { getDetailPost } = usePosts;
 
-export const load = (async ({ params, locals }) => {
+export const load = (async ({ params, locals, url }) => {
 	const detailPost = await getDetailPost(params.id, locals.user?.id);
+
+	const notificationId = url.searchParams.get('notId');
+
+	if (notificationId) {
+		await updateNotificationStatus(notificationId);
+	}
 
 	await db
 		.update(posts)
@@ -34,6 +44,12 @@ export const actions = {
 
 		const formData = await event.request.formData();
 		const comment = formData.get('comment');
+		const userId = formData.get('userIdFromComment');
+
+		if (!userId?.toString()) {
+			console.error('Error');
+			return;
+		}
 
 		try {
 			await db.insert(comments).values({
@@ -43,6 +59,14 @@ export const actions = {
 				content: comment?.toString(),
 				createdAt: new Date(),
 				updatedAt: new Date()
+			});
+
+			// create notification
+			await createNotification({
+				userId: userId.toString(),
+				username: event.locals.user.username,
+				postId: id,
+				type: 'comment'
 			});
 		} catch (error) {}
 	},
@@ -54,6 +78,7 @@ export const actions = {
 		const { id } = event.params;
 		const formData = await event.request.formData();
 		const isLiked = formData.get('liked');
+		const userId = formData.get('userId');
 
 		if (isLiked == 'true') {
 			await db.delete(likes).where(eq(likes.postId, id!));
@@ -67,6 +92,18 @@ export const actions = {
 				postId: id,
 				createdAt: new Date(),
 				updatedAt: new Date()
+			});
+
+			if (!userId?.toString()) {
+				console.error('Error');
+				return;
+			}
+
+			await createNotification({
+				username: event.locals.user.username,
+				userId: userId.toString(),
+				postId: id,
+				type: 'like'
 			});
 		} catch (error) {}
 	},
@@ -87,6 +124,8 @@ export const actions = {
 		try {
 			if (isFollowed) {
 				await unfollowUser(event.locals.user.id, userId.toString());
+
+				// delete notification
 			} else {
 				await followUser(event.locals.user.id, userId.toString());
 

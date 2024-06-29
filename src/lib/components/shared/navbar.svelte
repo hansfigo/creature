@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
 	import { TITLE } from '$lib/consants';
 	import Icon from '@iconify/svelte';
@@ -7,10 +6,15 @@
 
 	export let user;
 	export let userDetail;
+	export let url;
 
 	let userData = user;
+	let pageUrl = url;
 
-	$: userData = user;
+	$: {
+		userData = user;
+		pageUrl = url;
+	}
 
 	const popupClick: PopupSettings = {
 		event: 'click',
@@ -49,8 +53,30 @@
 						<div class="h-2 w-2 rounded-full absolute bg-red-600"></div>
 					{/if}
 				</button>
-				<div class="card p-4 min-w-[16rem] variant-filled" data-popup="notificationPopupClick">
-					<p>Notification</p>
+				<div class="card p-4 min-w-[20rem] variant-filled" data-popup="notificationPopupClick">
+					<p class="font-black mb-3">Notification</p>
+					{#if userDetail.notifications && userDetail.notifications.length === 0}
+						<p>No notification</p>
+					{:else}
+						<div class="flex flex-col gap-2 items-start">
+							{#each userDetail.notifications as notifications}
+								<button class="btn px-0 w-full flex justify-between">
+									{#if notifications.post}
+										<a href={`/p/${notifications.post.id}?notId=${notifications.id}`}>
+											<span>{notifications.message} {notifications.post.title}</span>
+										</a>
+									{:else}
+										<a href={`/noti/${notifications.id}?from=${url}`}>
+											<span>{notifications.message}</span>
+										</a>
+									{/if}
+									{#if notifications.isRead == false}
+										<div class="h-2 w-2 rounded-full bg-red-600"></div>
+									{/if}
+								</button>
+							{/each}
+						</div>
+					{/if}
 				</div>
 				<button use:popup={popupClick} class="btn variant-outline-secondary">
 					<Icon icon="ic:outline-person" />

@@ -8,7 +8,6 @@
 	import { ProgressRadial } from '@skeletonlabs/skeleton';
 	import { ICON } from '$lib/consants';
 	import { writable } from 'svelte/store';
-	import { is } from 'drizzle-orm';
 
 	export let data: PageData;
 
@@ -110,12 +109,15 @@
 							use:enhance={() => {
 								likeLoading = true;
 								return async ({ update }) => {
-									await update();
+									await update({
+										reset: false
+									});
 									likeLoading = false;
 								};
 							}}
 						>
 							<button
+								type="submit"
 								disabled={likeLoading}
 								class={`btn ${posts.isLiked ? 'variant-filled-secondary' : 'variant-outline-secondary'} `}
 							>
@@ -128,6 +130,7 @@
 									<Icon class="ml-2" icon="ic:baseline-thumb-up" />
 								{/if}
 							</button>
+							<input class="input hidden" type="text" name="userId" id="userId" value={userId} />
 							<input class="input hidden" type="text" name="liked" value={posts.isLiked} />
 						</form>
 						<form
@@ -153,7 +156,7 @@
 								value={posts.isBookmarked}
 							/>
 						</form>
-						<button class="btn variant-outline-secondary ">
+						<button class="btn variant-outline-secondary">
 							<span class="hidden md:block"> Share </span>
 							<Icon class="ml-2" icon="ic:baseline-share" />
 						</button>
@@ -191,7 +194,11 @@
 								};
 							}}
 						>
-							<button disabled={isFollowLoading} type="submit" class="btn btn-sm md:btn-base variant-filled-secondary">
+							<button
+								disabled={isFollowLoading}
+								type="submit"
+								class="btn btn-sm md:btn-base variant-filled-secondary"
+							>
 								<span>{isFollowing ? 'Followed ' : 'Follow +'}</span>
 								{#if isFollowLoading}
 									<ProgressRadial class="ml-2 w-4" />
@@ -255,7 +262,9 @@
 					use:enhance={() => {
 						isCommentLoading = true;
 						return async ({ update }) => {
-							await update();
+							await update({
+								reset: false
+							});
 							isCommentLoading = false;
 						};
 					}}
@@ -269,6 +278,7 @@
 							type="text"
 							placeholder="Write your comments !!"
 						/>
+
 						{#if isCommentLoading}
 							<div>
 								<ProgressRadial class="w-4" />
@@ -295,6 +305,14 @@
 							</div>
 						{/each}
 					</div>
+
+					<input
+						class="input"
+						type="hidden"
+						name="userIdFromComment"
+						id="userIdFromComment"
+						value={userId}
+					/>
 				</form>
 			</div>
 		</div>
