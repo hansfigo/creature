@@ -164,7 +164,7 @@
 						</div>
 						<div>
 							<p class="text-xl font-bold">{$dataUser?.username}</p>
-							<p class="text-base font-normal">{$dataUser?.followersCount} Followers</p>
+							<p class="text-base font-normal">{posts.user.followersCount} Followers</p>
 						</div>
 					</div>
 				</div>
