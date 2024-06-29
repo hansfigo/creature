@@ -114,3 +114,16 @@ export const bookmarks = mysqlTable('bookmarks', {
 	createdAt: timestamp('created_at').defaultNow(),
 	updatedAt: timestamp('updated_at').defaultNow()
 });
+
+export const notifications = mysqlTable('notifications', {
+	id: varchar('id', { length: 256 }).primaryKey().notNull(),
+	userId: varchar('user_id', { length: 256 })
+		.references(() => user.id)
+		.notNull(),
+	type: varchar('type', { length: 256 }).notNull(), // Misalnya: 'like', 'comment', 'follow', dll.
+	postId: varchar('post_id', { length: 256 }).references(() => posts.id),
+	message: text('message').notNull(),
+	isRead: boolean('is_read').default(false),
+	createdAt: timestamp('created_at').defaultNow(),
+	updatedAt: timestamp('updated_at').defaultNow()
+});

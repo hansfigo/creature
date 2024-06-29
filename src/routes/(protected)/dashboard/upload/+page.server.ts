@@ -82,7 +82,6 @@ export const actions: Actions = {
 
 				return message(form, 'Form posted successfully!');
 			} catch (error) {
-				console.log(error, 'ERROR');
 				return message(form, 'Error posting form');
 			}
 		}

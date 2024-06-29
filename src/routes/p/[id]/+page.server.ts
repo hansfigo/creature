@@ -2,10 +2,11 @@ import { usePosts } from '$lib/server/posts/usePosts';
 import { redirect, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { db } from '$lib/server/db/db';
-import { comments, likes, posts, user } from '$lib/server/db/schema';
+import { bookmarks, comments, likes, posts, user } from '$lib/server/db/schema';
 import { generateIdFromEntropySize } from 'lucia';
 import { eq } from 'drizzle-orm';
 import { followUser, unfollowUser } from '$lib/server/followers/useFollowers';
+import { addBookmark } from '$lib/server/bookmarks/useBookmarks';
 
 const { getDetailPost } = usePosts;
 
@@ -43,7 +44,6 @@ export const actions = {
 				updatedAt: new Date()
 			});
 		} catch (error) {
-			console.log(error);
 		}
 	},
 	like: async (event) => {
@@ -69,7 +69,6 @@ export const actions = {
 				updatedAt: new Date()
 			});
 		} catch (error) {
-			console.log(error);
 		}
 	},
 	follow: async (event) => {
@@ -81,10 +80,8 @@ export const actions = {
 		const isFollowed = formData.get('followed') === 'true'; // Check follow status as boolean
 		const userId = formData.get('userId');
 
-		console.log(isFollowed, 'isFollowed');
 
 		if (!userId) {
-			console.log(userId?.toString(), "User ID is missing");
 			console.error('User ID is missing');
 			return;
 		}
@@ -98,7 +95,37 @@ export const actions = {
 				await followUser(event.locals.user.id, userId.toString());
 			}
 		} catch (error) {
-			console.log(error);
+		}
+	},
+	bookmark : async (event) => {
+		if (!event.locals.user || !event.locals.user.id) {
+			throw redirect(301, '/signin');
+		}
+
+		const { id } = event.params;
+		
+		if (!id) {
+			console.error('Post ID is missing');
+			return;
+		}
+
+		const formData = await event.request.formData();
+		const isBookmarked = formData.get('bookmarked');
+
+		if (!isBookmarked) {
+			console.error('Bookmark status is missing');
+			return;
+		}
+
+		if (isBookmarked == 'true') {
+			await db.delete(bookmarks).where(eq(bookmarks.postId, id!));
+			return;
+		}
+
+		try {
+			await addBookmark(event.locals.user.username, id);
+		} catch (error) {
+			console.error("ERRR", error);
 		}
 	}
 } satisfies Actions;

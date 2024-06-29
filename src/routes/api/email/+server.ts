@@ -24,7 +24,6 @@ const sendPasswordRecoveryEmail = (userEmail: string,) => {
         if (error) {
             console.error(error);
         } else {
-            console.log('Email sent: ' + info.response);
         }
     });
 };

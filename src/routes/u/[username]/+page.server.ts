@@ -12,11 +12,9 @@ export const load = (async (event) => {
 		};
 	}
 
-	console.log(username);
 	const userDetail = await getUserDetail(username);
 
 	if (!userDetail) {
-		console.log('User not found');
 		throw redirect(302, '/');
 	}
 

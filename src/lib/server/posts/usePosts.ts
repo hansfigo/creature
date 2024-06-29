@@ -2,6 +2,7 @@ import { and, asc, count, desc, eq, inArray, like, or, sql } from 'drizzle-orm';
 import { db } from '../db/db';
 import { comments, likes, posts, postTags, tags, user } from '../db/schema';
 import { getFollowersCount, isFollowing } from '../followers/useFollowers';
+import { isBookmarked } from '../bookmarks/useBookmarks';
 
 export enum orderEnum {
 	ASC = 'asc',
@@ -43,6 +44,7 @@ interface DetailPost {
 		tag: string;
 	}[];
 	isLiked?: boolean;
+	isBookmarked?: boolean;
 }
 
 interface GetPostsParams {
@@ -84,8 +86,6 @@ const postInit = () => {
 				)
 			)
 			.orderBy(orderBy);
-
-		
 
 		return postList;
 	};
@@ -150,8 +150,6 @@ const postInit = () => {
 		const postClone: any = post[0];
 
 		//get followers count
-		
-		
 
 		postClone.comments = commentList;
 		postClone.likes = likesCount[0].count;
@@ -175,10 +173,14 @@ const postInit = () => {
 		if (userId) {
 			const isFollow = await isFollowing(userId, postClone.user.id);
 			postClone.user.isFollowing = isFollow;
-		} else{
-			postClone.user.isFollowing = null;
-		}
 
+			// get bookmark status
+			const isBookmarkedByuser = await isBookmarked(userId, id);
+			postClone.isBookmarked = isBookmarkedByuser;
+		} else {
+			postClone.user.isFollowing = null;
+			postClone.isBookmarked = null;
+		}
 
 		return postClone;
 	};

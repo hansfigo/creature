@@ -22,10 +22,10 @@
 
 	let isFollowing = data.posts.user.isFollowing;
 	const userId = data.posts.user.id;
+
 	// make post reactive to changes
 	$: {
 		posts = data.posts;
-		console.log(userId);
 		isFollowing = data.posts.user.isFollowing;
 	}
 	const calculateAge = (createdAt: Date) => {
@@ -101,8 +101,8 @@
 				{/if}
 			</div>
 			<div class="mt-4">
-				<div class="flex w-full justify-between">
-					<h1 class="text-3xl font-black">{posts.title}</h1>
+				<div class="flex w-full items-center justify-between">
+					<h1 class=" font-black">{posts.title}</h1>
 					<div class="flex gap-4">
 						<form
 							action="?/like"
@@ -127,6 +127,22 @@
 								{/if}
 							</button>
 							<input class="input hidden" type="text" name="liked" value={posts.isLiked} />
+						</form>
+						<form
+							use:enhance={() => {
+								return async ({ update }) => {
+									await update({
+										reset: false
+									});
+								};
+							}}
+							action="?/bookmark"
+							method="post"
+						>
+							<button class={`btn text-2xl ${posts.isBookmarked ? 'variant-filled-secondary' : 'variant-outline-secondary'} `}>
+								<Icon icon="ic:baseline-bookmark" />
+							</button>
+							<input class="input hidden" type="text" name="bookmarked" value={posts.isBookmarked} />
 						</form>
 						<button class="btn variant-outline-secondary"
 							>Share
@@ -238,11 +254,16 @@
 				>
 					<p class="text-lg font-bold mb-3">Comments</p>
 					<div class="input-group input-group-divider grid-cols-[1fr_auto]">
-						<input disabled={isCommentLoading} name="comment" type="text" placeholder="Write your comments !!" />
+						<input
+							disabled={isCommentLoading}
+							name="comment"
+							type="text"
+							placeholder="Write your comments !!"
+						/>
 						{#if isCommentLoading}
-						<div>
-							<ProgressRadial class="w-4" />
-						</div>
+							<div>
+								<ProgressRadial class="w-4" />
+							</div>
 						{/if}
 					</div>
 

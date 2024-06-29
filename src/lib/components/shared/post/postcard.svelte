@@ -12,7 +12,6 @@
 	};
 
 	const handleDelete = () => {
-		console.log('Delete Post');
 	};
 </script>
 

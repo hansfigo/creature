@@ -1,6 +1,6 @@
 import { eq } from 'drizzle-orm';
 import { db } from '../db/db';
-import { posts, user } from '../db/schema';
+import { bookmarks, posts, user } from '../db/schema';
 
 export interface userSchema {
 	username?: string;
@@ -16,32 +16,34 @@ export interface userSchema {
 	behance?: string;
 	other?: string;
 	profilePicture?: string;
-} 
+}
 
 const initUser = () => {
-	const updateuser = async (username: string, data: userSchema ) => {
+	const updateuser = async (username: string, data: userSchema) => {
 		const userData = await db.select().from(user).where(eq(user.username, username));
 		if (userData.length === 0) {
 			return undefined;
 		}
 		const updatedUser = await db.update(user).set(data).where(eq(user.username, username));
 		return updatedUser;
-	}
+	};
 	const getUserDetail = async (username: string) => {
 		const userData = await db.select().from(user).where(eq(user.username, username));
 		const PostList = await db.select().from(posts).where(eq(posts.userId, userData[0].id));
 
+		const bookmarksList = await db.select().from(bookmarks).where(eq(bookmarks.id, userData[0].id));
+
 		let data = {
 			user: userData[0],
-			posts: PostList as any
+			posts: PostList as any,
+			bookmarks : bookmarksList
 		};
 
-		data.posts.forEach((post : any) => {
+		data.posts.forEach((post: any) => {
 			post.user = userData[0];
 		});
 
 		return data;
-
 	};
 
 	return { getUserDetail, updateuser };

@@ -33,7 +33,6 @@ export const load = (async ({ locals }) => {
 		throw redirect(302, '/');
 	}
 
-	console.log(userData.user.firstName, 'userData');
 
 	// create zod schema with default value user data
 	const schema = z.object({
@@ -108,7 +107,6 @@ export const actions: Actions = {
 
 		const form = await superValidate(request, zod(schema));
 
-		console.log('FORM INI', form.data);
 		if (!form.valid) {
 			return fail(400, { form });
 		}
@@ -149,7 +147,6 @@ export const actions: Actions = {
 			return message(form, 'User not found');
 		}
 
-		console.log('PAYLOAD', payload);
 		await useUser.updateuser(params.username, payload);
 
 		return message(form, 'You have uploaded a valid file!');

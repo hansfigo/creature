@@ -28,7 +28,6 @@
 				const roundedHeight = Number(height.toFixed(5));
 
 				if (roundedHeight < 0.6) {
-					console.log('Model Terlalu Kecil, Scaling ...');
 					model.scale.set(10, 10, 10);
 				}
 

@@ -35,7 +35,7 @@
 	// 				ref: ImageCropper,
 	// 				props: {
 	// 					image: e.target?.result as string,
-	// 					onCropComplete: (e: any) => console.log(e, 'PPPPPPPP'),
+	// 					onCropComplete: (e: any) => {},
 	// 					classList: 'w-[20rem] h-[20rem] bg-black relative z-[99]'
 	// 				}
 	// 			};
@@ -72,7 +72,6 @@
 				const data = await res.json();
 			} else {
 				alert('Error uploading image');
-				console.log('error');
 			}
 
 			isLoading = false;

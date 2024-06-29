@@ -8,7 +8,6 @@
 	export let user;
 	export let userDetail;
 
-	console.log('USERDETAIL', userDetail);
 	let userData = user;
 
 	$: userData = user;
@@ -22,7 +21,7 @@
 	let query = '';
 </script>
 
-<div class="flex min-w-full justify-cente items-center z-[99]">
+<div class="flex min-w-full justify-center items-center z-[99]">
 	<div class="container flex justify-between items-center py-8">
 		<a href="/" class="h3 font-bold font-jakarta text-3xl md:text-4xl">{TITLE}</a>
 		<div class="w-[0%] sm:w-[30%] xl:w-[40%]">
@@ -60,6 +59,9 @@
 							</a>
 							<a href={`/u/${userData.username}`}>
 								<button class="btn btn-sm">Profile</button>
+							</a>
+							<a href={`/u/${userData.username}/bookmarks`}>
+								<button class="btn btn-sm">Bookmarks</button>
 							</a>
 							<button class="btn btn-sm">Guide</button>
 						</div>

@@ -44,9 +44,7 @@
 			return;
 		}
 
-		console.log(cav, 'cav');
 		base64 = cav.toDataURL('img/png');
-		console.log(base64, 'base64');
 
 		setTimeout(() => {
 			imageRef.src = base64;
@@ -54,7 +52,6 @@
 
 		const blob = base64ToBlob(base64, 'image/png');
 		image = new File([blob], 'thumbnail.png', { type: 'image/png' });
-		console.log(image, 'file');
 	};
 
 	function onChangeHandler(e: Event): void {
@@ -93,8 +90,6 @@
 		form.append('thumbnail', thumbnailUrl);
 		form.append('tags', JSON.stringify(tagList));
 
-		console.log(form, 'form');
-
 		try {
 			const response = await fetch('/api/post', {
 				method: 'POST',
@@ -114,7 +109,6 @@
 			alert(
 				'Error While Uploading Post, your model might be too big or server error, our team is working on it'
 			);
-			console.log(e);
 			isLoading = false;
 		}
 
@@ -142,8 +136,6 @@
 
 	function selectTag(e : any){
 		const selectedTag = e.target.value;
-
-		console.log(tags, 'selectedTag');
 
 		//check if already exist
 		// if(tagList.includes(selectedTag)) return;

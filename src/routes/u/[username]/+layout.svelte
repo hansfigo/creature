@@ -34,7 +34,6 @@
 				const data = await res.json();
 			} else {
 				alert('Error uploading image');
-				console.log('error');
 			}
 		}
 	};
