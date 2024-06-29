@@ -1,4 +1,4 @@
-import { and, asc, count, desc, eq, inArray, like, or, sql } from 'drizzle-orm';
+import { and, asc, count, desc, eq, ilike, inArray, like, or, sql } from 'drizzle-orm';
 import { db } from '../db/db';
 import { comments, likes, posts, postTags, tags, user } from '../db/schema';
 import { getFollowersCount, isFollowing } from '../followers/useFollowers';
@@ -81,7 +81,7 @@ const postInit = () => {
 			.where(
 				and(
 					eq(posts.is_published, true),
-					query ? like(posts.title, `%${query}%`) : undefined,
+					query ? ilike(posts.title, `%${query}%`) : undefined,
 					tags.length > 0 ? inArray(postTags.tagId, tags) : undefined
 				)
 			)
