@@ -102,7 +102,7 @@
 			</div>
 			<div class="mt-4">
 				<div class="flex w-full items-center justify-between">
-					<h1 class=" font-black">{posts.title}</h1>
+					<h1 class="text-3xl font-black">{posts.title}</h1>
 					<div class="flex gap-4">
 						<form
 							action="?/like"
