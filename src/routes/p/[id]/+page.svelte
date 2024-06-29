@@ -251,7 +251,9 @@
 					<p class="text-lg font-bold mb-3">Tags</p>
 					<div class="flex flex-wrap gap-1">
 						{#each tags as tag}
-							<span class="bg-blue-primary text-white px-2 py-1 rounded-full">{tag.tag}</span>
+							<a href={`/search?tags=${tag.tag}`}>
+								<button class=" btn bg-blue-primary text-white px-2 py-1 rounded-full">{tag.tag}</button>
+							</a>
 						{/each}
 					</div>
 				</div>

@@ -7,10 +7,20 @@
 </script>
 
 <Container>
-	<h1 class="text-2xl font-light">{`Search for : `} <span class="font-black">{data.query}</span></h1>
+	{#if data.query}
+		<h1 class="text-2xl font-light">
+			{`Search for : `} <span class="font-black">{data.query}</span>
+		</h1>
+	{/if}
+
+	{#if data.tags}
+		<h1 class="text-2xl font-light">
+			{`Search for Tag : `} <span class="font-black">{data.tags}</span>
+		</h1>
+	{/if}
 
 	{#if data.posts && data.posts.length === 0}
-		<p class="mt-10">No posts found, try with another key words </p>
+		<p class="mt-10">No posts found, try with another key words</p>
 	{:else}
 		<div class="flex flex-wrap mt-10">
 			{#if data.posts}
