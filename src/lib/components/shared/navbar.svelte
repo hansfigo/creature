@@ -40,7 +40,7 @@
 					<div class="input-group-shim bg-transparent">
 						<Icon icon="ic:outline-search" />
 					</div>
-					<input type="search" placeholder="Search..." />
+					<input type="search" bind:value={query} placeholder="Search..." />
 				</div>
 			</form>
 		</div>
