@@ -8,5 +8,5 @@
 </script>
 
 <div>
-	<PostForm {tags} />
+	<PostForm {tags} id={data.id} post={data.post} />
 </div>

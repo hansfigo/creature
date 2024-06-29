@@ -4,9 +4,7 @@ import { posts, postTags, user } from '$lib/server/db/schema';
 import { orderEnum, usePosts } from '$lib/server/posts/usePosts';
 import type { RequestHandler } from '@sveltejs/kit';
 import { json } from '@sveltejs/kit';
-import { create } from 'domain';
 import { sql } from 'drizzle-orm';
-import { get } from 'http';
 import { generateIdFromEntropySize } from 'lucia';
 
 const { getPosts } = usePosts;
@@ -97,6 +95,9 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
 	return json({ success: true, message: 'Post uploaded' });
 };
+
+
+			
 
 export const DELETE: RequestHandler = async ({ params, locals }) => {
 	if (locals.session === undefined) {

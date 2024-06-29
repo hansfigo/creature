@@ -1,30 +1,42 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
-	import { popup, type PopupSettings } from '@skeletonlabs/skeleton';
+	import { popup } from '@skeletonlabs/skeleton';
 
 	export let post;
 	export let showOptions = false;
+	export let index = 0;
 
-	const popupClick: PopupSettings = {
+	let popupPostCard  : any= {
 		event: 'click',
-		target: 'popupClick',
 		placement: 'bottom'
 	};
 
-	const handleDelete = () => {
-	};
+	const handleDelete = () => {};
 </script>
 
-<div class="card p-4 variant-filled-surface z-[99]" data-popup="popupClick">
-	<button on:click={handleDelete} class="text-red-500 btn">Delete Post</button>
+<div class="card p-4 variant-filled-surface z-[99]" data-popup={'popupPostCard-' + post.id}>
+	<button on:click={handleDelete} class="btn">
+		<span>Archive</span>
+	</button>
+	<a href={`/dashboard/edit/${post.id}`}>
+		<button on:click={handleDelete} class="btn">
+			<span>Edit</span>
+			<Icon icon="ic:sharp-edit"></Icon>
+		</button>
+	</a>
 	<div class="arrow variant-filled-surface" />
 </div>
-<div class="relative rounded-xl md:rounded-3xl h-[14rem] w-[11.5rem] md:w-[20rem] md:h-[20rem] border-[1px] border-slate-800 overflow-hidden">
+<div
+	class="relative rounded-xl md:rounded-3xl h-[14rem] w-[11.5rem] md:w-[20rem] md:h-[20rem] border-[1px] border-slate-800 overflow-hidden"
+>
 	<a href={`/p/${post.id}`}>
 		<img src={post.thumbnail} class="min-w-full min-h-full object-cover z-0" alt={post.title} />
 	</a>
 	{#if showOptions}
-		<button use:popup={popupClick} class="absolute top-4 right-5 text-2xl z-20">
+		<button
+			use:popup={{ ...popupPostCard, target: `popupPostCard-${post.id}` }}
+			class="absolute top-4 right-5 text-2xl z-20"
+		>
 			<Icon icon="ic:sharp-settings"></Icon>
 		</button>
 	{/if}

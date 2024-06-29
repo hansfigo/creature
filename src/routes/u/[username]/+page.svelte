@@ -86,7 +86,9 @@
 <Container>
 	<div class="flex flex-col w-full gap-4 min-h-[20rem]">
 		<section class="flex flex-col md:flex-row gap-4">
-			<div class="w-[30%] 3xl:w-[20%] px-8 py-10 bg-blue-primary rounded-3xl flex flex-col items-center">
+			<div
+				class="w-[30%] 3xl:w-[20%] px-8 py-10 bg-blue-primary rounded-3xl flex flex-col items-center"
+			>
 				<div class="w-28 h-28 bg-slate-700 rounded-full mb-4 relative">
 					<img src={$imageUrl} alt="" class="h-full w-full rounded-full object-cover" />
 					{#if locals && locals.user && user.username === locals.user.username}
@@ -107,11 +109,11 @@
 				</div>
 				<p class="font-bold text-2xl">
 					{#if user?.firstName || user?.lastName}
-					  {user?.firstName} {user?.lastName}
+						{user?.firstName} {user?.lastName}
 					{:else}
-					  {user?.username}
+						{user?.username}
 					{/if}
-				  </p>
+				</p>
 				<div class="flex flex-col gap-1 justify-center items-center">
 					<p class="sub-info">{user?.headline ? user.headline : 'No Headline Provided'}</p>
 					<p class="sub-info">{user?.company ? user.company : 'No Company Provided'}</p>
@@ -177,15 +179,16 @@
 						</div>
 					</div>
 				</div>
-
-				
 			</div>
 			<div class="flex-1">
-				<p class="font-bold text-3xl mb-4"> Posts</p>
+				<p class="font-bold text-3xl mb-4">Posts</p>
 				{#if posts && posts.length > 0}
 					<div class="flex gap-4 flex-wrap">
 						{#each posts as post}
-							<Postcard {post} />
+							<Postcard
+								{post}
+								showOptions={locals?.user && locals.user.username === user.username ? true : undefined}
+								/>
 						{/each}
 					</div>
 				{/if}
