@@ -38,7 +38,7 @@
 </svelte:head>
 
 <div
-	class="relative bg-main plus-jakarta-sans min-h-screen h-full flex flex-col overflow-y-hidden overflow-x-hidden px-14 4xl:px-0 justify-between"
+	class="relative bg-main plus-jakarta-sans min-h-screen h-full flex flex-col overflow-y-hidden overflow-x-hidden px-4 4xl:px-0 justify-between"
 >
 	<div class="ball-gradient"></div>
 	<div class="ball-gradient-2"></div>

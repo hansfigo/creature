@@ -18,6 +18,12 @@
 		placement: 'bottom'
 	};
 
+	const notificationPopupClick: PopupSettings = {
+		event: 'click',
+		target: 'notificationPopupClick',
+		placement: 'bottom'
+	};
+
 	let query = '';
 </script>
 
@@ -37,17 +43,21 @@
 		{#if userData}
 			<div class=" gap-4 justify-center items-center hidden md:flex">
 				<!-- <p class="font-jakarta">{`Welcome, ${userData.username}`}</p> -->
-				 <button class="btn variant-outline-secondary relative">
+				<button use:popup={notificationPopupClick} class="btn variant-outline-secondary relative">
 					<Icon icon="ic:outline-notifications" />
-					<div class="h-2 w-2 rounded-full absolute bg-red-600">
-					</div>
-				 </button>
+					{#if userDetail.hasUnreadNotification}
+						<div class="h-2 w-2 rounded-full absolute bg-red-600"></div>
+					{/if}
+				</button>
+				<div class="card p-4 min-w-[16rem] variant-filled" data-popup="notificationPopupClick">
+					<p>Notification</p>
+				</div>
 				<button use:popup={popupClick} class="btn variant-outline-secondary">
 					<Icon icon="ic:outline-person" />
 				</button>
 				<div class="card p-4 min-w-[16rem] variant-filled" data-popup="popupClick">
 					{#if userData}
-						<div class="flex items-center flex-col w-full justify-center ">
+						<div class="flex items-center flex-col w-full justify-center">
 							<img src={userDetail.profilePicture} class="w-20 h-20 rounded-full mb-3" alt="" />
 							<p class="font-bold">{userData.username}</p>
 							<p>{userDetail.email}</p>
@@ -87,11 +97,6 @@
 					{/if}
 					<div class="arrow variant-filled" />
 				</div>
-
-				<!-- <a href="/dashboard/upload" class="btn variant-outline-secondary text-sm">Create Post + </a> -->
-				<!-- <form method="post" use:enhance> -->
-
-				<!-- </form> -->
 			</div>
 		{:else}
 			<div class=" gap-2 hidden md:flex">

@@ -19,7 +19,7 @@
 	<button on:click={handleDelete} class="text-red-500 btn">Delete Post</button>
 	<div class="arrow variant-filled-surface" />
 </div>
-<div class="relative rounded-xl md:rounded-3xl h-[14rem] w-[10rem] md:w-[20rem] md:h-[20rem] border-[1px] border-slate-800 overflow-hidden">
+<div class="relative rounded-xl md:rounded-3xl h-[14rem] w-[11.5rem] md:w-[20rem] md:h-[20rem] border-[1px] border-slate-800 overflow-hidden">
 	<a href={`/p/${post.id}`}>
 		<img src={post.thumbnail} class="min-w-full min-h-full object-cover z-0" alt={post.title} />
 	</a>

@@ -7,6 +7,7 @@ import { generateIdFromEntropySize } from 'lucia';
 import { eq } from 'drizzle-orm';
 import { followUser, unfollowUser } from '$lib/server/followers/useFollowers';
 import { addBookmark } from '$lib/server/bookmarks/useBookmarks';
+import { createNotification } from '$lib/server/notification/useNotification';
 
 const { getDetailPost } = usePosts;
 
@@ -43,8 +44,7 @@ export const actions = {
 				createdAt: new Date(),
 				updatedAt: new Date()
 			});
-		} catch (error) {
-		}
+		} catch (error) {}
 	},
 	like: async (event) => {
 		if (!event.locals.user || !event.locals.user.id) {
@@ -68,8 +68,7 @@ export const actions = {
 				createdAt: new Date(),
 				updatedAt: new Date()
 			});
-		} catch (error) {
-		}
+		} catch (error) {}
 	},
 	follow: async (event) => {
 		if (!event.locals.user || !event.locals.user.id) {
@@ -80,7 +79,6 @@ export const actions = {
 		const isFollowed = formData.get('followed') === 'true'; // Check follow status as boolean
 		const userId = formData.get('userId');
 
-
 		if (!userId) {
 			console.error('User ID is missing');
 			return;
@@ -88,22 +86,26 @@ export const actions = {
 
 		try {
 			if (isFollowed) {
-				// If already followed, then unfollow
 				await unfollowUser(event.locals.user.id, userId.toString());
 			} else {
-				// If not followed, then follow
 				await followUser(event.locals.user.id, userId.toString());
+
+				// Create notification
+				await createNotification({
+					userId: userId.toString(),
+					username: event.locals.user.username,
+					type: 'follow'
+				});
 			}
-		} catch (error) {
-		}
+		} catch (error) {}
 	},
-	bookmark : async (event) => {
+	bookmark: async (event) => {
 		if (!event.locals.user || !event.locals.user.id) {
 			throw redirect(301, '/signin');
 		}
 
 		const { id } = event.params;
-		
+
 		if (!id) {
 			console.error('Post ID is missing');
 			return;
@@ -125,7 +127,7 @@ export const actions = {
 		try {
 			await addBookmark(event.locals.user.username, id);
 		} catch (error) {
-			console.error("ERRR", error);
+			console.error('ERRR', error);
 		}
 	}
 } satisfies Actions;

@@ -1,6 +1,7 @@
 import { eq } from 'drizzle-orm';
 import { db } from '../db/db';
 import { bookmarks, posts, user } from '../db/schema';
+import { hasUnreadNotifications } from '../notification/useNotification';
 
 export interface userSchema {
 	username?: string;
@@ -33,12 +34,20 @@ const initUser = () => {
 
 		const bookmarksList = await db.select().from(bookmarks).where(eq(bookmarks.id, userData[0].id));
 
+		// check if user has unread notifications
+		const hasUnreadNotif = await hasUnreadNotifications(userData[0].id);
+
 		let data = {
-			user: userData[0],
+			user: userData[0] as any,
 			posts: PostList as any,
-			bookmarks : bookmarksList
+			bookmarks: bookmarksList
 		};
 
+		data.user = {
+			...data.user,
+			hasUnreadNotification: hasUnreadNotif
+		};
+		
 		data.posts.forEach((post: any) => {
 			post.user = userData[0];
 		});

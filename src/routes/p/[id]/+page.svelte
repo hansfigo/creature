@@ -75,7 +75,7 @@
 		<div class="h-full relative">
 			<div
 				bind:this={canvas}
-				class="relative w-full bg-main bg-slate-800 h-[55%] border-2 border-slate-800 rounded-3xl"
+				class="relative w-full bg-main bg-slate-800 h-[34%] md:h-[55%] border-2 border-slate-800 rounded-3xl"
 			>
 				<div class="absolute z-40 bottom-0 right-[50%]">
 					{#if $animationStore}
@@ -119,7 +119,9 @@
 								disabled={likeLoading}
 								class={`btn ${posts.isLiked ? 'variant-filled-secondary' : 'variant-outline-secondary'} `}
 							>
-								{posts.isLiked ? 'Liked' : 'Like'}
+								<span class="hidden md:block">
+									{posts.isLiked ? 'Liked' : 'Like'}
+								</span>
 								{#if likeLoading}
 									<ProgressRadial class="ml-2 w-4" />
 								{:else}
@@ -139,13 +141,20 @@
 							action="?/bookmark"
 							method="post"
 						>
-							<button class={`btn text-2xl ${posts.isBookmarked ? 'variant-filled-secondary' : 'variant-outline-secondary'} `}>
-								<Icon icon="ic:baseline-bookmark" />
+							<button
+								class={`btn  ${posts.isBookmarked ? 'variant-filled-secondary' : 'variant-outline-secondary'}`}
+							>
+								<Icon class="md:text-2xl" icon="ic:baseline-bookmark" />
 							</button>
-							<input class="input hidden" type="text" name="bookmarked" value={posts.isBookmarked} />
+							<input
+								class="input hidden"
+								type="text"
+								name="bookmarked"
+								value={posts.isBookmarked}
+							/>
 						</form>
-						<button class="btn variant-outline-secondary"
-							>Share
+						<button class="btn variant-outline-secondary ">
+							<span class="hidden md:block"> Share </span>
 							<Icon class="ml-2" icon="ic:baseline-share" />
 						</button>
 					</div>
@@ -154,7 +163,7 @@
 				<div class="mt-8">
 					<div class="flex gap-3 h-full items-center">
 						<div
-							class="h-20 w-20 rounded-full flex flex-col overflow-hidden items-center justify-center"
+							class="md:h-20 md:w-20 w-14 h-14 rounded-full flex flex-col overflow-hidden items-center justify-center"
 						>
 							{#if !posts.user.profilePicture}
 								<div class="w-24 h-24 rounded-full bg-slate-900"></div>
@@ -170,7 +179,7 @@
 				</div>
 
 				{#if user?.id != posts.user.id}
-					<div class="mt-6 flex gap-4">
+					<div class="mt-6 mb-2 flex gap-4">
 						<form
 							action="?/follow"
 							method="post"
@@ -182,7 +191,7 @@
 								};
 							}}
 						>
-							<button disabled={isFollowLoading} type="submit" class="btn variant-filled-secondary">
+							<button disabled={isFollowLoading} type="submit" class="btn btn-sm md:btn-base variant-filled-secondary">
 								<span>{isFollowing ? 'Followed ' : 'Follow +'}</span>
 								{#if isFollowLoading}
 									<ProgressRadial class="ml-2 w-4" />
@@ -197,7 +206,7 @@
 							/>
 							<input class="input hidden" type="text" name="userId" id="userId" value={userId} />
 						</form>
-						<button class="btn variant-filled-secondary"
+						<button class="btn btn-sm md:btn-base variant-filled-secondary"
 							>Contact
 							<Icon icon={ICON['ARROW-OUTWARD']} />
 						</button>
