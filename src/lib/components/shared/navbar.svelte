@@ -102,7 +102,6 @@
 							<a href={`/u/${userData.username}/bookmarks`}>
 								<button class="btn btn-sm">Bookmarks</button>
 							</a>
-							<button class="btn btn-sm">Guide</button>
 						</div>
 					{:else}
 						<a href="/signin">
