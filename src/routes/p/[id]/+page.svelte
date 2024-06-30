@@ -16,6 +16,7 @@
 	let posts = data.posts;
 	let isFollowLoading = false;
 	let isCommentLoading = false;
+	let isBookmarkLoading = false;
 
 	const dataUser = writable(data.posts.user);
 
@@ -135,19 +136,25 @@
 						</form>
 						<form
 							use:enhance={() => {
+								isBookmarkLoading = true;
 								return async ({ update }) => {
 									await update({
 										reset: false
 									});
+									isBookmarkLoading = false;
 								};
 							}}
 							action="?/bookmark"
 							method="post"
 						>
 							<button
+								disabled={isBookmarkLoading}
 								class={`btn  ${posts.isBookmarked ? 'variant-filled-secondary' : 'variant-outline-secondary'}`}
 							>
 								<Icon class="md:text-2xl" icon="ic:baseline-bookmark" />
+								{#if isBookmarkLoading}
+									<ProgressRadial class="ml-2 w-4" />
+								{/if}
 							</button>
 							<input
 								class="input hidden"
@@ -252,7 +259,9 @@
 					<div class="flex flex-wrap gap-1">
 						{#each tags as tag}
 							<a href={`/search?tags=${tag.tag}`}>
-								<button class=" btn bg-blue-primary text-white px-2 py-1 rounded-full">{tag.tag}</button>
+								<button class=" btn bg-blue-primary text-white px-2 py-1 rounded-full"
+									>{tag.tag}</button
+								>
 							</a>
 						{/each}
 					</div>
