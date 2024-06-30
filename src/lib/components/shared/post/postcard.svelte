@@ -53,13 +53,11 @@
 		<div class="flex gap-2 mt-3">
 			<div>
 				<div class="flex items-center  md:text-sm text-xs">
-					<Icon icon="ic:sharp-favorite"></Icon>
-					<span>{post.totalLikes}</span>
+					<span>👍 {post.likes}</span>
 				</div>
 			</div>
 			<div class="flex items-center md:text-sm text-xs">
-				<Icon icon="ic:sharp-remove-red-eye"></Icon>
-				<span>{post.views}</span>
+				<span> 👀 {post.views}</span>
 			</div>
 		</div>
 	</div>

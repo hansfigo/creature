@@ -10,9 +10,7 @@
 				<div class="flex justify-between items-center w-full">
 					<a href="/" class="h3 font-bold font-jakarta text-3xl text-center w-full md:text-left md:text-4xl">{TITLE}</a>
 					<div class="gap-4 font-lg hidden md:gap-4 md:flex">
-						<a class="w-full" href="/">Home</a>
-						<a class="w-full" href="/about-us">About Us</a>
-						<a class="w-full" href="/contact-us">Contact Us</a>
+						
 					</div>
 				</div>
 				<div class="w-full h-full flex flex-col gap-6 justify-end items-center">

@@ -67,7 +67,7 @@ const postInit = () => {
 				description: posts.description,
 				thumbnail: posts.thumbnail,
 				createdAt: posts.createdAt,
-				views : posts.views,
+				views: posts.views,
 				user: {
 					id: user.id,
 					username: user.username,
@@ -75,10 +75,10 @@ const postInit = () => {
 					lastName: user.lastName,
 					profilePicture: user.profilePicture
 				},
-				totalLikes: sql`COUNT(${likes.id})`
+				likes: sql`COUNT(${likes.id})`
 			})
 			.from(posts)
-			.innerJoin(likes, eq(likes.postId, posts.id))
+			.leftJoin(likes, eq(likes.postId, posts.id))
 			.leftJoin(postTags, eq(postTags.postId, posts.id))
 			.innerJoin(user, eq(user.id, posts.userId))
 			.groupBy(
@@ -97,7 +97,9 @@ const postInit = () => {
 			.where(
 				and(
 					eq(posts.is_published, true),
-					query ? sql<string>`LOWER(${posts.title}) LIKE ${'%' + query.toLowerCase() + '%'}` : undefined,
+					query
+						? sql<string>`LOWER(${posts.title}) LIKE ${'%' + query.toLowerCase() + '%'}`
+						: undefined,
 					tags.length > 0 ? inArray(postTags.tagId, tags) : undefined
 				)
 			)
@@ -201,9 +203,46 @@ const postInit = () => {
 		return postClone;
 	};
 
+	const getTopRatedPosts = async () => {
+		const PostList = await db
+			.select({
+				id: posts.id,
+				title: posts.title,
+				description: posts.description,
+				thumbnail: posts.thumbnail,
+				createdAt: posts.createdAt,
+				views: posts.views,
+				likes: sql`COUNT(${likes.id})`,
+				rating: sql`(${posts.views} * 0.6 + COUNT(${likes.id}) * 0.4) AS rating`,
+				user : {
+					id: user.id,
+					username: user.username,
+					firstName: user.firstName,
+					lastName: user.lastName,
+					profilePicture: user.profilePicture
+				}
+			})
+			.from(posts)
+			.innerJoin(user, eq(user.id, posts.userId))
+			.leftJoin(likes, eq(likes.postId, posts.id))
+			.groupBy(
+				posts.id,
+				posts.title,
+				posts.description,
+				posts.thumbnail,
+				posts.createdAt,
+				posts.views
+			)
+			.orderBy(sql`rating DESC`) // Urutkan berdasarkan rating
+			.limit(6);
+
+		return PostList;
+	};
+
 	return {
 		getPosts,
-		getDetailPost
+		getDetailPost,
+		getTopRatedPosts
 	};
 };
 

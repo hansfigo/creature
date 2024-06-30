@@ -7,6 +7,8 @@
 	import { getModalStore, type ModalComponent, type ModalSettings } from '@skeletonlabs/skeleton';
 	import Icon from '@iconify/svelte';
 	import { ICON, LOGO } from '$lib/consants';
+	import { useFirebase } from '$lib/firebase';
+	import { isLoadingStore } from '$lib/state';
 
 	export let data: PageData;
 	const modalStore = getModalStore();
@@ -60,8 +62,19 @@
 
 			isLoading = true;
 
+			isLoadingStore.set(true);
+			
+			const profilePicture = await useFirebase.uploadFile({
+				file: file,
+				path: '/users/profilePictures/'
+			});
+
+			if (!profilePicture) {
+				alert('Error uploading image');
+			}
+
 			const formData = new FormData();
-			formData.append('profilePicture', file);
+			formData.append('profilePicture', profilePicture);
 
 			const res = await fetch(`/api/user/${user?.username}`, {
 				method: 'PUT',
@@ -73,6 +86,8 @@
 			} else {
 				alert('Error uploading image');
 			}
+
+			isLoadingStore.set(false);
 
 			isLoading = false;
 		}
@@ -187,8 +202,10 @@
 						{#each posts as post}
 							<Postcard
 								{post}
-								showOptions={locals?.user && locals.user.username === user.username ? true : undefined}
-								/>
+								showOptions={locals?.user && locals.user.username === user.username
+									? true
+									: undefined}
+							/>
 						{/each}
 					</div>
 				{/if}

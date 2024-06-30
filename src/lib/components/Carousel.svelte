@@ -45,7 +45,7 @@
                     <p class="text-xl font-bold">{movie.title}</p>
                     <p>@{movie.user.username}</p>
                     <div class="flex items-center gap-2 mt-4">
-                        <span>👍 {movie.totalLikes}</span>
+                        <span>👍 {movie.likes}</span>
                         <span>👀 {movie.views}</span>
                     </div>
                 </div>

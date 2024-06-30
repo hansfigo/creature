@@ -30,17 +30,25 @@ export const PUT: RequestHandler = async ({ request, locals, params }) => {
 	let data = {};
 
 	if (formData.profilePicture) {
-		try {
-			const profilePicture = await useFirebase.uploadFile({
-				file: formData.profilePicture as File,
-				path: '/users/profilePictures/'
-			});
+		// check if the file is an image or string
+		if (typeof formData.profilePicture === 'string') {
 			data = {
 				...data,
-				profilePicture
+				profilePicture: formData.profilePicture
 			};
-		} catch (error) {
-			return json({ error: 'Error uploading file' });
+		} else {
+			try {
+				const profilePicture = await useFirebase.uploadFile({
+					file: formData.profilePicture as File,
+					path: '/users/profilePictures/'
+				});
+				data = {
+					...data,
+					profilePicture
+				};
+			} catch (error) {
+				return json({ error: 'Error uploading file' });
+			}
 		}
 	}
 

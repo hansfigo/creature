@@ -14,6 +14,7 @@
 
 	import { storePopup } from '@skeletonlabs/skeleton';
 	import { get } from 'svelte/store';
+	import { isLoadingStore } from '$lib/state';
 	storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
 
 	export let data;
@@ -47,7 +48,7 @@
 		<Navbar {user} {url} userDetail={data.userDetail} />
 	{/if}
 
-	{#if $navigating}
+	{#if $navigating || $isLoadingStore}
 		<div class="fixed w-full left-0 top-0 z-[100]">
 			<ProgressBar />
 		</div>

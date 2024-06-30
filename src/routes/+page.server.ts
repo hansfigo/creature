@@ -6,14 +6,16 @@ import { usePosts } from '$lib/server/posts/usePosts';
 import { posts } from '$lib/server/db/schema';
 import { db } from '$lib/server/db/db';
 
-const { getPosts } = usePosts;
+const { getPosts, getTopRatedPosts } = usePosts;
 
 export const load: PageServerLoad = async (event) => {
 	try {
 		const postList = await getPosts();
 
 		const x = await db.select().from(posts);
-		return { postList, x };
+
+		const topRatedPosts = await getTopRatedPosts();
+		return { postList, topRatedPosts };
 	} catch (error) {
 		throw error;
 	}

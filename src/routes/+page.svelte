@@ -11,9 +11,6 @@
 
 	const posts = data.postList;
 
-	console.log('XX', data.x);
-
-	// const models = data.models.map((model: string) => removeGlbExtension(model));
 </script>
 
 <main class="flex justify-center min-h-screen w-full gap-4">
@@ -46,8 +43,8 @@
 						</div>
 					</div>
 				</div>
-				<div class="h-[20rem] md:h-[30rem] w-full overflow-hidden rounded-2xl">
-					<img class="h-full w-full object-cover" src="/advantage-1.png" alt="" />
+				<div class="h-[20rem] md:h-[40rem] w-full overflow-hidden rounded-2xl">
+					<img class="h-full w-full object-contain" src="/hero-img.png" alt="" />
 				</div>
 			</div>
 
@@ -90,7 +87,7 @@
 						<Icon icon={ICON['ARROW-OUTWARD']} />
 					</a>
 				</div>
-				<Carousel {posts} />
+				<Carousel posts={data.topRatedPosts} />
 			</section>
 
 			<section class="mt-16">

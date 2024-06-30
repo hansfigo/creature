@@ -47,6 +47,9 @@
 		{#if userData}
 			<div class=" gap-4 justify-center items-center hidden md:flex">
 				<!-- <p class="font-jakarta">{`Welcome, ${userData.username}`}</p> -->
+				<a href="/guide">
+					<button class="btn variant-outline-secondary">Guide</button>
+				</a>
 				<button use:popup={notificationPopupClick} class="btn variant-outline-secondary relative">
 					<Icon icon="ic:outline-notifications" />
 					{#if userDetail.hasUnreadNotification}
@@ -126,6 +129,9 @@
 			</div>
 		{:else}
 			<div class=" gap-2 hidden md:flex">
+				<a href="/guide">
+					<button class="btn variant-outline-secondary">Guide</button>
+				</a>
 				<a href="/signin">
 					<button class="btn variant-outline-secondary"> Login </button>
 				</a>

@@ -3,6 +3,7 @@
 	import type { LayoutData } from './$types';
 	import { writable } from 'svelte/store';
 	import { useFirebase } from '$lib/firebase';
+	import { isLoadingStore } from '$lib/state';
 
 	export let data: LayoutData;
 
@@ -16,6 +17,8 @@
 
 		if (file) {
 			imageUrl.set(URL.createObjectURL(file));
+
+			isLoadingStore.set(true);
 
 			const bannerPicture = await useFirebase.uploadFile({
 				file: file,
@@ -35,6 +38,8 @@
 			} else {
 				alert('Error uploading image');
 			}
+
+			isLoadingStore.set(false);
 		}
 	};
 </script>
