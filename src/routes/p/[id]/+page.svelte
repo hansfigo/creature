@@ -68,6 +68,8 @@
 
 	//Tags list
 	const tags = posts.tags;
+
+	let colorValue: any = '#0e0231';
 </script>
 
 <Container>
@@ -75,7 +77,8 @@
 		<div class="h-full relative">
 			<div
 				bind:this={canvas}
-				class="relative w-full bg-main bg-slate-800 h-[34%] md:h-[55%] border-2 border-slate-800 rounded-3xl"
+				style={`background-color: ${colorValue} !important;`}
+				class={`relative w-full bg-main bg-slate-800 h-[34%] md:h-[55%] border-2 border-slate-800 rounded-3xl`}
 			>
 				<div class="absolute z-40 bottom-0 right-[50%]">
 					{#if $animationStore}
@@ -96,10 +99,18 @@
 					{/if}
 				</button>
 
+				<div
+					class="flex items-center gap-2 absolute top-4 right-5 rounded-lg"
+				>
+					<label for="bg" class="text-2xl btn">🎨</label>
+					<input name="bg" id="bg" class="input opacity-0 w-0 max-w-0" type="color" bind:value={colorValue} />
+				</div>
+
 				{#if posts.modelPath}
 					<App modelFile={posts.modelPath} />
 				{/if}
 			</div>
+
 			<div class="mt-4">
 				<div class="flex w-full items-center justify-between">
 					<h1 class="text-3xl font-black">{posts.title}</h1>
