@@ -214,7 +214,7 @@ const postInit = () => {
 				views: posts.views,
 				likes: sql`COUNT(${likes.id})`,
 				rating: sql`(${posts.views} * 0.6 + COUNT(${likes.id}) * 0.4) AS rating`,
-				user : {
+				user: {
 					id: user.id,
 					username: user.username,
 					firstName: user.firstName,
@@ -231,13 +231,19 @@ const postInit = () => {
 				posts.description,
 				posts.thumbnail,
 				posts.createdAt,
-				posts.views
+				posts.views,
+				user.id,
+				user.username,
+				user.firstName,
+				user.lastName,
+				user.profilePicture
 			)
 			.orderBy(sql`rating DESC`) // Urutkan berdasarkan rating
 			.limit(6);
-
+	
 		return PostList;
 	};
+	
 
 	return {
 		getPosts,

@@ -12,8 +12,6 @@ export const load: PageServerLoad = async (event) => {
 	try {
 		const postList = await getPosts();
 
-		const x = await db.select().from(posts);
-
 		const topRatedPosts = await getTopRatedPosts();
 		return { postList, topRatedPosts };
 	} catch (error) {
