@@ -61,27 +61,43 @@ const postInit = () => {
 	}: GetPostsParams = {}) => {
 		let orderBy = order === orderEnum.ASC ? asc(posts.createdAt) : desc(posts.createdAt);
 		const postList = db
-			.select({
+			.selectDistinct({
 				id: posts.id,
 				title: posts.title,
 				description: posts.description,
 				thumbnail: posts.thumbnail,
 				createdAt: posts.createdAt,
+				views : posts.views,
 				user: {
 					id: user.id,
 					username: user.username,
 					firstName: user.firstName,
 					lastName: user.lastName,
 					profilePicture: user.profilePicture
-				}
+				},
+				totalLikes: sql`COUNT(${likes.id})`
 			})
 			.from(posts)
+			.innerJoin(likes, eq(likes.postId, posts.id))
 			.leftJoin(postTags, eq(postTags.postId, posts.id))
 			.innerJoin(user, eq(user.id, posts.userId))
+			.groupBy(
+				posts.id,
+				posts.title,
+				posts.description,
+				posts.thumbnail,
+				posts.createdAt,
+				posts.views,
+				user.id,
+				user.username,
+				user.firstName,
+				user.lastName,
+				user.profilePicture
+			)
 			.where(
 				and(
 					eq(posts.is_published, true),
-					query ? ilike(posts.title, `%${query}%`) : undefined,
+					query ? sql<string>`LOWER(${posts.title}) LIKE ${'%' + query.toLowerCase() + '%'}` : undefined,
 					tags.length > 0 ? inArray(postTags.tagId, tags) : undefined
 				)
 			)

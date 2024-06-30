@@ -3,13 +3,17 @@ import type { PageServerLoad } from './$types';
 import { lucia } from '$lib/server/auth';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import { usePosts } from '$lib/server/posts/usePosts';
+import { posts } from '$lib/server/db/schema';
+import { db } from '$lib/server/db/db';
 
 const { getPosts } = usePosts;
 
 export const load: PageServerLoad = async (event) => {
 	try {
 		const postList = await getPosts();
-		return { postList };
+
+		const x = await db.select().from(posts);
+		return { postList, x };
 	} catch (error) {
 		throw error;
 	}

@@ -9,6 +9,8 @@
 
 	const posts = data.postList;
 
+	console.log("XX", data.x);
+
 	// const models = data.models.map((model: string) => removeGlbExtension(model));
 </script>
 
@@ -21,7 +23,7 @@
 						The medium for 3D interest and the creator
 					</h1>
 					<br />
-					<div class="flex  w-full justify-end gap-4 flex-row md:pr-8">
+					<div class="flex  w-full md:justify-end gap-4 flex-row md:pr-8">
 						<div>
 							<a href="/dashboard/upload">
 								<button class="btn variant-filled-secondary text-lg"
@@ -40,10 +42,10 @@
 						</div>
 					</div>
 				</div>
-				<div class="h-[20rem] md:h-[30rem] w-full bg-slate-800 overflow-hidden rounded-2xl">
+				<div class="h-[20rem] md:h-[30rem] w-full  overflow-hidden rounded-2xl">
 					<img
 						class="h-full w-full object-cover"
-						src="https://lh6.googleusercontent.com/proxy/qHZjYOyDk62_G4zO4GArH5BvfdjLSJ5Ov96_912gs2tenHaeRKJDFfVh5hBp8OUX4LbZ_MIkx2a_G9LGq9iSUFJZVTtUZFzVriovkt6-vT59-Na5cd38ktXdRi1G1JBuznxXScvgxr_5O6hF"
+						src="/advantage-1.png"
 						alt=""
 					/>
 				</div>
@@ -81,8 +83,8 @@
 			</section>
 
 			<section class="mt-16">
-				<h1 class="text-lg mb-3  md:text-3xl font-bold">Latest Upload</h1>
-				<div class="grid grid-cols-2 gap-8 md:grid-cols-3 xl:grid-cols-4">
+				<h1 class="text-lg mb-6  md:text-3xl font-bold">Latest Upload</h1>
+				<div class="grid grid-cols-1 gap-8 md:grid-cols-3 xl:grid-cols-4">
 					{#if posts.length > 0}
 						{#each posts as post}
 							<Postcard {post} />

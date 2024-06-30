@@ -20,7 +20,7 @@
 
 	let user = data.user;
 
-	$ : user = data.user;
+	$: user = data.user;
 
 	const url = get(page).route.id?.toString();
 
@@ -44,7 +44,7 @@
 	<div class="ball-gradient-2"></div>
 
 	{#if $page.route.id !== '/signin' && $page.route.id !== '/signup'}
-		<Navbar user={user} {url} userDetail={data.userDetail}/>
+		<Navbar {user} {url} userDetail={data.userDetail} />
 	{/if}
 
 	{#if $navigating}
@@ -168,6 +168,39 @@
 		}
 		100% {
 			transform: translateX(-50%) translateY(-10%);
+		}
+	}
+
+	@media (max-width: 768px) {
+		.ball-gradient {
+			left: -8rem;
+			width: 100%;
+			height: 100%;
+			transform: scale(0.8);
+			border-radius: 99rem;
+			background: radial-gradient(
+				circle at center,
+				rgba(var(--color1), 0.75) 0,
+				rgba(var(--color1), 0) 10%
+			) 
+			no-repeat;
+
+			animation: moveVertical 20s ease infinite;
+
+		}
+
+		.ball-gradient-2 {
+			right: -20rem;
+			width: 100%;
+			height: 100%;
+			transform: scale(0.9);
+			border-radius: 99rem;
+			background: radial-gradient(
+				circle at center,
+				rgba(var(--color1), 0.8) 0,
+				rgba(var(--color1), 0) 10%
+			)
+			no-repeat;
 		}
 	}
 </style>

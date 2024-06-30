@@ -22,7 +22,7 @@
 	{#if data.posts && data.posts.length === 0}
 		<p class="mt-10">No posts found, try with another key words</p>
 	{:else}
-		<div class="flex flex-wrap mt-10">
+		<div class="flex flex-wrap mt-10 gap-4">
 			{#if data.posts}
 				{#each data.posts as post}
 					<Postcard {post} />
