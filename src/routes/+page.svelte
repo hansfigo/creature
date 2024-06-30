@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import Carousel from '$lib/components/Carousel.svelte';
 	import Navbar from '$lib/components/shared/navbar.svelte';
 	import Postcard from '$lib/components/shared/post/postcard.svelte';
+	import { ICON } from '$lib/consants.js';
 	import { removeGlbExtension } from '$lib/utils.js';
 	import Icon from '@iconify/svelte';
 
@@ -9,7 +11,7 @@
 
 	const posts = data.postList;
 
-	console.log("XX", data.x);
+	console.log('XX', data.x);
 
 	// const models = data.models.map((model: string) => removeGlbExtension(model));
 </script>
@@ -17,13 +19,15 @@
 <main class="flex justify-center min-h-screen w-full gap-4">
 	<div class="container">
 		<section class="flex flex-col gap-4">
-			<div class="h-screen md:h-full flex flex-col-reverse md:flex-row  gap-8 justify-center md:items-center items-start  md:mb-16">
+			<div
+				class="h-screen md:h-full flex flex-col-reverse md:flex-row gap-8 justify-center md:items-center items-start md:mb-16"
+			>
 				<div class="w-[70%]">
 					<h1 class="text-4xl md:text-[4rem] leading-tight font-black">
 						The medium for 3D interest and the creator
 					</h1>
 					<br />
-					<div class="flex  w-full md:justify-end gap-4 flex-row md:pr-8">
+					<div class="flex w-full md:justify-end gap-4 flex-row md:pr-8">
 						<div>
 							<a href="/dashboard/upload">
 								<button class="btn variant-filled-secondary text-lg"
@@ -42,12 +46,8 @@
 						</div>
 					</div>
 				</div>
-				<div class="h-[20rem] md:h-[30rem] w-full  overflow-hidden rounded-2xl">
-					<img
-						class="h-full w-full object-cover"
-						src="/advantage-1.png"
-						alt=""
-					/>
+				<div class="h-[20rem] md:h-[30rem] w-full overflow-hidden rounded-2xl">
+					<img class="h-full w-full object-cover" src="/advantage-1.png" alt="" />
 				</div>
 			</div>
 
@@ -83,7 +83,24 @@
 			</section>
 
 			<section class="mt-16">
-				<h1 class="text-lg mb-6  md:text-3xl font-bold">Latest Upload</h1>
+				<div class="flex w-full justify-between">
+					<h1 class="text-lg mb-6 md:text-3xl font-bold">Top Rated</h1>
+					<a class="flex items-center gap-2 text-cyan-500" href="/search">
+						<span>Explore All Models</span>
+						<Icon icon={ICON['ARROW-OUTWARD']} />
+					</a>
+				</div>
+				<Carousel {posts} />
+			</section>
+
+			<section class="mt-16">
+				<div class="flex w-full justify-between">
+					<h1 class="text-lg mb-6 md:text-3xl font-bold">Latest Upload</h1>
+					<a class="flex items-center gap-2 text-cyan-500" href="/search">
+						<span>Explore All Models</span>
+						<Icon icon={ICON['ARROW-OUTWARD']} />
+					</a>
+				</div>
 				<div class="grid grid-cols-1 gap-8 md:grid-cols-3 xl:grid-cols-4">
 					{#if posts.length > 0}
 						{#each posts as post}

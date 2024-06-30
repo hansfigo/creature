@@ -7,3 +7,10 @@ export async function getTagDetail(tagsName: string) {
 	const tagsDetail = await db.select().from(tags).where(inArray(tags.name, [tagsName]));
     return tagsDetail[0];
 }
+
+
+// get tag list
+export async function getTagList() {
+    const tagsDetail = await db.select().from(tags);
+    return tagsDetail;
+}

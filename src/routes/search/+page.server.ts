@@ -1,13 +1,21 @@
 import { usePosts } from '$lib/server/posts/usePosts';
-import { getTagDetail } from '$lib/server/tag/useTag';
+import { getTagDetail, getTagList } from '$lib/server/tag/useTag';
 import type { PageServerLoad } from './$types';
 
 export const load = (async ({ url }) => {
 	const query = url.searchParams.get('query');
 	const tags = url.searchParams.get('tags') ?? '';
 
+	// get tag list
+	const tagList = await getTagList();
+
+	if (tagList.length === 0) {
+		return { query, tags, tagList : [] };
+	}
+
 	if (!query && !tags) {
-		return { query };
+		const posts = await usePosts.getPosts();
+		return { posts, query, tagList };
 	}
 
 	let searchParam: any = {};
@@ -23,7 +31,7 @@ export const load = (async ({ url }) => {
 	}
 
 	// search posts
-	const posts = await usePosts.getPosts(searchParam);
+	const posts = await usePosts.getPosts(searchParam ? searchParam : undefined);
 
-	return { query, posts, tags };
+	return { query, posts, tags, tagList };
 }) satisfies PageServerLoad;
