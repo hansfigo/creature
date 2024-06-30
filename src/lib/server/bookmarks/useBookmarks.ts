@@ -1,7 +1,7 @@
 // get bookmarks list for username
 
-import { and, eq } from 'drizzle-orm';
-import { bookmarks, posts, user } from '../db/schema';
+import { and, eq, sql } from 'drizzle-orm';
+import { bookmarks, likes, posts, user } from '../db/schema';
 import { db } from '../db/db';
 import { generateIdFromEntropySize } from 'lucia';
 
@@ -44,15 +44,16 @@ export const getBookmarks = async (username: string) => {
 			updatedAt: bookmarks.updatedAt,
 			title: posts.title,
 			post: {
-				id : posts.id,
+				id: posts.id,
 				userId: posts.userId,
 				createdAt: posts.createdAt,
 				updatedAt: posts.updatedAt,
 				views: posts.views,
-				title : posts.title,
+				title: posts.title,
 				thumbnail: posts.thumbnail,
+				likes: sql`COUNT(${likes.id})` // Menambahkan likes count
 			},
-			user : {
+			user: {
 				username: user.username,
 				email: user.email,
 				createdAt: user.createdAt,
@@ -61,8 +62,28 @@ export const getBookmarks = async (username: string) => {
 		})
 		.from(bookmarks)
 		.innerJoin(posts, eq(bookmarks.postId, posts.id))
+		.leftJoin(likes, eq(likes.postId, posts.id)) // Menggunakan left join untuk likes
 		.innerJoin(user, eq(posts.userId, user.id))
-		.where(eq(bookmarks.userId, userData[0].id));
+		.where(eq(bookmarks.userId, userData[0].id))
+		.groupBy(
+			bookmarks.id,
+			bookmarks.userId,
+			bookmarks.postId,
+			bookmarks.createdAt,
+			bookmarks.updatedAt,
+			posts.id,
+			posts.userId,
+			posts.createdAt,
+			posts.updatedAt,
+			posts.views,
+			posts.title,
+			posts.thumbnail,
+			user.username,
+			user.email,
+			user.createdAt,
+			user.updatedAt
+		);
+
 	return bookmarksList;
 };
 

@@ -11,6 +11,8 @@
 				id: bookmark.post.id,
 				title: bookmark.post.title,
 				thumbnail: bookmark.post.thumbnail,
+				views : bookmark.post.views,
+				likes : bookmark.post.likes,
 				user: {
 					username: bookmark.user.username
 				}
