@@ -5,6 +5,7 @@
 	import Footer from '$lib/components/shared/footer.svelte';
 	import Navbar from '$lib/components/shared/navbar.svelte';
 	import { ProgressBar, initializeStores } from '@skeletonlabs/skeleton';
+	import { inject } from '@vercel/analytics'
 
 	import '../app.pcss';
 
