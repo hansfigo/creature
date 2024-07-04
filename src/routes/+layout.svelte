@@ -16,6 +16,7 @@
 	import { storePopup } from '@skeletonlabs/skeleton';
 	import { get } from 'svelte/store';
 	import { isLoadingStore } from '$lib/state';
+	import { TITLE } from '$lib/consants';
 	storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
 
 	export let data;
@@ -36,7 +37,7 @@
 </script>
 
 <svelte:head>
-	<title>Creature</title>
+	<title>{TITLE}</title>
 </svelte:head>
 
 <div
