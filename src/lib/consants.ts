@@ -1,5 +1,5 @@
 // export const TITLE = 'Harta Tahta Mamah Yuuka 😋'
-export const TITLE = 'CREATURE'
+export const TITLE = 'ArtiGenZ'
 
 
 export const ICON = {
