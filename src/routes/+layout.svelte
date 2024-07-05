@@ -5,8 +5,10 @@
 	import Footer from '$lib/components/shared/footer.svelte';
 	import Navbar from '$lib/components/shared/navbar.svelte';
 	import { ProgressBar, initializeStores } from '@skeletonlabs/skeleton';
-	import { inject } from '@vercel/analytics'
+	import { inject } from '@vercel/analytics';
 
+	inject({ mode: 'production'});
+	
 	import '../app.pcss';
 
 	initializeStores();
@@ -182,14 +184,13 @@
 			transform: scale(0.8);
 			border-radius: 99rem;
 			background: radial-gradient(
-				circle at center,
-				rgba(var(--color1), 0.75) 0,
-				rgba(var(--color1), 0) 10%
-			) 
-			no-repeat;
+					circle at center,
+					rgba(var(--color1), 0.75) 0,
+					rgba(var(--color1), 0) 10%
+				)
+				no-repeat;
 
 			animation: moveVertical 20s ease infinite;
-
 		}
 
 		.ball-gradient-2 {
@@ -199,11 +200,11 @@
 			transform: scale(0.9);
 			border-radius: 99rem;
 			background: radial-gradient(
-				circle at center,
-				rgba(var(--color1), 0.8) 0,
-				rgba(var(--color1), 0) 10%
-			)
-			no-repeat;
+					circle at center,
+					rgba(var(--color1), 0.8) 0,
+					rgba(var(--color1), 0) 10%
+				)
+				no-repeat;
 		}
 	}
 </style>
