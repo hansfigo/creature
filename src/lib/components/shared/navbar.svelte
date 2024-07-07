@@ -28,6 +28,12 @@
 		placement: 'bottom'
 	};
 
+	const hamburgerClick: PopupSettings = {
+		event: 'click',
+		target: 'hamburgerClick',
+		placement: 'bottom'
+	};
+
 	let query = '';
 </script>
 
@@ -43,6 +49,24 @@
 					<input type="search" bind:value={query} placeholder="Search..." />
 				</div>
 			</form>
+		</div>
+		<div>
+			<button use:popup={hamburgerClick} class="btn variant-outline-secondary">
+				<Icon icon="ic:outline-menu" />
+			</button>
+			<div class="card p-4 min-w-[20rem] variant-filled" data-popup="hamburgerClick">
+				<div class=" gap-2 hidden md:flex">
+					<a href="/guide">
+						<button class="btn variant-outline-secondary">Guide</button>
+					</a>
+					<a href="/signin">
+						<button class="btn variant-outline-secondary"> Login </button>
+					</a>
+					<a href="/signup">
+						<button class="btn variant-outline-secondary"> Register </button>
+					</a>
+				</div>
+			</div>
 		</div>
 		{#if userData}
 			<div class=" gap-4 justify-center items-center hidden md:flex">

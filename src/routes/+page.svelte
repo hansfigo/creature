@@ -79,7 +79,7 @@
 				</div>
 			</section>
 
-			<section class="mt-16">
+			<section class="hidden md:block mt-16">
 				<div class="flex w-full justify-between">
 					<h1 class="text-lg mb-6 md:text-3xl font-bold">Top Rated</h1>
 					<a class="flex items-center gap-2 text-cyan-500" href="/search">

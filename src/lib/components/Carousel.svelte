@@ -30,7 +30,7 @@
 		class="snap-x snap-mandatory scroll-smooth flex gap-2 pb-2 overflow-x-auto"
 	>
 		{#each posts as movie}
-			<a href={`/p/${movie.id}`} target="_blank" class="relative shrink-0 w-[28%] md:h-[24rem] snap-start border-[1px] border-slate-800 rounded-3xl">
+			<a href={`/p/${movie.id}`} class="relative shrink-0 w-[28%] md:h-[24rem] snap-start border-[1px] border-slate-800 rounded-3xl">
 				<img
 					class="rounded-container-token object-cover h-full hover:brightness-125"
 					src={movie.thumbnail}
