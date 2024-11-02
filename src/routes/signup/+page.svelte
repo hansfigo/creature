@@ -8,7 +8,7 @@
 
 <section class="flex justify-center items-center min-h-[88vh] w-full">
 	<div
-		class="flex relative flex-col md:flex-row rounded-3xl bg-blue-primary overflow-hidden md:w-[60%] md:min-h-[30rem] md:max-h-[40rem]"
+		class="mt-20 flex relative flex-col md:flex-row rounded-3xl bg-blue-primary overflow-hidden md:w-[60%] md:min-h-[10rem] md:max-h-[40rem]"
 	>
 		<div class="md:w-[50%] h-[14rem] md:h-full overflow-hidden">
 			<img class="object-cover h-full w-full" src="/backdrop-login.png" alt="" />

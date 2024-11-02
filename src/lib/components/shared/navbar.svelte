@@ -37,10 +37,10 @@
 	let query = '';
 </script>
 
-<div class="flex min-w-full justify-center items-center z-[99]">
+<div class="flex min-w-full justify-center items-center z-[99] px-0 md:px-8">
 	<div class="container flex justify-between items-center py-8">
 		<a href="/" class="h3 font-bold font-jakarta text-3xl md:text-4xl">{TITLE}</a>
-		<div class="w-[0%] sm:w-[30%] xl:w-[40%]">
+		<div class="hidden md:block w-[0%] sm:w-[30%] xl:w-[40%]">
 			<form on:submit|preventDefault={() => goto(`/search?query=${query}`)}>
 				<div class="input-group input-group-divider grid-cols-[auto_1fr_auto]">
 					<div class="input-group-shim bg-transparent">
@@ -50,12 +50,12 @@
 				</div>
 			</form>
 		</div>
-		<div>
+		<div class="md:hidden block">
 			<button use:popup={hamburgerClick} class="btn variant-outline-secondary">
 				<Icon icon="ic:outline-menu" />
 			</button>
 			<div class="card p-4 min-w-[20rem] variant-filled" data-popup="hamburgerClick">
-				<div class=" gap-2 hidden md:flex">
+				<div class=" gap-2 md:flex">
 					<a href="/guide">
 						<button class="btn variant-outline-secondary">Guide</button>
 					</a>

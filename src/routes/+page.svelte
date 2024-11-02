@@ -13,7 +13,7 @@
 
 </script>
 
-<main class="flex justify-center min-h-screen w-full gap-4">
+<main class="flex justify-center min-h-screen w-full gap-4 px-0 md:px-8">
 	<div class="container">
 		<section class="flex flex-col gap-4">
 			<div
