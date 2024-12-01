@@ -99,11 +99,15 @@
 					{/if}
 				</button>
 
-				<div
-					class="flex items-center gap-2 absolute top-4 right-5 rounded-lg"
-				>
+				<div class="flex items-center gap-2 absolute top-4 right-5 rounded-lg">
 					<label for="bg" class="text-2xl btn">🎨</label>
-					<input name="bg" id="bg" class="input opacity-0 w-0 max-w-0" type="color" bind:value={colorValue} />
+					<input
+						name="bg"
+						id="bg"
+						class="input opacity-0 w-0 max-w-0"
+						type="color"
+						bind:value={colorValue}
+					/>
 				</div>
 
 				{#if posts.modelPath}
@@ -193,7 +197,9 @@
 							{/if}
 						</div>
 						<div>
-							<p class="text-xl font-bold">{$dataUser?.username}</p>
+							<a class="text-xl font-bold" href={`/u/${$dataUser?.username}`}
+								>{$dataUser?.username}</a
+							>
 							<p class="text-base font-normal">{posts.user.followersCount} Followers</p>
 						</div>
 					</div>
@@ -321,7 +327,7 @@
 									{/if}
 								</div>
 								<div class="px-8 py-4 rounded-3xl bg-blue-primary w-full">
-									<p>@{comment.user.username}</p>
+									<a href={`/u/${comment.user.username}`} >@{comment.user.username}</a>
 									<p>{comment.content}</p>
 								</div>
 							</div>

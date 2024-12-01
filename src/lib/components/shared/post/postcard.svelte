@@ -6,8 +6,6 @@
 	export let showOptions = false;
 	export let index = 0;
 
-	console.log(post, 'POST');
-
 	let popupPostCard: any = {
 		event: 'click',
 		placement: 'bottom'
@@ -48,7 +46,7 @@
 	>
 		<div>
 			<p class="text-white font-bold md:text-xl">{post.title}</p>
-			<p class="text-white text-sm md:text-base">@{post.user.username}</p>
+			<a href={`u/${post.user.username}`} class="text-white text-sm md:text-base">@{post.user.username}</a>
 		</div>
 		<div class="flex gap-2 mt-3">
 			<div>

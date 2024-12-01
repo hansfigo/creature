@@ -1,5 +1,3 @@
-import { count } from 'console';
-import { desc } from 'drizzle-orm';
 import {
 	mysqlTable,
 	varchar,

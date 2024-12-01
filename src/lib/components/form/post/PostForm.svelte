@@ -93,8 +93,6 @@
 	const submit = async () => {
 		isLoading = true;
 
-		console.log('ID', id);
-
 		if (id) {
 			const form = new FormData();
 

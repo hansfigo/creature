@@ -7,7 +7,6 @@ import { db } from '$lib/server/db/db';
 import { user } from '$lib/server/db/schema';
 import { sql } from 'drizzle-orm';
 
-
 export const actions: Actions = {
 	default: async (event) => {
 		const formData = await event.request.formData();
@@ -24,21 +23,47 @@ export const actions: Actions = {
 			!/^[a-z0-9_-]+$/.test(username)
 		) {
 			return fail(400, {
-                error : true,
+				error: true,
 				message: 'Invalid username'
 			});
 		}
 		if (typeof password !== 'string' || password.length < 6 || password.length > 255) {
 			return fail(400, {
-                error : true,
+				error: true,
 				message: 'Invalid password'
 			});
 		}
 
 		if (typeof email !== 'string' || email.length < 6 || email.length > 255) {
 			return fail(400, {
-                error : true,
+				error: true,
 				message: 'Invalid email'
+			});
+		}
+		
+		//check email exist or not
+		const existedEmail = await db
+			.select()
+			.from(user)
+			.where(sql`${user.email} = ${email}`);
+
+		if (existedEmail.length > 0) {
+			return fail(400, {
+				error: true,
+				message: 'Email already exists'
+			});
+		}
+
+		// TODO: check if username is already used
+		const existedUsername = await db
+			.select()
+			.from(user)
+			.where(sql`${user.username} = ${username}`);
+
+		if (existedUsername.length > 0) {
+			return fail(400, {
+				error: true,
+				message: 'Username already exists'
 			});
 		}
 
@@ -51,25 +76,11 @@ export const actions: Actions = {
 			parallelism: 1
 		});
 
-		// TODO: check if username is already used
-		const existedUsername = await db
-			.select()
-			.from(user).where(
-                sql`${user.username} = ${username}`
-            )
-
-		if (existedUsername.length > 0) {
-			return fail(400, {
-                error : true,
-				message: 'Username already exists'
-			});
-		}
-
 		await db.insert(user).values({
 			id: userId,
 			username: username,
 			email: email,
-			password: passwordHash,
+			password: passwordHash
 		});
 
 		const session = await lucia.createSession(userId, {});
