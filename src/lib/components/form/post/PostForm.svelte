@@ -1,9 +1,13 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import Container from '$lib/components/shared/container.svelte';
-	import { FileDropzone, ProgressRadial } from '@skeletonlabs/skeleton';
-	import SuperDebug, { superForm } from 'sveltekit-superforms';
-	import Icon from '@iconify/svelte';
+	import {
+		FileDropzone,
+		getModalStore,
+		Modal,
+		ProgressRadial,
+		type ModalSettings
+	} from '@skeletonlabs/skeleton';
 	import App from './components/App.svelte';
 	import { modelUpload } from '$lib/state';
 	import { goto } from '$app/navigation';
@@ -33,6 +37,27 @@
 	let image: any;
 
 	let isLoading = false;
+
+	let fileSize: any = null;
+
+	const modalStore = getModalStore();
+
+	const sizeLimitModal: ModalSettings = {
+		type: 'confirm',
+		title: 'File Size Limit',
+		body: 'File size limit is 30MB, please upload a smaller file or upgrade your account',
+		response: (r: boolean) => {
+			if (r) {
+				goto('/pricing');
+			}
+		}
+	};
+
+	const fileTypeModal: ModalSettings = {
+		type: 'alert',
+		title: 'File Type',
+		body: 'Please upload .glb or .gltf file'
+	};
 
 	onMount(() => {
 		if (!post) return;
@@ -84,7 +109,23 @@
 
 		if (input.files && input.files.length > 0) {
 			const file = input.files[0];
+
+			console.log(file.size, 'FILE TEXT');
+
+			// validate file type, by checking file name extension
+			if (!file.name.match(/\.(glb|gltf)$/)) {
+				modalStore.trigger(fileTypeModal);
+				return;
+			}
+
+			// check file size, max 30MB
+			if (file.size > 30000000) {
+				modalStore.trigger(sizeLimitModal);
+				return;
+			}
+
 			model = file;
+			fileSize = `${(file.size / 1024 / 1024).toFixed(2)} MB`;
 
 			modelUpload.set(file);
 		}
@@ -218,6 +259,7 @@
 	}
 </script>
 
+<Modal />
 <Container>
 	<p class="text-3xl font-bold mb-8">Create New 3D Post</p>
 	<div class="flex w-full gap-8">
@@ -260,6 +302,10 @@
 					<svelte:fragment slot="message">Upload your 3D Model or Drag and Drop</svelte:fragment>
 					<svelte:fragment slot="meta">.glb and .gltf are allowed</svelte:fragment>
 				</FileDropzone>
+			{/if}
+
+			{#if fileSize}
+				<p class="text-sm text-red-500">File size: {fileSize}</p>
 			{/if}
 
 			{#if base64}

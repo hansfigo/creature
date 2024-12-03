@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { useFirebase } from '$lib/firebase';
 import { db } from '$lib/server/db/db';
 import { generateIdFromEntropySize } from 'lucia';
-import { posts, tags, user } from '$lib/server/db/schema';
+import { tags } from '$lib/server/db/schema';
 
 const schema = z.object({
 	title: z.string().min(1),

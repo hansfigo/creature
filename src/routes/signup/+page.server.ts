@@ -41,7 +41,7 @@ export const actions: Actions = {
 			});
 		}
 		
-		//check email exist or not
+		//check if Email is already used
 		const existedEmail = await db
 			.select()
 			.from(user)

@@ -63,7 +63,7 @@
 			isLoading = true;
 
 			isLoadingStore.set(true);
-			
+
 			const profilePicture = await useFirebase.uploadFile({
 				file: file,
 				path: '/users/profilePictures/'
@@ -207,6 +207,15 @@
 									: undefined}
 							/>
 						{/each}
+					</div>
+				{:else}
+					<div class="flex w-full flex-col gap-4 justify-center items-center">
+						<h3>No posts yet</h3>
+						{#if locals && locals.user && user.username === locals.user.username}
+							<button class="btn btn-sm variant-filled-secondary px-4 py-3">
+								<a href="/dashboard/upload">Create Post + </a>
+							</button>
+						{/if}
 					</div>
 				{/if}
 			</div>
