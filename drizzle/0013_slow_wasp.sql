@@ -1,0 +1,1 @@
+ALTER TABLE `transactions` ADD `midtrans_id` varchar(256);

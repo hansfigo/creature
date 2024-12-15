@@ -71,6 +71,9 @@
 		{#if userData}
 			<div class=" gap-4 justify-center items-center hidden md:flex">
 				<!-- <p class="font-jakarta">{`Welcome, ${userData.username}`}</p> -->
+				<a href="/pricing">
+					<button class="btn variant-outline-secondary">Pricing</button>
+				</a>
 				<a href="/guide">
 					<button class="btn variant-outline-secondary">Guide</button>
 				</a>
@@ -114,6 +117,7 @@
 							<img src={userDetail.profilePicture} class="w-20 h-20 rounded-full mb-3" alt="" />
 							<p class="font-bold">{userData.username}</p>
 							<p>{userDetail.email}</p>
+							<p class="chip variant-filled-secondary mt-2">{userDetail.active_plan}</p>
 						</div>
 						<br />
 						<div class="flex flex-col items-start justify-start gap-2 variant-filled">
@@ -152,6 +156,9 @@
 			</div>
 		{:else}
 			<div class=" gap-2 hidden md:flex">
+				<a href="/pricing">
+					<button class="btn variant-outline-secondary">Pricing</button>
+				</a>
 				<a href="/guide">
 					<button class="btn variant-outline-secondary">Guide</button>
 				</a>

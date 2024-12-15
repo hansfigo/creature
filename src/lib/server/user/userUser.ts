@@ -17,6 +17,7 @@ export interface userSchema {
 	behance?: string;
 	other?: string;
 	profilePicture?: string;
+	active_plan?: 'premium' | 'standart' | 'basic';
 }
 
 const initUser = () => {
@@ -27,6 +28,10 @@ const initUser = () => {
 		}
 		const updatedUser = await db.update(user).set(data).where(eq(user.username, username));
 		return updatedUser;
+	};
+	const getUserInfo = async (username: string) => {
+		const userData = await db.select().from(user).where(eq(user.username, username));
+		return userData[0];
 	};
 	const getUserDetail = async (username: string) => {
 		const userData = await db.select().from(user).where(eq(user.username, username));
@@ -48,7 +53,7 @@ const initUser = () => {
 				posts.description,
 				posts.thumbnail,
 				posts.createdAt,
-				posts.views,
+				posts.views
 			)
 			.where(eq(posts.userId, userData[0].id));
 
@@ -81,7 +86,7 @@ const initUser = () => {
 		return data;
 	};
 
-	return { getUserDetail, updateuser };
+	return { getUserDetail, updateuser, getUserInfo };
 };
 
 export const useUser = initUser();

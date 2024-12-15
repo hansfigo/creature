@@ -6,10 +6,13 @@ declare global {
 			user: import('lucia').User | null;
 			session: import('lucia').Session | null;
 		}
-		// interface Error {}
-		// interface Locals {}
-		// interface PageData {}
-		// interface Platform {}
+		interface MidtransClient {
+			Snap: any; // Atau bisa lebih detail dengan tipe yang sesuai
+		}
+	}
+
+	interface Window {
+		snap: any;
 	}
 }
 

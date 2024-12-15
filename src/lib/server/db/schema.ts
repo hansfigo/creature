@@ -5,11 +5,14 @@ import {
 	timestamp,
 	datetime,
 	bigint,
-	boolean
+	boolean,
+	int,
+	mysqlEnum
 } from 'drizzle-orm/mysql-core';
 
 export const user = mysqlTable('user', {
 	id: varchar('id', { length: 256 }).primaryKey().notNull(),
+	role: mysqlEnum('role', ['user', 'admin']).notNull().default('user'),
 	username: varchar('username', { length: 256 }).unique(),
 	firstName: varchar('first_name', { length: 256 }),
 	location: varchar('location', { length: 256 }),
@@ -19,13 +22,16 @@ export const user = mysqlTable('user', {
 	headline: varchar('headline', { length: 256 }),
 	lastName: varchar('last_name', { length: 256 }),
 	email: varchar('email', { length: 256 }).unique(),
-	company : varchar('company', { length: 256 }),
+	company: varchar('company', { length: 256 }),
 	other: varchar('other', { length: 256 }),
 	country: varchar('country', { length: 256 }),
 	password: varchar('password', { length: 256 }),
 	description: text('description'),
 	bannerPicture: varchar('banner_picture', { length: 256 }),
 	profilePicture: varchar('profile_picture', { length: 256 }),
+	active_plan: mysqlEnum('active_plan', ['premium', 'standart', 'basic'])
+		.notNull()
+		.default('basic'),
 	createdAt: timestamp('created_at'),
 	updatedAt: timestamp('updated_at')
 });
@@ -124,4 +130,21 @@ export const notifications = mysqlTable('notifications', {
 	isRead: boolean('is_read').default(false),
 	createdAt: timestamp('created_at').defaultNow(),
 	updatedAt: timestamp('updated_at').defaultNow()
+});
+
+export const transactions = mysqlTable('transactions', {
+	id: varchar('id', { length: 256 }).primaryKey().notNull(),
+	midtransId: varchar('midtrans_id', { length: 256 }),
+	userId: varchar('user_id', { length: 256 })
+		.references(() => user.id)
+		.notNull(),
+	transaction_type: mysqlEnum('transaction_type', ['premium', 'standart', 'basic'])
+		.notNull()
+		.default('basic'),
+	amount: int('amount').notNull(),
+	status: mysqlEnum('status', ['pending', 'success', 'failed']).notNull(),
+	created_at: timestamp('created_at').defaultNow(),
+	is_active: boolean('is_active').default(false),
+	updated_at: timestamp('updated_at').defaultNow().onUpdateNow(),
+	valid_until: timestamp('valid_until')
 });

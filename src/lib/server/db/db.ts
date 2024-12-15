@@ -1,17 +1,15 @@
 import { drizzle } from 'drizzle-orm/mysql2';
 import mysql from 'mysql2/promise';
 import * as schema from './schema';
-import * as dotenv from 'dotenv';
 import { DrizzleMySQLAdapter } from '@lucia-auth/adapter-drizzle';
 
+import dotenv from 'dotenv';
 dotenv.config();
 
-const host = process.env.NODE_ENV === 'production' ? process.env.DB_HOST : process.env.DB_HOST_DEV;
-const user = process.env.NODE_ENV === 'production' ? process.env.DB_USER : process.env.DB_USER_DEV;
-const password =
-	process.env.NODE_ENV === 'production' ? process.env.DB_PASSWORD : process.env.DB_PASSWORD_DEV;
-const database =
-	process.env.NODE_ENV === 'production' ? process.env.DB_NAME : process.env.DB_NAME_DEV;
+const host = process.env.DB_HOST;
+const user = process.env.DB_USER;
+const password = process.env.DB_PASSWORD;
+const database = process.env.DB_NAME;
 
 export const connection = mysql.createPool({
 	host: host,
@@ -22,7 +20,6 @@ export const connection = mysql.createPool({
 
 	ssl: {
 		rejectUnauthorized: false
-		// ca: fs.readFileSync('/path/to/ca-cert.pem'), // Sertifikat CA jika diperlukan
 	}
 });
 
