@@ -21,8 +21,10 @@
 	}[] = [];
 
 	export let post: any | null = null;
-
 	export let id: string | null = null;
+	export let user: any = null;
+
+	console.log(user, 'USER');
 
 	let model: any = null;
 	let title: string = '';
@@ -118,10 +120,16 @@
 				return;
 			}
 
-			// check file size, max 30MB
-			if (file.size > 30000000) {
-				modalStore.trigger(sizeLimitModal);
-				return;
+			if (user.active_plan === 'basic') {
+				if (file.size > 30000000) {
+					modalStore.trigger(sizeLimitModal);
+					return;
+				}
+			} else if (user.active_plan === 'standard') {
+				if (file.size > 60000000) {
+					modalStore.trigger(sizeLimitModal);
+					return;
+				}
 			}
 
 			model = file;
@@ -262,6 +270,7 @@
 <Modal />
 <Container>
 	<p class="text-3xl font-bold mb-8">Create New 3D Post</p>
+	<p>Plan : {user.active_plan}</p>
 	<div class="flex w-full gap-8">
 		<div class={`flex-1 ${post ? 'w-[20%]' : ''} `}>
 			{#if model || post}

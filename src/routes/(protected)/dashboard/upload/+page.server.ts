@@ -7,6 +7,7 @@ import { useFirebase } from '$lib/firebase';
 import { db } from '$lib/server/db/db';
 import { generateIdFromEntropySize } from 'lucia';
 import { tags } from '$lib/server/db/schema';
+import { useUser } from '$lib/server/user/userUser';
 
 const schema = z.object({
 	title: z.string().min(1),
@@ -15,8 +16,9 @@ const schema = z.object({
 	thumbnail: z.instanceof(File)
 });
 
-export const load = (async () => {
+export const load = (async (events) => {
 	const form = await superValidate(zod(schema));
+	const user = await useUser.getUserInfo(events.locals.user?.username!);
 
 	const tagsList = await db
 		.select({
@@ -25,7 +27,7 @@ export const load = (async () => {
 		})
 		.from(tags);
 
-	return { form, tags : tagsList };
+	return { form, tags: tagsList, user };
 }) satisfies PageServerLoad;
 
 export const actions: Actions = {

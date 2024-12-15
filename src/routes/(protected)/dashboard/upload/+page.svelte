@@ -5,8 +5,9 @@
 	export let data: PageData;
 
 	const tags = data.tags;
+	const user = data.user;
 </script>
 
 <div>
-	<PostForm {tags} />
+	<PostForm {tags} {user} />
 </div>
