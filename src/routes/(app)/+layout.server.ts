@@ -20,8 +20,8 @@ export const load = (async (event) => {
 	if (!event.locals.user) {
 		return { user: event.locals.user, url };
 	}
-	
+
 	const userDetail = await useUser.getUserDetail(event.locals.user?.username);
 
-	return { user: event.locals.user, url, userDetail : userDetail.user };
+	return { user: event.locals.user, url, userDetail: userDetail.user };
 }) satisfies LayoutServerLoad;

@@ -1,8 +1,5 @@
 <script lang="ts">
 	import Container from '$lib/components/shared/container.svelte';
-	import type { PageData } from './$types';
-
-	export let data: PageData;
 </script>
 
 <Container>

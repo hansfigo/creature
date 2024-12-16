@@ -8,7 +8,7 @@
 
 	const plans = [
 		{
-			name: 'Basic',
+			name: 'Starter',
 			description: 'Designed for beginners and hobbyists to explore and share their 3D creations.',
 			features: [
 				{ name: 'Max file size per upload', value: '30MB' },
@@ -19,10 +19,10 @@
 			cta: data.user ? 'Get Started' : 'Start Uploading'
 		},
 		{
-			name: 'Standard',
+			name: 'Creator',
 			description: 'For intermediate 3D artists',
 			features: [
-				{ name: 'Max file size per upload', value: '50MB' },
+				{ name: 'Max file size per upload', value: '60MB' },
 				{ name: 'Max posts allowed', value: '12' },
 				{ name: 'Access to basic analytics for uploaded models' }
 			],
@@ -30,7 +30,7 @@
 			cta: data.user ? (data.user.active_plan === 'standart' ? 'Renew' : 'Upgrade') : 'Get Started'
 		},
 		{
-			name: 'Premium',
+			name: 'Pro',
 			description: 'For professional 3D artists',
 			features: [
 				{ name: 'Max file size per upload', value: '100MB' },
