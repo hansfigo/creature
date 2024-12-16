@@ -16,7 +16,7 @@
 				{ name: 'Access to basic analytics for uploaded models' }
 			],
 			price: 'Free',
-			cta: data.user ? 'Get Started' : 'Start Uploading'
+			cta: data.user ? 'Start Uploading' : 'Get Started'
 		},
 		{
 			name: 'Creator',
@@ -27,7 +27,7 @@
 				{ name: 'Access to basic analytics for uploaded models' }
 			],
 			price: 'IDR 25.000/month',
-			cta: data.user ? (data.user.active_plan === 'standart' ? 'Renew' : 'Upgrade') : 'Get Started'
+			cta: data.user ? (data.user.active_plan === 'premium' ? 'Start Uploading' : 'Upgrade') : 'Get Started'
 		},
 		{
 			name: 'Pro',
@@ -81,22 +81,22 @@
 	};
 
 	const handleClickCta = async (plan: string) => {
-		if (plan === 'Basic') {
+		if (plan === 'Starter') {
 			// Redirect to the upload page
 			if (!data.user) {
 				goto('/login');
 				return;
 			}
 
-			goto('/dashboard/upload');
-		} else if (plan === 'Standard') {
+			goto('/upload');
+		} else if (plan === 'Creator') {
 			if (!data.user) {
 				goto('/login');
 				return;
 			}
 
-			if (data.user.active_plan === 'standart') {
-				goto('/dashboard/upload');
+			if (data.user.active_plan === 'premium') {
+				goto('/upload');
 			} else {
 				try {
 					const data = await getToken();
@@ -118,7 +118,7 @@
 					return;
 				}
 			}
-		} else if (plan === 'Premium') {
+		} else if (plan === 'Pro') {
 			// Show a modal that says "Coming Soon"
 		}
 	};
