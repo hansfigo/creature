@@ -2,22 +2,11 @@
 	import { navigating, page } from '$app/stores';
 	import Footer from '$lib/components/shared/footer.svelte';
 	import Navbar from '$lib/components/shared/navbar.svelte';
-	import { ProgressBar, initializeStores } from '@skeletonlabs/skeleton';
-	import { inject } from '@vercel/analytics';
+	import { ProgressBar } from '@skeletonlabs/skeleton';
 
-	inject({ mode: 'production'});
-	
-	import '../../app.pcss';
-
-	initializeStores();
-
-	import { arrow, autoUpdate, computePosition, flip, offset, shift } from '@floating-ui/dom';
-
-	import { storePopup } from '@skeletonlabs/skeleton';
 	import { get } from 'svelte/store';
 	import { isLoadingStore } from '$lib/state';
 	import { TITLE } from '$lib/consants';
-	storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
 
 	export let data;
 
@@ -34,6 +23,8 @@
 			return true;
 		}
 	};
+
+	console.log($page.route.id);
 </script>
 
 <svelte:head>
@@ -41,11 +32,8 @@
 </svelte:head>
 
 <div
-	class="relative bg-main plus-jakarta-sans min-h-screen h-full flex flex-col overflow-y-hidden overflow-x-hidden px-4 4xl:px-0 justify-between"
+	class="relative plus-jakarta-sans min-h-screen h-full flex flex-col overflow-y-hidden overflow-x-hidden px-4 4xl:px-0 justify-between"
 >
-	<div class="ball-gradient"></div>
-	<div class="ball-gradient-2"></div>
-
 	{#if $page.route.id !== '/signin' && $page.route.id !== '/signup'}
 		<Navbar {user} {url} userDetail={data.userDetail} />
 	{/if}
@@ -60,7 +48,6 @@
 		<slot />
 	</div>
 
-	<div class="footer-gradient z-0"></div>
 	<br /><br /><br />
 	{#if $page.route.id !== '/signin' && $page.route.id !== '/signup'}
 		<Footer />

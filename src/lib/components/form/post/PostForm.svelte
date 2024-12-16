@@ -270,7 +270,9 @@
 <Modal />
 <Container>
 	<p class="text-3xl font-bold mb-8">Create New 3D Post</p>
-	<p>Plan : {user.active_plan}</p>
+	{#if user}
+		<p>Plan : {user.active_plan}</p>
+	{/if}
 	<div class="flex w-full gap-8">
 		<div class={`flex-1 ${post ? 'w-[20%]' : ''} `}>
 			{#if model || post}

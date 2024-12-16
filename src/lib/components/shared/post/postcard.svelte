@@ -19,7 +19,7 @@
 		<span>Archive</span>
 	</button> -->
 	<br />
-	<a href={`/dashboard/edit/${post.id}`}>
+	<a href={`/edit/${post.id}`}>
 		<button on:click={handleDelete} class="btn">
 			<span>Edit</span>
 			<Icon icon="ic:sharp-edit"></Icon>
