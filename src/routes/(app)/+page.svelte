@@ -10,7 +10,6 @@
 	export let data;
 
 	const posts = data.postList;
-
 </script>
 
 <main class="flex justify-center min-h-screen w-full gap-4 px-0 md:px-8">
@@ -26,7 +25,7 @@
 					<br />
 					<div class="flex w-full md:justify-end gap-4 flex-row md:pr-8">
 						<div>
-							<a href="/dashboard/upload">
+							<a href="/upload">
 								<button class="btn variant-filled-secondary text-lg"
 									>Join
 									<Icon class="ml-2" icon="ic:baseline-arrow-outward" />
@@ -34,7 +33,7 @@
 							</a>
 						</div>
 						<div>
-							<a href="/dashboard/upload">
+							<a href="/upload">
 								<button class="btn variant-filled-secondary text-lg"
 									>Post
 									<Icon class="ml-2" icon="ic:baseline-arrow-outward" />
@@ -100,7 +99,7 @@
 				</div>
 				<div class="grid grid-cols-1 gap-8 md:grid-cols-3 xl:grid-cols-4">
 					{#if posts.length > 0}
-						{#each posts as post}
+						{#each posts.reverse() as post}
 							<Postcard {post} />
 						{/each}
 					{/if}

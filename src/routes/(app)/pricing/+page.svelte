@@ -88,7 +88,7 @@
 				return;
 			}
 
-			goto('/upload');
+			goto('upload');
 		} else if (plan === 'Creator') {
 			if (!data.user) {
 				goto('/login');
@@ -96,7 +96,7 @@
 			}
 
 			if (data.user.active_plan === 'premium') {
-				goto('/upload');
+				goto('upload');
 			} else {
 				try {
 					const data = await getToken();

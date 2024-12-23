@@ -18,7 +18,7 @@
     <div class="ball-gradient"></div>
 	<div class="ball-gradient-2"></div>
     <div class="footer-gradient z-0"></div>
-    <div class="z-10">
+    <div class="z-10 w-full">
         <slot />
     </div>
 </div>

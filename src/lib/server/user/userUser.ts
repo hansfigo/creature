@@ -86,7 +86,12 @@ const initUser = () => {
 		return data;
 	};
 
-	return { getUserDetail, updateuser, getUserInfo };
+	const getUser = async () => {
+		const userData = await db.select().from(user);
+		return userData;
+	};
+
+	return { getUserDetail, updateuser, getUserInfo, getUser };
 };
 
 export const useUser = initUser();

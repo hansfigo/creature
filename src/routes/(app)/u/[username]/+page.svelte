@@ -213,7 +213,7 @@
 						<h3>No posts yet</h3>
 						{#if locals && locals.user && user.username === locals.user.username}
 							<button class="btn btn-sm variant-filled-secondary px-4 py-3">
-								<a href="/dashboard/upload">Create Post + </a>
+								<a href="/upload">Create Post + </a>
 							</button>
 						{/if}
 					</div>
