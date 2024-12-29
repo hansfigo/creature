@@ -25,7 +25,11 @@
 				{ name: 'Access to basic analytics for uploaded models' }
 			],
 			price: 'IDR 25.000/month',
-			cta: data.user ? (data.user.active_plan === 'premium' ? 'Start Uploading' : 'Upgrade') : 'Get Started'
+			cta: data.user
+				? data.user.active_plan === 'premium'
+					? 'Start Uploading'
+					: 'Upgrade'
+				: 'Get Started'
 		},
 		{
 			name: 'Pro',
@@ -132,13 +136,12 @@
 </svelte:head>
 
 <Container>
-	<h1 class="text-[3.4rem] font-bold mt-20">Find a plan to power your projects</h1>
-
-	<div class="flex gap-4 mt-44">
+	<h1 class="md:text-[3.4rem] text-3xl font-bold mt-20">Find a plan to power your projects</h1>
+	<div class="flex gap-4 mt-8 md:mt-44 overflow-x-scroll md:overflow-visible">
 		{#each plans as plan}
-			<div class="card l flex-1 variant-ghost-surface shadow-lg px-5 py-4">
-				<h1 class="font-bold text-2xl mb-2">{plan.name}</h1>
-				<p class="text-lg">
+			<div class="card flex-1 variant-ghost-surface shadow-lg px-5 py-4 min-w-[16rem]">
+				<h1 class="font-bold text-xl md:text-2xl mb-2">{plan.name}</h1>
+				<p class="text-base">
 					{plan.description}
 				</p>
 				<ul class="list-disc pl-5 mb-4 mt-2">

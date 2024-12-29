@@ -239,6 +239,13 @@
 				</a>
 				<a
 					on:click={toggleHamburgerMenu}
+					href={`/pricing`}
+					class="py-5 border-b-[1px] border-white/40 hover:font-black hover:border-white transition-all duration-300"
+				>
+					Upgrade Account
+				</a>
+				<a
+					on:click={toggleHamburgerMenu}
 					href="/guide"
 					class="py-5 border-b-[1px] border-white/40 hover:font-black hover:border-white transition-all duration-300"
 				>
@@ -246,7 +253,13 @@
 				</a>
 			</div>
 		</div>
-		<button on:click={toggleHamburgerMenu} class="btn variant-filled-error">
+		<button
+			on:click={() => {
+				goto('/signout');
+				toggleHamburgerMenu();
+			}}
+			class="btn variant-filled-error"
+		>
 			<a href="/signout">Logout</a>
 		</button>
 	{:else}
