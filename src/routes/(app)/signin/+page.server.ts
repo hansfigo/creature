@@ -12,8 +12,11 @@ import { sql } from 'drizzle-orm';
 import { verify } from '@node-rs/argon2';
 import { error } from 'console';
 
-export const load = (async () => {
-	return {};
+export const load = (async (event) => {
+	const param = event.url.searchParams.get('invalidate');
+	return {
+		param
+	};
 }) satisfies PageServerLoad;
 
 export const actions: Actions = {
@@ -21,7 +24,6 @@ export const actions: Actions = {
 		const formData = await event.request.formData();
 		const username = formData.get('username');
 		const password = formData.get('password');
-
 
 		if (password === null || username === null) {
 			return fail(400, {

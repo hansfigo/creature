@@ -9,10 +9,12 @@
 	import { TITLE } from '$lib/consants';
 
 	export let data;
-
+	
+	let userDetail = data.userDetail;
 	let user = data.user;
 
-	$: user = data.user;
+	$: user = $page.data.user;
+	$: userDetail = $page.data.userDetail;
 
 	const url = get(page).route.id?.toString();
 
@@ -33,11 +35,11 @@
 	class="relative plus-jakarta-sans min-h-screen h-full flex flex-col overflow-y-hidden overflow-x-hidden justify-between"
 >
 	{#if $page.route.id !== '/signin' && $page.route.id !== '/signup'}
-		<Navbar {user} {url} userDetail={data.userDetail} />
+		<Navbar {user} {url} {userDetail} />
 	{/if}
 
 	{#if $navigating || $isLoadingStore}
-		<div class="fixed w-full left-0 top-0 z-[100]   ">
+		<div class="fixed w-full left-0 top-0 z-[100]">
 			<ProgressBar />
 		</div>
 	{/if}

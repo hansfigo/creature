@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	import { goto, invalidateAll } from '$app/navigation';
 	import { TITLE } from '$lib/consants';
 	import { isHamburgerMenuOpen } from '$lib/state';
 	import Icon from '@iconify/svelte';
@@ -149,7 +149,10 @@
 					{#if userData}
 						<div class="flex w-full justify-center">
 							<button
-								on:click={() => goto('/signout')}
+								on:click={async () => {
+									await invalidateAll();
+									goto('/signout');
+								}}
 								class="btn btn-sm mt-4 variant-filled-error"
 							>
 								<span>Logout</span>
@@ -254,7 +257,8 @@
 			</div>
 		</div>
 		<button
-			on:click={() => {
+			on:click={async () => {
+				await invalidateAll();
 				goto('/signout');
 				toggleHamburgerMenu();
 			}}

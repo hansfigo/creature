@@ -114,7 +114,6 @@
 
 			console.log(file.size, 'FILE TEXT');
 
-			// validate file type, by checking file name extension
 			if (!file.name.match(/\.(glb|gltf)$/)) {
 				modalStore.trigger(fileTypeModal);
 				return;
