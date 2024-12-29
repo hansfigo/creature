@@ -12,7 +12,6 @@
 			description: 'Designed for beginners and hobbyists to explore and share their 3D creations.',
 			features: [
 				{ name: 'Max file size per upload', value: '30MB' },
-				{ name: 'Max posts allowed', value: '8' },
 				{ name: 'Access to basic analytics for uploaded models' }
 			],
 			price: 'Free',
@@ -23,7 +22,6 @@
 			description: 'For intermediate 3D artists',
 			features: [
 				{ name: 'Max file size per upload', value: '60MB' },
-				{ name: 'Max posts allowed', value: '12' },
 				{ name: 'Access to basic analytics for uploaded models' }
 			],
 			price: 'IDR 25.000/month',
@@ -34,7 +32,6 @@
 			description: 'For professional 3D artists',
 			features: [
 				{ name: 'Max file size per upload', value: '100MB' },
-				{ name: 'Max posts allowed', value: '20' },
 				{ name: 'Access to advanced analytics for uploaded models' }
 			],
 			price: 'IDR 50.000/month',

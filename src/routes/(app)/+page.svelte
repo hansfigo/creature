@@ -1,10 +1,8 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import Carousel from '$lib/components/Carousel.svelte';
-	import Navbar from '$lib/components/shared/navbar.svelte';
 	import Postcard from '$lib/components/shared/post/postcard.svelte';
 	import { ICON } from '$lib/consants.js';
-	import { removeGlbExtension } from '$lib/utils.js';
 	import Icon from '@iconify/svelte';
 
 	export let data;
@@ -18,12 +16,12 @@
 			<div
 				class="h-screen md:h-full flex flex-col-reverse md:flex-row gap-8 justify-center md:items-center items-start md:mb-16"
 			>
-				<div class="w-[70%]">
-					<h1 class="text-4xl md:text-[4rem] leading-tight font-black">
+				<div class="md:w-[70%]">
+					<h1 class="text-center md:text-left text-4xl md:text-[4rem] leading-tight font-black">
 						The medium for 3D interest and the creator
 					</h1>
 					<br />
-					<div class="flex w-full md:justify-end gap-4 flex-row md:pr-8">
+					<div class="flex w-full justify-center md:justify-end gap-4 flex-row md:pr-8">
 						<div>
 							<a href="/upload">
 								<button class="btn variant-filled-secondary text-lg"
