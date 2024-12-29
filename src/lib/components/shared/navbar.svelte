@@ -246,6 +246,9 @@
 				</a>
 			</div>
 		</div>
+		<button on:click={toggleHamburgerMenu} class="btn variant-filled-error">
+			<a href="/signout">Logout</a>
+		</button>
 	{:else}
 		<div>
 			<div class="flex w-full justify-end">
