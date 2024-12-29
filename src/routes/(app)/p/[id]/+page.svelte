@@ -78,7 +78,7 @@
 			<div
 				bind:this={canvas}
 				style={`background-color: ${colorValue} !important;`}
-				class={`relative w-full bg-main bg-slate-800 h-[34%] md:h-[55%] border-2 border-slate-800 rounded-3xl`}
+				class={`relative w-full bg-main bg-slate-800 h-[38%] md:h-[55%] border-2 border-slate-800 rounded-3xl`}
 			>
 				<div class="absolute z-40 bottom-0 right-[50%]">
 					{#if $animationStore}
@@ -91,7 +91,7 @@
 					{/if}
 				</div>
 
-				<button on:click={toggleFullScreen} class="btn absolute bottom-4 right-5 text-2xl">
+				<button on:click={toggleFullScreen} class="btn absolute bottom-4 right-1 md:right-5 text-2xl">
 					{#if isFullScreen}
 						<Icon icon="ic:baseline-fullscreen-exit" />
 					{:else}
@@ -99,7 +99,7 @@
 					{/if}
 				</button>
 
-				<div class="flex items-center gap-2 absolute top-4 right-5 rounded-lg">
+				<div class="flex items-center gap-2 absolute top-4 right-1 md:right-5 rounded-lg">
 					<label for="bg" class="text-2xl btn">🎨</label>
 					<input
 						name="bg"
@@ -116,8 +116,8 @@
 			</div>
 
 			<div class="mt-4">
-				<div class="flex w-full items-center justify-between">
-					<h1 class="text-2xl font-black">{posts.title}</h1>
+				<div class="flex w-full items-center justify-between gap-4">
+					<h1 class="text-2xl font-black break-words">{posts.title}</h1>
 					<div class="flex gap-2">
 						<form
 							action="?/like"
