@@ -23,8 +23,6 @@
 			return true;
 		}
 	};
-
-	console.log($page.route.id);
 </script>
 
 <svelte:head>
@@ -32,19 +30,19 @@
 </svelte:head>
 
 <div
-	class="relative plus-jakarta-sans min-h-screen h-full flex flex-col overflow-y-hidden overflow-x-hidden px-4 4xl:px-0 justify-between"
+	class="relative plus-jakarta-sans min-h-screen h-full flex flex-col overflow-y-hidden overflow-x-hidden justify-between"
 >
 	{#if $page.route.id !== '/signin' && $page.route.id !== '/signup'}
 		<Navbar {user} {url} userDetail={data.userDetail} />
 	{/if}
 
 	{#if $navigating || $isLoadingStore}
-		<div class="fixed w-full left-0 top-0 z-[100]">
+		<div class="fixed w-full left-0 top-0 z-[100]   ">
 			<ProgressBar />
 		</div>
 	{/if}
 
-	<div class=" flex-1 z-10">
+	<div class=" flex-1 z-10 px-4 4xl:px-0">
 		<slot />
 	</div>
 

@@ -16,3 +16,4 @@ export const isLightOn = writable<boolean>(false);
 
 export const isLoadingStore = writable<boolean>(false);
 
+export const isHamburgerMenuOpen = writable<boolean>(false);

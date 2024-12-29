@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { TITLE } from '$lib/consants';
+	import { isHamburgerMenuOpen } from '$lib/state';
 	import Icon from '@iconify/svelte';
-	import { popup, type PopupSettings } from '@skeletonlabs/skeleton';
+	import { Avatar, popup, type PopupSettings } from '@skeletonlabs/skeleton';
 
 	export let user;
 	export let userDetail;
@@ -35,11 +36,15 @@
 	};
 
 	let query = '';
+
+	const toggleHamburgerMenu = () => {
+		isHamburgerMenuOpen.update((n) => !n);
+	};
 </script>
 
-<div class="flex min-w-full justify-center items-center z-[99] px-0 md:px-8">
-	<div class="container flex justify-between items-center py-8">
-		<a href="/" class="h3 font-bold font-jakarta text-3xl md:text-4xl">{TITLE}</a>
+<div class="flex min-w-full justify-center items-center z-[99] px-0 md:px-8 relative flex-col">
+	<div class="container flex justify-between items-center md:py-8 py-6 px-4">
+		<a href="/" class="h3 font-bold font-jakarta text-2xl md:text-4xl">{TITLE}</a>
 		<div class="hidden md:block w-[0%] sm:w-[30%] xl:w-[40%]">
 			<form on:submit|preventDefault={() => goto(`/search?query=${query}`)}>
 				<div class="input-group input-group-divider grid-cols-[auto_1fr_auto]">
@@ -50,11 +55,12 @@
 				</div>
 			</form>
 		</div>
+		<!-- MOBILE VIEW -->
 		<div class="md:hidden block">
-			<button use:popup={hamburgerClick} class="btn variant-outline-secondary">
+			<button on:click={toggleHamburgerMenu} class="btn variant-outline-secondary">
 				<Icon icon="ic:outline-menu" />
 			</button>
-			<div class="card p-4 min-w-[20rem] variant-filled" data-popup="hamburgerClick">
+			<div class="card p-4 min-w-[20rem] bg-initial" data-popup="hamburgerClick">
 				<div class=" gap-2 md:flex">
 					<a href="/guide">
 						<button class="btn variant-outline-secondary">Guide</button>
@@ -121,7 +127,7 @@
 						</div>
 						<br />
 						<div class="flex flex-col items-start justify-start gap-2 variant-filled">
-							<a href="/dashboard/upload">
+							<a href="/upload">
 								<button class="btn btn-sm">Upload</button>
 							</a>
 							<a href={`/u/${userData.username}`}>
@@ -171,4 +177,131 @@
 			</div>
 		{/if}
 	</div>
+</div>
+<div
+	class={`fixed top-0 left-0 w-full h-full z-[100] justify-between flex flex-col px-4 py-6  bg-blue-primary/70 backdrop-blur-md	 text-white transition-transform transform ${
+		$isHamburgerMenuOpen ? 'translate-x-0' : '-translate-x-full'
+	}`}
+>
+	{#if userData}
+		<div>
+			<div class="flex w-full justify-end">
+				<button on:click={toggleHamburgerMenu}>
+					<svg
+						class="w-6 h-6 text-gray-800 dark:text-white"
+						aria-hidden="true"
+						xmlns="http://www.w3.org/2000/svg"
+						width="24"
+						height="24"
+						fill="none"
+						viewBox="0 0 24 24"
+					>
+						<path
+							stroke="currentColor"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M6 18 17.94 6M18 18 6.06 6"
+						/>
+					</svg>
+				</button>
+			</div>
+
+			<div class="mb-4 flex flex-col gap-2">
+				<Avatar src={userDetail.profilePicture} width="w-20" rounded="rounded-full" />
+				<h3 class="text-xl">Welcome, {userData.username}</h3>
+				<div>
+					<p class="chip variant-filled-secondary">{userDetail.active_plan}</p>
+				</div>
+			</div>
+
+			<div class="flex flex-col gap-2">
+				<a
+					on:click={toggleHamburgerMenu}
+					href={`/upload`}
+					class="py-5 border-b-[1px] border-white/40 hover:font-black hover:border-white transition-all duration-300"
+				>
+					Upload
+				</a>
+				<a
+					on:click={toggleHamburgerMenu}
+					href={`/u/${userData.username}`}
+					class="py-5 border-b-[1px] border-white/40 hover:font-black hover:border-white transition-all duration-300"
+				>
+					Profile
+				</a>
+				<a
+					on:click={toggleHamburgerMenu}
+					href={`/u/${userData.username}/bookmarks`}
+					class="py-5 border-b-[1px] border-white/40 hover:font-black hover:border-white transition-all duration-300"
+				>
+					Bookmarks
+				</a>
+				<a
+					on:click={toggleHamburgerMenu}
+					href="/guide"
+					class="py-5 border-b-[1px] border-white/40 hover:font-black hover:border-white transition-all duration-300"
+				>
+					Guide
+				</a>
+			</div>
+		</div>
+	{:else}
+		<div>
+			<div class="flex w-full justify-end">
+				<button on:click={toggleHamburgerMenu}>
+					<svg
+						class="w-6 h-6 text-gray-800 dark:text-white"
+						aria-hidden="true"
+						xmlns="http://www.w3.org/2000/svg"
+						width="24"
+						height="24"
+						fill="none"
+						viewBox="0 0 24 24"
+					>
+						<path
+							stroke="currentColor"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M6 18 17.94 6M18 18 6.06 6"
+						/>
+					</svg>
+				</button>
+			</div>
+
+			<div class="flex flex-col gap-2">
+				<a
+					on:click={toggleHamburgerMenu}
+					href="/guide"
+					class="py-5 border-b-[1px] border-white/40 hover:font-black hover:border-white transition-all duration-300"
+				>
+					Guide
+				</a>
+				<a
+					on:click={toggleHamburgerMenu}
+					href="/signin"
+					class="py-5 border-b-[1px] border-white/40 hover:font-black hover:border-white transition-all duration-300"
+				>
+					Login
+				</a>
+				<a
+					on:click={toggleHamburgerMenu}
+					href="/signup"
+					class="py-5 border-b-[1px] border-white/40 hover:font-black hover:border-white transition-all duration-300"
+				>
+					Register
+				</a>
+			</div>
+		</div>
+
+		<div class="w-full flex flex-col justify-center gap-2">
+			<button on:click={toggleHamburgerMenu} class="btn variant-outline-secondary">
+				<a href="/signin">Login</a>
+			</button>
+			<button on:click={toggleHamburgerMenu} class="btn variant-filled-secondary">
+				<a href="/signup">Register</a>
+			</button>
+		</div>
+	{/if}
 </div>
