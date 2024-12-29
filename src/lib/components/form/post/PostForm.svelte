@@ -269,11 +269,14 @@
 
 <Modal />
 <Container>
-	<p class="text-3xl font-bold mb-8">Create New 3D Post</p>
+	<p class="text-xl md:text-3xl font-bold mb-8">Create New 3D Post</p>
 	{#if user}
-		<p>Plan : {user.active_plan}</p>
+		<div class="mb-4">
+			<p class="mb-2">Plan :</p>
+			<p class="chip variant-filled-secondary">{user.active_plan}</p>
+		</div>
 	{/if}
-	<div class="flex w-full gap-8">
+	<div class="flex flex-col md:flex-row w-full gap-8">
 		<div class={`flex-1 ${post ? 'w-[20%]' : ''} `}>
 			{#if model || post}
 				<div>
@@ -344,7 +347,6 @@
 					bind:value={tag}
 				/> -->
 				<label class="label">
-					<span>Select</span>
 					<select on:change={selectTag} class="select">
 						<option value="">--- Select Tags ---</option>
 						{#each tags as tag}
