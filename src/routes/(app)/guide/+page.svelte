@@ -5,7 +5,7 @@ import type { PageData } from './$types';
 </script>
 
 <Container>
-    <h1 class="text-[3.4rem] font-bold mt-20">How to Upload 3D Model on Creature?</h1>
+    <h1 class="md:text-[3.4rem] font-bold mt-20">How to Upload 3D Model on Creature?</h1>
     <div class="">
         <img class="h-full w-full" src="guide.png" alt="">
     </div>
