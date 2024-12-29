@@ -300,17 +300,10 @@
 				</a>
 				<a
 					on:click={toggleHamburgerMenu}
-					href="/signin"
+					href="/search"
 					class="py-5 border-b-[1px] border-white/40 hover:font-black hover:border-white transition-all duration-300"
 				>
-					Login
-				</a>
-				<a
-					on:click={toggleHamburgerMenu}
-					href="/signup"
-					class="py-5 border-b-[1px] border-white/40 hover:font-black hover:border-white transition-all duration-300"
-				>
-					Register
+					Search
 				</a>
 			</div>
 		</div>
