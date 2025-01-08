@@ -1,23 +1,28 @@
-import { model } from '$lib/server/Model';
-import type { PageServerLoad } from '../$types';
 import { lucia } from '$lib/server/auth';
-import { fail, redirect, type Actions } from '@sveltejs/kit';
-import { usePosts } from '$lib/server/posts/usePosts';
-import { posts } from '$lib/server/db/schema';
 import { db } from '$lib/server/db/db';
+import { posts } from '$lib/server/db/schema';
+import { model } from '$lib/server/Model';
+import { usePosts } from '$lib/server/posts/usePosts';
+import { fail, redirect, type Actions } from '@sveltejs/kit';
+import type { PageServerLoad } from '../$types';
 
 const { getPosts, getTopRatedPosts } = usePosts;
 
 export const load: PageServerLoad = async (event) => {
 	try {
-		const postList = await getPosts();
+		const [postList, topRatedPosts] = await Promise.all([
+			getPosts(),
+			getTopRatedPosts(),
+		]);
 
-		const topRatedPosts = await getTopRatedPosts();
+		// Return hasilnya
 		return { postList, topRatedPosts };
 	} catch (error) {
+		// Tangani error
 		throw error;
 	}
 };
+
 
 // const models = await model.getModel();
 // return { models: models, user: event.locals.user };
