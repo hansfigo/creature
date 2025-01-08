@@ -4,6 +4,7 @@ import { user } from '$lib/server/db/schema';
 import { verify } from '@node-rs/argon2';
 import { fail, redirect } from '@sveltejs/kit';
 import { sql } from 'drizzle-orm';
+import type { Actions, PageServerLoad } from './$types';
 
 export const load = (async (event) => {
 	const param = event.url.searchParams.get('invalidate');
