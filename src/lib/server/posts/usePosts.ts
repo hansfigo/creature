@@ -1,8 +1,9 @@
 import { and, asc, count, desc, eq, ilike, inArray, like, or, sql } from 'drizzle-orm';
+import { isBookmarked } from '../bookmarks/useBookmarks';
 import { db } from '../db/db';
 import { comments, likes, posts, postTags, tags, user } from '../db/schema';
 import { getFollowersCount, isFollowing } from '../followers/useFollowers';
-import { isBookmarked } from '../bookmarks/useBookmarks';
+import { redis } from '../redis';
 
 export enum orderEnum {
 	ASC = 'asc',
@@ -59,8 +60,15 @@ const postInit = () => {
 		query = null,
 		tags = []
 	}: GetPostsParams = {}) => {
+
+		const cached = await redis.get(`posts:${order}:${query}:${tags.join(',')}`);
+
+		if (cached) {
+			return JSON.parse(cached);
+		}
+
 		let orderBy = order === orderEnum.ASC ? asc(posts.createdAt) : desc(posts.createdAt);
-		const postList = db
+		const postList = await db
 			.selectDistinct({
 				id: posts.id,
 				title: posts.title,
@@ -105,6 +113,9 @@ const postInit = () => {
 			)
 			.orderBy(orderBy);
 
+
+		await redis.set(`posts:${order}:${query}:${tags.join(',')}`, JSON.stringify(postList), 'EX', 60 * 60 * 24);
+		
 		return postList;
 	};
 
@@ -204,6 +215,13 @@ const postInit = () => {
 	};
 
 	const getTopRatedPosts = async () => {
+
+		const cached = await redis.get('topRatedPosts');
+
+		if (cached) {
+			return JSON.parse(cached);
+		}
+
 		const PostList = await db
 			.select({
 				id: posts.id,
@@ -240,10 +258,12 @@ const postInit = () => {
 			)
 			.orderBy(sql`rating DESC`) // Urutkan berdasarkan rating
 			.limit(6);
-	
+
+		await redis.set('topRatedPosts', JSON.stringify(PostList), 'EX', 60 * 60 * 24);
+
 		return PostList;
 	};
-	
+
 
 	return {
 		getPosts,

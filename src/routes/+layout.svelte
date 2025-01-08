@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { initializeStores } from '@skeletonlabs/skeleton';
 	import { arrow, autoUpdate, computePosition, flip, offset, shift } from '@floating-ui/dom';
+	import { initializeStores } from '@skeletonlabs/skeleton';
 
 	import { storePopup } from '@skeletonlabs/skeleton';
 	import '../app.pcss';

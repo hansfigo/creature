@@ -45,7 +45,7 @@
 <div class="flex min-w-full justify-center items-center z-[99] px-0 md:px-8 relative flex-col">
 	<div class="container flex justify-between items-center md:py-8 py-6 px-4">
 		<a href="/" class="h3 font-bold font-jakarta text-2xl md:text-4xl">{TITLE}</a>
-		<div class="hidden md:block w-[0%] sm:w-[30%] xl:w-[40%]">
+		<div class="hidden lg:block w-[0%] sm:w-[30%] xl:w-[40%]">
 			<form on:submit|preventDefault={() => goto(`/search?query=${query}`)}>
 				<div class="input-group input-group-divider grid-cols-[auto_1fr_auto]">
 					<div class="input-group-shim bg-transparent">
