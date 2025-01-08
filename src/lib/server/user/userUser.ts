@@ -2,6 +2,7 @@ import { eq, sql } from 'drizzle-orm';
 import { db } from '../db/db';
 import { bookmarks, likes, posts, user } from '../db/schema';
 import { getNotifications, hasUnreadNotifications } from '../notification/useNotification';
+import { redis } from '../redis';
 
 export interface userSchema {
 	username?: string;
@@ -34,6 +35,12 @@ const initUser = () => {
 		return userData[0];
 	};
 	const getUserDetail = async (username: string) => {
+
+		const cachedData = await redis.get(`user:${username}`);
+		if (cachedData) {
+			return JSON.parse(cachedData);
+		}
+		
 		const userData = await db.select().from(user).where(eq(user.username, username));
 		const PostList = await db
 			.select({
@@ -82,6 +89,8 @@ const initUser = () => {
 		data.posts.forEach((post: any) => {
 			post.user = userData[0];
 		});
+
+		await redis.set(`user:${username}`, JSON.stringify(data), 'EX', 60 * 60 * 24);
 
 		return data;
 	};

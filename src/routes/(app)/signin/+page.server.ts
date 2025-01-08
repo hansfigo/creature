@@ -1,16 +1,8 @@
-import { authFirebase } from '$lib/firebase';
-import { hashPassword } from '$lib/server/hashPassword';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import type { Actions, PageServerLoad } from './$types';
 import { lucia } from '$lib/server/auth';
-import { fail, redirect } from '@sveltejs/kit';
-import { generateIdFromEntropySize } from 'lucia';
-import { hash } from '@node-rs/argon2';
-import { db } from '$lib/server/db/db';
 import { user } from '$lib/server/db/schema';
-import { sql } from 'drizzle-orm';
 import { verify } from '@node-rs/argon2';
-import { error } from 'console';
+import { fail, redirect } from '@sveltejs/kit';
+import { sql } from 'drizzle-orm';
 
 export const load = (async (event) => {
 	const param = event.url.searchParams.get('invalidate');
