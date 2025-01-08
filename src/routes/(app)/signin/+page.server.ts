@@ -1,4 +1,5 @@
 import { lucia } from '$lib/server/auth';
+import { db } from '$lib/server/db/db';
 import { user } from '$lib/server/db/schema';
 import { verify } from '@node-rs/argon2';
 import { fail, redirect } from '@sveltejs/kit';
