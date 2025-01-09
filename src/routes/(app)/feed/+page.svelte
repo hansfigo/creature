@@ -12,7 +12,6 @@
 
 <main class="flex justify-center min-h-screen w-full gap-4 px-0 md:px-8">
 	<div class="container">
-		<p>Ini Landing PAGE</p>
 		<section class="flex flex-col gap-4">
 			<div
 				class="h-screen md:h-full flex flex-col-reverse md:flex-row gap-8 justify-center md:items-center items-start md:mb-16"
@@ -74,6 +73,34 @@
 							<p>Use lighting to make it more real</p>
 						</div>
 					</div>
+				</div>
+			</section>
+
+			<section class="hidden md:block mt-16">
+				<div class="flex w-full justify-between">
+					<h1 class="text-lg mb-6 md:text-3xl font-bold">Top Rated</h1>
+					<a class="flex items-center gap-2 text-cyan-500" href="/search">
+						<span>Explore All Models</span>
+						<Icon icon={ICON['ARROW-OUTWARD']} />
+					</a>
+				</div>
+				<Carousel posts={data.topRatedPosts} />
+			</section>
+
+			<section class="mt-16">
+				<div class="flex w-full justify-between">
+					<h1 class="text-lg mb-6 md:text-3xl font-bold">Latest Upload</h1>
+					<a class="flex items-center gap-2 text-cyan-500" href="/search">
+						<span>Explore All Models</span>
+						<Icon icon={ICON['ARROW-OUTWARD']} />
+					</a>
+				</div>
+				<div class="grid grid-cols-1 gap-8 md:grid-cols-3 xl:grid-cols-4">
+					{#if posts.length > 0}
+						{#each posts.reverse() as post}
+							<Postcard {post} />
+						{/each}
+					{/if}
 				</div>
 			</section>
 		</section>

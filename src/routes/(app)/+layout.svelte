@@ -4,9 +4,9 @@
 	import Navbar from '$lib/components/shared/navbar.svelte';
 	import { ProgressBar } from '@skeletonlabs/skeleton';
 
-	import { get } from 'svelte/store';
-	import { isLoadingStore } from '$lib/state';
 	import { TITLE } from '$lib/consants';
+	import { isLoadingStore } from '$lib/state';
+	import { get } from 'svelte/store';
 
 	export let data;
 	
@@ -18,13 +18,6 @@
 
 	const url = get(page).route.id?.toString();
 
-	const isShow = () => {
-		if (url == '/signin' || url == '/signup') {
-			return false;
-		} else {
-			return true;
-		}
-	};
 </script>
 
 <svelte:head>
@@ -34,8 +27,9 @@
 <div
 	class="relative plus-jakarta-sans min-h-screen h-full flex flex-col overflow-y-hidden overflow-x-hidden justify-between"
 >
-	{#if $page.route.id !== '/signin' && $page.route.id !== '/signup'}
+	{#if $page.route.id !== '/(app)/signin' && $page.route.id !== '/(app)/signup'}
 		<Navbar {user} {url} {userDetail} />
+		<p>{$page.route.id}</p>
 	{/if}
 
 	{#if $navigating || $isLoadingStore}
@@ -49,7 +43,7 @@
 	</div>
 
 	<br /><br /><br />
-	{#if $page.route.id !== '/signin' && $page.route.id !== '/signup'}
+	{#if $page.route.id !== '/(app)/signin' && $page.route.id !== '/(app)/signup'}
 		<Footer />
 	{/if}
 </div>
