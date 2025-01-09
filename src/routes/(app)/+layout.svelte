@@ -29,7 +29,6 @@
 >
 	{#if $page.route.id !== '/(app)/signin' && $page.route.id !== '/(app)/signup'}
 		<Navbar {user} {url} {userDetail} />
-		<p>{$page.route.id}</p>
 	{/if}
 
 	{#if $navigating || $isLoadingStore}
