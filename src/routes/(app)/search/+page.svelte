@@ -52,7 +52,7 @@
 	{#if posts && posts.length === 0}
 		<p class="mt-10">No posts found, try with another key words</p>
 	{:else}
-		<div class="flex flex-wrap mt-10 gap-4">
+		<div class="grid grid-cols-1 gap-8 md:grid-cols-3 xl:grid-cols-4">
 			{#if posts !== undefined}
 				{#each posts as post}
 					<Postcard {post} />
