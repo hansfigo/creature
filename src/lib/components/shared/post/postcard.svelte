@@ -46,7 +46,7 @@
 	>
 		<div>
 			<p class="text-white font-bold md:text-xl">{post.title}</p>
-			<a href={`u/${post.user.username}`} class="text-white text-sm md:text-base">@{post.user.username}</a>
+			<a href={`u/${post.user.username}`} class="text-white text-sm md:text-base hover:underline">@{post.user.username}</a>
 		</div>
 		<div class="flex gap-2 mt-3">
 			<div>

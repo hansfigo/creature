@@ -26,6 +26,7 @@ interface DetailPost {
 		profilePicture: string;
 		followersCount?: number;
 		isFollowing?: boolean;
+		email: string;
 	};
 	comments: {
 		id: string;
@@ -134,7 +135,8 @@ const postInit = () => {
 					username: user.username,
 					firstName: user.firstName,
 					lastName: user.lastName,
-					profilePicture: user.profilePicture
+					profilePicture: user.profilePicture,
+					email : user.email
 				}
 			})
 			.from(posts)

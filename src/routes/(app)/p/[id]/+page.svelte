@@ -1,13 +1,13 @@
 <script lang="ts">
-	import { animationStore, currentAnimationStore } from '$lib/state';
-	import App from './components/App.svelte';
-	import type { PageData } from './$types';
-	import Container from '$lib/components/shared/container.svelte';
-	import Icon from '@iconify/svelte';
 	import { enhance } from '$app/forms';
-	import { ProgressRadial } from '@skeletonlabs/skeleton';
+	import Container from '$lib/components/shared/container.svelte';
 	import { ICON } from '$lib/consants';
+	import { animationStore, currentAnimationStore } from '$lib/state';
+	import Icon from '@iconify/svelte';
+	import { ProgressRadial } from '@skeletonlabs/skeleton';
 	import { writable } from 'svelte/store';
+	import type { PageData } from './$types';
+	import App from './components/App.svelte';
 
 	export let data: PageData;
 
@@ -91,7 +91,10 @@
 					{/if}
 				</div>
 
-				<button on:click={toggleFullScreen} class="btn absolute bottom-4 right-1 md:right-5 text-2xl">
+				<button
+					on:click={toggleFullScreen}
+					class="btn absolute bottom-4 right-1 md:right-5 text-2xl"
+				>
 					{#if isFullScreen}
 						<Icon icon="ic:baseline-fullscreen-exit" />
 					{:else}
@@ -210,7 +213,7 @@
 							{/if}
 						</div>
 						<div>
-							<a class="text-base font-bold" href={`/u/${$dataUser?.username}`}
+							<a class="text-base font-bold hover:underline" href={`/u/${$dataUser?.username}`}
 								>{$dataUser?.username}</a
 							>
 							<p class="text-sm font-normal">{posts.user.followersCount} Followers</p>
@@ -250,10 +253,12 @@
 							/>
 							<input class="input hidden" type="text" name="userId" id="userId" value={userId} />
 						</form>
-						<button class="btn text-xs btn-sm md:btn-base variant-filled-secondary"
-							>Contact
-							<Icon icon={ICON['ARROW-OUTWARD']} />
-						</button>
+						<a href={`mailto:${posts.user.email}`}>
+							<button class="btn text-xs btn-sm md:btn-base variant-filled-secondary"
+								>Contact
+								<Icon icon={ICON['ARROW-OUTWARD']} />
+							</button>
+						</a>
 					</div>
 				{/if}
 
@@ -340,7 +345,7 @@
 									{/if}
 								</div>
 								<div class="px-8 py-4 rounded-3xl bg-blue-primary w-full">
-									<a href={`/u/${comment.user.username}`}>@{comment.user.username}</a>
+									<a class="hover:underline" href={`/u/${comment.user.username}`}>@{comment.user.username}</a>
 									<p>{comment.content}</p>
 								</div>
 							</div>

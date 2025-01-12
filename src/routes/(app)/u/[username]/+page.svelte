@@ -2,13 +2,13 @@
 	import { goto } from '$app/navigation';
 	import Container from '$lib/components/shared/container.svelte';
 	import Postcard from '$lib/components/shared/post/postcard.svelte';
-	import { writable } from 'svelte/store';
-	import type { PageData } from './$types';
-	import { getModalStore, type ModalComponent, type ModalSettings } from '@skeletonlabs/skeleton';
-	import Icon from '@iconify/svelte';
 	import { ICON, LOGO } from '$lib/consants';
 	import { useFirebase } from '$lib/firebase';
 	import { isLoadingStore } from '$lib/state';
+	import Icon from '@iconify/svelte';
+	import { getModalStore, type ModalComponent, type ModalSettings } from '@skeletonlabs/skeleton';
+	import { writable } from 'svelte/store';
+	import type { PageData } from './$types';
 
 	export let data: PageData;
 	const modalStore = getModalStore();
@@ -154,21 +154,26 @@
 						<div class="h-8 w-8"></div>
 						<div>
 							<p class="text-sm">Say hello to,</p>
-							{user?.firstName}
-							{user?.lastName}
+							{#if user?.firstName || user?.lastName}
+								<span>{user.firstName} {user.lastName}</span>
+							{:else}
+								<span>{user?.username}</span>
+							{/if}
 						</div>
 					</div>
 					<div class="h-[1px] bg-white w-full my-4"></div>
 					<p class="text-sm mb-4">Looking for good model?</p>
 					<div class="w-full flex justify-center">
-						<button class="btn btn-sm variant-filled-secondary">
-							<span>Send Email</span>
-							<Icon icon="akar-icons:arrow-right" class="w-4 h-4" />
-						</button>
+						<a href={`mailto:${user?.email}`}>
+							<button class="btn btn-sm variant-filled-secondary">
+								<span>Send Email</span>
+								<Icon icon="akar-icons:arrow-right" class="w-4 h-4" />
+							</button>
+						</a>
 					</div>
 				</div>
 
-				<div class="mt-4">
+				<div class="mt-4 w-full">
 					<h1 class="font-bold mb-2">About Me</h1>
 					<p class="font-thin mb-4">
 						{user?.description || 'No description'}
@@ -180,17 +185,33 @@
 					<div class="flex flex-col gap-2">
 						<div class="flex gap-2 items-center">
 							<img class="h-6 rounded-md" src={LOGO['LINKEDIN']} alt="" />
-							<span class="text-sm">{user?.linkedin ? user.linkedin : 'No LinkedIn Profile'}</span>
+							{#if user?.linkedin}
+								<a href={user.linkedin} target="_blank" rel="noreferrer">
+									<span class="text-sm hover:underline">{user.linkedin}</span>
+								</a>
+							{:else}
+								<span class="text-sm">No LinkedIn Profile</span>
+							{/if}
 						</div>
 						<div class="flex gap-2 items-center">
 							<img class="h-6 rounded-md" src={LOGO['INSTAGRAM']} alt="" />
-							<span class="text-sm"
-								>{user?.instagram ? user.instagram : 'No Instagram Profile'}</span
-							>
+							{#if user?.instagram}
+								<a href={user.instagram} target="_blank" rel="noreferrer">
+									<span class="text-sm hover:underline">{user.instagram}</span>
+								</a>
+							{:else}
+								<span class="text-sm">No Instagram Profile</span>
+							{/if}
 						</div>
 						<div class="flex gap-2 items-center">
 							<img class="h-6 rounded-md" src={LOGO['BEHANCE']} alt="" />
-							<span class="text-sm">{user?.behance ? user.behance : 'No Behance Profile'}</span>
+							{#if user?.behance}
+								<a href={user.behance} target="_blank" rel="noreferrer">
+									<span class="text-sm hover:underline">{user.behance}</span>
+								</a>
+							{:else}
+								<span class="text-sm">No Behance Profile</span>
+							{/if}
 						</div>
 					</div>
 				</div>

@@ -1,17 +1,17 @@
-import { usePosts } from '$lib/server/posts/usePosts';
-import { redirect, type Actions } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
+import { addBookmark } from '$lib/server/bookmarks/useBookmarks';
 import { db } from '$lib/server/db/db';
 import { bookmarks, comments, likes, posts, user } from '$lib/server/db/schema';
-import { generateIdFromEntropySize } from 'lucia';
-import { eq } from 'drizzle-orm';
 import { followUser, unfollowUser } from '$lib/server/followers/useFollowers';
-import { addBookmark } from '$lib/server/bookmarks/useBookmarks';
 import {
 	createNotification,
 	updateNotificationStatus
 } from '$lib/server/notification/useNotification';
+import { usePosts } from '$lib/server/posts/usePosts';
+import { redirect, type Actions } from '@sveltejs/kit';
 import { error } from 'console';
+import { eq } from 'drizzle-orm';
+import { generateIdFromEntropySize } from 'lucia';
+import type { PageServerLoad } from './$types';
 
 const { getDetailPost } = usePosts;
 
