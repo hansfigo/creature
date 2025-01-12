@@ -27,20 +27,27 @@ const initUser = () => {
 		if (userData.length === 0) {
 			return undefined;
 		}
-		const updatedUser = await db.update(user).set(data).where(eq(user.username, username));
-		return updatedUser;
+
+		try {
+			const updatedUser = await db.update(user).set(data).where(eq(user.username, username));
+			return updatedUser;
+		} catch (error) {
+			return undefined;
+		}
 	};
 	const getUserInfo = async (username: string) => {
 		const userData = await db.select().from(user).where(eq(user.username, username));
 		return userData[0];
 	};
-	const getUserDetail = async (username: string) => {
+	const getUserDetail = async (username: string, getCache = false) => {
 
-		const cachedData = await redis.get(`user:${username}`);
-		if (cachedData) {
-			return JSON.parse(cachedData);
+		if (getCache) {
+			const cachedData = await redis.get(`user:${username}`);
+			if (cachedData) {
+				return JSON.parse(cachedData);
+			}
 		}
-		
+
 		const userData = await db.select().from(user).where(eq(user.username, username));
 		const PostList = await db
 			.select({

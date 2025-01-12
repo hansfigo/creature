@@ -4,17 +4,19 @@
 	import Navbar from '$lib/components/shared/navbar.svelte';
 	import { ProgressBar } from '@skeletonlabs/skeleton';
 
-	import { get } from 'svelte/store';
-	import { isLoadingStore } from '$lib/state';
 	import { TITLE } from '$lib/consants';
+	import { isLoadingStore } from '$lib/state';
+	import { get } from 'svelte/store';
 
 	export let data;
 	
 	let userDetail = data.userDetail;
 	let user = data.user;
 
-	$: user = $page.data.user;
-	$: userDetail = $page.data.userDetail;
+	$ : {
+		userDetail = data.userDetail;
+		user = data.user;
+	}
 
 	const url = get(page).route.id?.toString();
 
