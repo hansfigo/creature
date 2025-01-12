@@ -1,13 +1,13 @@
-import { fail, type Actions } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
+import { useFirebase } from '$lib/firebase';
+import { db } from '$lib/server/db/db';
+import { tags } from '$lib/server/db/schema';
+import { useUser } from '$lib/server/user/userUser';
+import { fail, redirect, type Actions } from '@sveltejs/kit';
+import { generateIdFromEntropySize } from 'lucia';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { z } from 'zod';
-import { useFirebase } from '$lib/firebase';
-import { db } from '$lib/server/db/db';
-import { generateIdFromEntropySize } from 'lucia';
-import { tags } from '$lib/server/db/schema';
-import { useUser } from '$lib/server/user/userUser';
+import type { PageServerLoad } from './$types';
 
 const schema = z.object({
 	title: z.string().min(1),
@@ -17,6 +17,11 @@ const schema = z.object({
 });
 
 export const load = (async (events) => {
+
+	if (!events.locals.user) {
+		throw redirect(302, '/');
+	}
+
 	const form = await superValidate(zod(schema));
 	const user = await useUser.getUserInfo(events.locals.user?.username!);
 

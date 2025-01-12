@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { navigating, page } from '$app/stores';
 	import Container from '$lib/components/shared/container.svelte';
 	import Postcard from '$lib/components/shared/post/postcard.svelte';
 	import type { PageData } from './$types';
@@ -9,12 +10,14 @@
 	let posts = data.posts;
 
 	$: posts = data.posts;
+
+	console.log($navigating)
 </script>
 
 <Container>
-	<form use:enhance class="mb-4 block md:hidden">
+	<!-- <form use:enhance class="mb-4 block md:hidden">
 		<input class="input" type="text" name="query" id="query" placeholder="Search Models..." />
-	</form>
+	</form> -->
 
 	{#if data.query || data.tags}
 		<div class="flex justify-between items-center mb-4">
