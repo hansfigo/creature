@@ -77,9 +77,9 @@
 		{#if userData}
 			<div class=" gap-4 justify-center items-center hidden md:flex">
 				<!-- <p class="font-jakarta">{`Welcome, ${userData.username}`}</p> -->
-				<!-- <a href="/pricing">
+				<a href="/pricing">
 					<button class="btn variant-outline-secondary">Pricing</button>
-				</a> -->
+				</a>
 				<a href="/guide">
 					<button class="btn variant-outline-secondary">Guide</button>
 				</a>
@@ -165,9 +165,9 @@
 			</div>
 		{:else}
 			<div class=" gap-2 hidden md:flex">
-				<!-- <a href="/pricing">
+				<a href="/pricing">
 					<button class="btn variant-outline-secondary">Pricing</button>
-				</a> -->
+				</a>
 				<a href="/guide">
 					<button class="btn variant-outline-secondary">Guide</button>
 				</a>
@@ -240,13 +240,13 @@
 				>
 					Bookmarks
 				</a>
-				<!-- <a
+				<a
 					on:click={toggleHamburgerMenu}
 					href={`/pricing`}
 					class="py-5 border-b-[1px] border-white/40 hover:font-black hover:border-white transition-all duration-300"
 				>
 					Upgrade Account
-				</a> -->
+				</a>
 				<a
 					on:click={toggleHamburgerMenu}
 					href="/guide"
